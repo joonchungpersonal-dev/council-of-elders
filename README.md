@@ -285,8 +285,10 @@ store.add_file("munger", "path/to/poor_charlies_almanack.txt")
 
 ## License
 
-MIT
+MIT with Attribution — see [LICENSE](LICENSE)
 
 ---
+
+*Council of Elders was created by Joon Chung and Claude (Anthropic).*
 
 *Built with Python, Ollama, and the wisdom of the ages.*
