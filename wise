@@ -1,0 +1,415 @@
+#!/usr/bin/env python3
+"""
+Council of Elders - Simple Interactive Interface
+
+Just run: ./wise
+"""
+
+import sys
+import os
+
+# Add project to path
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+from rich.console import Console
+from rich.panel import Panel
+from rich.table import Table
+from rich.prompt import Prompt, Confirm
+from rich.markdown import Markdown
+
+console = Console()
+
+# Elder categories for easy selection
+ELDER_GROUPS = {
+    "Business & Investing": [
+        ("munger", "Charlie Munger", "Mental models, rational thinking"),
+        ("buffett", "Warren Buffett", "Value investing, patience"),
+        ("naval", "Naval Ravikant", "Wealth, happiness, leverage"),
+        ("greene", "Robert Greene", "Power, strategy, human nature"),
+    ],
+    "Philosophy & Wisdom": [
+        ("aurelius", "Marcus Aurelius", "Stoicism, duty, resilience"),
+        ("seneca", "Seneca", "Practical philosophy, mortality"),
+        ("thich", "Thich Nhat Hanh", "Mindfulness, peace, presence"),
+        ("confucius", "Confucius", "Ethics, relationships, harmony"),
+    ],
+    "Psychology & Growth": [
+        ("jung", "Carl Jung", "Shadow work, archetypes, individuation"),
+        ("peterson", "Jordan Peterson", "Meaning, responsibility, order"),
+        ("branden", "Nathaniel Branden", "Self-esteem, authenticity"),
+        ("frankl", "Viktor Frankl", "Meaning, suffering, purpose"),
+    ],
+    "Creativity & Action": [
+        ("rubin", "Rick Rubin", "Creativity, art, source"),
+        ("lee", "Bruce Lee", "Adaptability, self-expression"),
+        ("oprah", "Oprah Winfrey", "Intuition, transformation"),
+        ("franklin", "Benjamin Franklin", "Self-improvement, pragmatism"),
+    ],
+    "Risk & Systems": [
+        ("taleb", "Nassim Taleb", "Antifragility, uncertainty, risk"),
+        ("feynman", "Richard Feynman", "First principles, curiosity"),
+        ("lao", "Lao Tzu", "Wu wei, natural flow, simplicity"),
+    ],
+}
+
+
+def show_elders():
+    """Display all elders in a nice table."""
+    console.print()
+    for group_name, elders in ELDER_GROUPS.items():
+        table = Table(title=group_name, show_header=False, border_style="dim")
+        table.add_column("ID", style="cyan", width=12)
+        table.add_column("Name", style="bold", width=20)
+        table.add_column("Focus", style="dim")
+        for elder_id, name, focus in elders:
+            table.add_row(elder_id, name, focus)
+        console.print(table)
+        console.print()
+
+
+def quick_ask():
+    """Quick single question to any elder."""
+    from council.elders import ElderRegistry
+    from council.orchestrator import get_orchestrator
+
+    show_elders()
+
+    elder_id = Prompt.ask("[cyan]Which elder?[/cyan]").strip().lower()
+    elder = ElderRegistry.get(elder_id)
+
+    if not elder:
+        console.print(f"[red]Elder '{elder_id}' not found[/red]")
+        return
+
+    console.print(f"\n[bold {elder.color}]{elder.name}[/bold {elder.color}] [dim]({elder.title})[/dim]")
+    console.print(f"[dim]{elder.get_greeting()}[/dim]\n")
+
+    question = Prompt.ask("[cyan]Your question[/cyan]")
+
+    if not question.strip():
+        return
+
+    console.print()
+    orchestrator = get_orchestrator()
+
+    response = []
+    for chunk in orchestrator.ask_elder(elder_id, question, stream=True):
+        response.append(chunk)
+        sys.stdout.write(chunk)
+        sys.stdout.flush()
+
+    console.print("\n")
+
+
+def roundtable():
+    """Convene multiple elders for a discussion."""
+    from council.elders import ElderRegistry
+    from council.orchestrator import get_orchestrator
+
+    console.print("\n[bold]Roundtable Discussion[/bold]")
+    console.print("[dim]Multiple elders will discuss your question.[/dim]\n")
+
+    # Preset combinations
+    presets = {
+        "1": ("munger,buffett,taleb", "Investment Decision"),
+        "2": ("aurelius,seneca,thich", "Life Challenge"),
+        "3": ("greene,naval,munger", "Career Strategy"),
+        "4": ("jung,peterson,frankl", "Personal Growth"),
+        "5": ("rubin,lee,oprah", "Creative Block"),
+        "6": ("feynman,taleb,munger", "Complex Problem"),
+    }
+
+    console.print("[bold]Preset Panels:[/bold]")
+    for key, (elders, desc) in presets.items():
+        console.print(f"  [cyan]{key}[/cyan]. {desc} ({elders})")
+    console.print(f"  [cyan]c[/cyan]. Custom selection")
+    console.print()
+
+    choice = Prompt.ask("Choose panel", default="1")
+
+    if choice.lower() == 'c':
+        show_elders()
+        elders_str = Prompt.ask("Enter elder IDs (comma-separated)")
+    elif choice in presets:
+        elders_str, _ = presets[choice]
+    else:
+        console.print("[red]Invalid choice[/red]")
+        return
+
+    elder_ids = [e.strip() for e in elders_str.split(",")]
+
+    # Validate
+    for eid in elder_ids:
+        if not ElderRegistry.get(eid):
+            console.print(f"[red]Elder '{eid}' not found[/red]")
+            return
+
+    console.print(f"\n[bold]Panel:[/bold] {', '.join(elder_ids)}\n")
+    question = Prompt.ask("[cyan]Your question[/cyan]")
+
+    if not question.strip():
+        return
+
+    orchestrator = get_orchestrator()
+
+    current_elder = None
+    for elder_id, chunk in orchestrator.roundtable(elder_ids, question, turns=1):
+        if chunk is None:
+            console.print("\n")
+            current_elder = None
+        else:
+            elder = ElderRegistry.get(elder_id)
+            if elder != current_elder:
+                current_elder = elder
+                console.print(f"\n[bold {elder.color}]━━━ {elder.name} ━━━[/bold {elder.color}]\n")
+            sys.stdout.write(chunk)
+            sys.stdout.flush()
+
+    console.print()
+
+
+def chat_session():
+    """Extended conversation with one elder."""
+    from council.elders import ElderRegistry
+    from council.orchestrator import get_orchestrator
+
+    show_elders()
+
+    elder_id = Prompt.ask("[cyan]Which elder for extended chat?[/cyan]").strip().lower()
+    elder = ElderRegistry.get(elder_id)
+
+    if not elder:
+        console.print(f"[red]Elder '{elder_id}' not found[/red]")
+        return
+
+    console.print(f"\n[bold {elder.color}]═══ Session with {elder.name} ═══[/bold {elder.color}]")
+    console.print(f"[dim]{elder.title} • {elder.era}[/dim]")
+    console.print(f"\n[{elder.color}]{elder.get_greeting()}[/{elder.color}]")
+    console.print("\n[dim]Type 'done' to end session[/dim]\n")
+
+    orchestrator = get_orchestrator()
+
+    while True:
+        try:
+            question = Prompt.ask("[cyan]You[/cyan]")
+
+            if question.lower() in ('done', 'quit', 'exit', 'q'):
+                console.print(f"\n[{elder.color}]Until next time. Go well.[/{elder.color}]\n")
+                break
+
+            if not question.strip():
+                continue
+
+            console.print()
+            for chunk in orchestrator.ask_elder(elder_id, question, stream=True):
+                sys.stdout.write(chunk)
+                sys.stdout.flush()
+            console.print("\n")
+
+        except KeyboardInterrupt:
+            console.print("\n\n[dim]Session ended[/dim]\n")
+            break
+
+
+def full_council():
+    """
+    Full Council Debate - Maximum wisdom exposure.
+
+    3 Phases:
+    1. Domain Perspectives (5 elders from different domains)
+    2. Dialectic Pairs (opposing viewpoints debate)
+    3. Synthesis (integrative summary)
+    """
+    from council.elders import ElderRegistry
+    from council.orchestrator import get_orchestrator
+
+    console.print("\n[bold]═══ FULL COUNCIL DEBATE ═══[/bold]")
+    console.print("[dim]Maximum exposure to diverse wisdom perspectives[/dim]\n")
+
+    # Presets
+    presets = {
+        "1": ("career", "Career & Work", ["munger", "naval", "aurelius", "peterson", "greene"]),
+        "2": ("life", "Life Direction", ["aurelius", "frankl", "jung", "naval", "lao"]),
+        "3": ("creative", "Creative Challenge", ["rubin", "lee", "feynman", "jung", "naval"]),
+        "4": ("financial", "Financial Decision", ["munger", "buffett", "taleb", "seneca", "naval"]),
+        "5": ("relationship", "Relationships", ["confucius", "thich", "jung", "branden", "aurelius"]),
+        "6": ("full", "Full Council (All Domains)", ["munger", "aurelius", "jung", "rubin", "taleb"]),
+    }
+
+    console.print("[bold]Council Presets:[/bold]")
+    for key, (_, desc, elders) in presets.items():
+        console.print(f"  [cyan]{key}[/cyan]. {desc}")
+        console.print(f"      [dim]{', '.join(elders)}[/dim]")
+    console.print()
+
+    choice = Prompt.ask("Choose council type", default="1")
+
+    if choice not in presets:
+        console.print("[red]Invalid choice[/red]")
+        return
+
+    preset_id, preset_name, domain_elders = presets[choice]
+
+    console.print(f"\n[bold]Council: {preset_name}[/bold]")
+    console.print(f"[dim]Elders: {', '.join(domain_elders)}[/dim]\n")
+
+    question = Prompt.ask("[cyan]Your question for the council[/cyan]")
+
+    if not question.strip():
+        return
+
+    orchestrator = get_orchestrator()
+    all_responses = []
+
+    # PHASE 1: Domain Perspectives
+    console.print("\n[bold yellow]━━━ PHASE 1: DOMAIN PERSPECTIVES ━━━[/bold yellow]\n")
+
+    for elder_id in domain_elders:
+        elder = ElderRegistry.get(elder_id)
+        if not elder:
+            continue
+
+        console.print(f"[bold {elder.color}]▶ {elder.name}[/bold {elder.color}] [dim]({elder.title})[/dim]\n")
+
+        response_parts = []
+        for chunk in orchestrator.ask_elder(elder_id, question, stream=True):
+            response_parts.append(chunk)
+            sys.stdout.write(chunk)
+            sys.stdout.flush()
+
+        response_text = "".join(response_parts)
+        all_responses.append({"elder": elder.name, "id": elder_id, "content": response_text})
+        console.print("\n")
+
+    # PHASE 2: Dialectic (pick 2 contrasting elders)
+    dialectic_pairs = [
+        (domain_elders[0], domain_elders[-1]),  # First vs Last (usually most different)
+    ]
+
+    console.print("\n[bold yellow]━━━ PHASE 2: DIALECTIC ━━━[/bold yellow]")
+    console.print("[dim]Contrasting perspectives engage with each other[/dim]\n")
+
+    for elder1_id, elder2_id in dialectic_pairs:
+        elder1 = ElderRegistry.get(elder1_id)
+        elder2 = ElderRegistry.get(elder2_id)
+
+        if not elder1 or not elder2:
+            continue
+
+        # Get elder1's response to elder2
+        elder2_response = next((r["content"] for r in all_responses if r["id"] == elder2_id), "")
+
+        dialectic_prompt = f"""Reflecting on this question: "{question}"
+
+Your colleague {elder2.name} offered this perspective:
+"{elder2_response[:800]}..."
+
+In 2-3 paragraphs, engage with their view. Where do you agree? What would you add or see differently?"""
+
+        console.print(f"[bold {elder1.color}]▶ {elder1.name} responds to {elder2.name}[/bold {elder1.color}]\n")
+
+        for chunk in orchestrator.ask_elder(elder1_id, dialectic_prompt, stream=True):
+            sys.stdout.write(chunk)
+            sys.stdout.flush()
+
+        console.print("\n")
+
+    # PHASE 3: Synthesis
+    console.print("\n[bold yellow]━━━ PHASE 3: SYNTHESIS ━━━[/bold yellow]")
+    console.print("[dim]Integrating the threads of wisdom[/dim]\n")
+
+    # Use Munger or first elder as synthesizer
+    synthesizer_id = "munger" if "munger" in domain_elders else domain_elders[0]
+    synthesizer = ElderRegistry.get(synthesizer_id)
+
+    perspectives_summary = "\n".join([
+        f"- {r['elder']}: {r['content'][:300]}..."
+        for r in all_responses
+    ])
+
+    synthesis_prompt = f"""The council has debated: "{question}"
+
+The perspectives shared were:
+{perspectives_summary}
+
+As a synthesizer, in 3-4 paragraphs:
+1. What key themes emerged across perspectives?
+2. What practical wisdom would you offer someone facing this question?
+3. What tensions remain, and why might that be valuable?"""
+
+    console.print(f"[bold {synthesizer.color}]▶ {synthesizer.name} synthesizes[/bold {synthesizer.color}]\n")
+
+    for chunk in orchestrator.ask_elder(synthesizer_id, synthesis_prompt, stream=True):
+        sys.stdout.write(chunk)
+        sys.stdout.flush()
+
+    console.print("\n\n[bold green]═══ COUNCIL COMPLETE ═══[/bold green]\n")
+
+
+def main_menu():
+    """Main interactive menu."""
+    console.print(Panel.fit(
+        "[bold cyan]Council of Elders[/bold cyan]\n"
+        "[dim]Wisdom from history's greatest minds[/dim]",
+        border_style="cyan"
+    ))
+
+    while True:
+        console.print("\n[bold]What would you like to do?[/bold]\n")
+        console.print("  [cyan]1[/cyan]. Ask a quick question")
+        console.print("  [cyan]2[/cyan]. Convene a roundtable (3 elders)")
+        console.print("  [cyan]3[/cyan]. Full council debate (5+ elders)")
+        console.print("  [cyan]4[/cyan]. Extended chat session")
+        console.print("  [cyan]5[/cyan]. List all elders")
+        console.print("  [cyan]q[/cyan]. Quit")
+        console.print()
+
+        choice = Prompt.ask("Choice", default="1")
+
+        try:
+            if choice == "1":
+                quick_ask()
+            elif choice == "2":
+                roundtable()
+            elif choice == "3":
+                full_council()
+            elif choice == "4":
+                chat_session()
+            elif choice == "5":
+                show_elders()
+            elif choice.lower() == "q":
+                console.print("\n[dim]May their wisdom guide you.[/dim]\n")
+                break
+            else:
+                console.print("[red]Invalid choice[/red]")
+        except KeyboardInterrupt:
+            console.print("\n")
+            continue
+        except Exception as e:
+            console.print(f"[red]Error: {e}[/red]")
+            console.print("[dim]Make sure Ollama is running: ollama serve[/dim]")
+
+
+if __name__ == "__main__":
+    # Quick mode: ./wise munger "your question"
+    if len(sys.argv) >= 3:
+        from council.elders import ElderRegistry
+        from council.orchestrator import get_orchestrator
+
+        elder_id = sys.argv[1]
+        question = " ".join(sys.argv[2:])
+
+        elder = ElderRegistry.get(elder_id)
+        if not elder:
+            console.print(f"[red]Elder '{elder_id}' not found[/red]")
+            sys.exit(1)
+
+        console.print(f"\n[bold {elder.color}]{elder.name}[/bold {elder.color}]\n")
+
+        orchestrator = get_orchestrator()
+        for chunk in orchestrator.ask_elder(elder_id, question, stream=True):
+            sys.stdout.write(chunk)
+            sys.stdout.flush()
+        console.print("\n")
+    else:
+        main_menu()

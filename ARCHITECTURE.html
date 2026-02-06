@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Council of Elders - Architecture & Flow</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --parchment: #faf9f6;
+            --parchment-dark: #f0ebe3;
+            --ink: #333;
+            --ink-light: #555;
+            --ink-muted: #777;
+            --accent: #8b7355;
+            --accent-dark: #5c4033;
+            --gold: #c9a959;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            background: var(--parchment);
+            color: var(--ink);
+            line-height: 1.8;
+            font-size: 18px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 30px;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding-bottom: 40px;
+            border-bottom: 2px solid var(--accent);
+        }
+
+        h1 {
+            font-size: 3em;
+            font-weight: 700;
+            color: var(--accent-dark);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            font-style: italic;
+            color: var(--ink-light);
+        }
+
+        .meta {
+            margin-top: 20px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85em;
+            color: var(--ink-muted);
+        }
+
+        /* Sections */
+        section {
+            margin-bottom: 50px;
+        }
+
+        h2 {
+            font-size: 1.8em;
+            color: var(--accent-dark);
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--parchment-dark);
+        }
+
+        h3 {
+            font-size: 1.3em;
+            color: var(--accent);
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        /* Callout boxes */
+        .callout {
+            background: white;
+            border-left: 4px solid var(--accent);
+            padding: 25px 30px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 4px 15px rgba(92, 64, 51, 0.08);
+        }
+
+        .callout-title {
+            font-weight: 700;
+            color: var(--accent-dark);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9em;
+        }
+
+        /* Flow diagram */
+        .flow-diagram {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin: 30px 0;
+            box-shadow: 0 4px 20px rgba(92, 64, 51, 0.1);
+        }
+
+        .flow-step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .flow-number {
+            width: 40px;
+            height: 40px;
+            background: var(--accent);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            flex-shrink: 0;
+            margin-right: 20px;
+        }
+
+        .flow-content {
+            flex: 1;
+        }
+
+        .flow-content strong {
+            color: var(--accent-dark);
+        }
+
+        .flow-arrow {
+            text-align: center;
+            color: var(--accent);
+            font-size: 1.5em;
+            margin: 10px 0;
+            margin-left: 10px;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        /* Technical appendix styling */
+        .appendix {
+            background: linear-gradient(135deg, #f8f6f3 0%, #f0ebe3 100%);
+            padding: 40px;
+            border-radius: 12px;
+            margin-top: 60px;
+        }
+
+        .appendix h2 {
+            border-bottom-color: var(--accent);
+        }
+
+        .tech-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9em;
+        }
+
+        .tech-table th {
+            background: var(--accent-dark);
+            color: white;
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 500;
+        }
+
+        .tech-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--parchment-dark);
+            vertical-align: top;
+        }
+
+        .tech-table tr:nth-child(even) {
+            background: rgba(255,255,255,0.5);
+        }
+
+        .tech-badge {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-family: 'Inter', sans-serif;
+            margin: 2px;
+        }
+
+        .tech-badge.optional {
+            background: var(--ink-muted);
+        }
+
+        code {
+            background: var(--parchment-dark);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'SF Mono', 'Consolas', monospace;
+            font-size: 0.85em;
+        }
+
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'SF Mono', 'Consolas', monospace;
+            font-size: 0.85em;
+            line-height: 1.5;
+            margin: 20px 0;
+        }
+
+        /* Elder showcase */
+        .elder-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .elder-mini {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(92, 64, 51, 0.08);
+        }
+
+        .elder-mini strong {
+            color: var(--accent-dark);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .elder-mini span {
+            font-size: 0.85em;
+            color: var(--ink-muted);
+        }
+
+        /* Print styles */
+        @media print {
+            body {
+                font-size: 12pt;
+            }
+            .container {
+                max-width: 100%;
+                padding: 0;
+            }
+            .flow-diagram, .callout, .appendix {
+                break-inside: avoid;
+            }
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--ink-muted);
+            font-size: 0.9em;
+            border-top: 1px solid var(--parchment-dark);
+            margin-top: 60px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Council of Elders</h1>
+            <p class="subtitle">Architecture & System Flow</p>
+            <p class="meta">A Local AI Advisory System Embodying the Wisdom of Great Thinkers</p>
+        </header>
+
+        <!-- PART 1: LAY LANGUAGE EXPLANATION -->
+
+        <section>
+            <h2>What Is the Council of Elders?</h2>
+            <p>
+                Imagine having a personal advisory board composed of history's greatest minds&mdash;philosophers,
+                investors, psychologists, and strategists&mdash;available to consult on any question you face.
+                That's the Council of Elders.
+            </p>
+            <p>
+                This system runs entirely on your computer, using artificial intelligence to embody the
+                thinking styles, frameworks, and wisdom of figures like Marcus Aurelius, Charlie Munger,
+                Carl Jung, and many others. You can ask a single elder for advice, or convene a
+                "roundtable" where multiple elders discuss your question together, building on each
+                other's perspectives.
+            </p>
+
+            <div class="callout">
+                <div class="callout-title">Key Principle</div>
+                <p style="margin-bottom: 0;">
+                    Everything runs locally on your machine. Your conversations never leave your computer,
+                    ensuring complete privacy. No accounts, no subscriptions, no data sharing.
+                </p>
+            </div>
+        </section>
+
+        <section>
+            <h2>The Cast of Advisors</h2>
+            <p>
+                The Council includes 28 distinct advisors, each with their own personality,
+                communication style, and mental frameworks. They span different domains of expertise:
+            </p>
+
+            <h3>Business & Investing</h3>
+            <div class="elder-showcase">
+                <div class="elder-mini"><strong>Charlie Munger</strong><span>Mental Models & Investing</span></div>
+                <div class="elder-mini"><strong>Warren Buffett</strong><span>Value Investing</span></div>
+                <div class="elder-mini"><strong>Naval Ravikant</strong><span>Wealth & Happiness</span></div>
+            </div>
+
+            <h3>Philosophy & Wisdom</h3>
+            <div class="elder-showcase">
+                <div class="elder-mini"><strong>Marcus Aurelius</strong><span>Stoic Philosophy</span></div>
+                <div class="elder-mini"><strong>Buddha</strong><span>Mindfulness & Compassion</span></div>
+                <div class="elder-mini"><strong>Benjamin Franklin</strong><span>Practical Wisdom</span></div>
+            </div>
+
+            <h3>Mindfulness & Eastern Wisdom</h3>
+            <div class="elder-showcase">
+                <div class="elder-mini"><strong>Thich Nhat Hanh</strong><span>Engaged Buddhism</span></div>
+                <div class="elder-mini"><strong>Jon Kabat-Zinn</strong><span>Mindfulness-Based Stress Reduction</span></div>
+                <div class="elder-mini"><strong>Lao Tzu</strong><span>Taoism & The Way</span></div>
+            </div>
+
+            <h3>Psychology & Self-Understanding</h3>
+            <div class="elder-showcase">
+                <div class="elder-mini"><strong>Carl Jung</strong><span>Depth Psychology</span></div>
+                <div class="elder-mini"><strong>Nathaniel Branden</strong><span>Self-Esteem</span></div>
+            </div>
+
+            <h3>Renaissance & Creativity</h3>
+            <div class="elder-showcase">
+                <div class="elder-mini"><strong>Leonardo da Vinci</strong><span>Polymath & Inventor</span></div>
+                <div class="elder-mini"><strong>Rick Rubin</strong><span>Creative Process</span></div>
+            </div>
+
+            <h3>Decision Science</h3>
+            <div class="elder-showcase">
+                <div class="elder-mini"><strong>Daniel Kahneman</strong><span>Behavioral Economics</span></div>
+                <div class="elder-mini"><strong>Philip Tetlock</strong><span>Forecasting & Judgment</span></div>
+                <div class="elder-mini"><strong>Gary Klein</strong><span>Naturalistic Decision Making</span></div>
+                <div class="elder-mini"><strong>Donella Meadows</strong><span>Systems Thinking</span></div>
+            </div>
+
+            <h3>Strategy & Adaptability</h3>
+            <div class="elder-showcase">
+                <div class="elder-mini"><strong>Sun Tzu</strong><span>Strategic Thinking</span></div>
+                <div class="elder-mini"><strong>Bruce Lee</strong><span>Adaptability</span></div>
+            </div>
+
+            <h3>Boldness & Courage</h3>
+            <div class="elder-showcase">
+                <div class="elder-mini"><strong>Harriet Tubman</strong><span>Liberation & Resilience</span></div>
+                <div class="elder-mini"><strong>Hannibal Barca</strong><span>Military Genius</span></div>
+                <div class="elder-mini"><strong>Boudicca</strong><span>Warrior Queen</span></div>
+                <div class="elder-mini"><strong>Genghis Khan</strong><span>Empire Building</span></div>
+                <div class="elder-mini"><strong>Estée Lauder</strong><span>Business Pioneer</span></div>
+            </div>
+        </section>
+
+        <section>
+            <h2>How It Works: The Simple Version</h2>
+
+            <div class="flow-diagram">
+                <div class="flow-step">
+                    <div class="flow-number">1</div>
+                    <div class="flow-content">
+                        <strong>You Ask a Question</strong><br>
+                        Type your question through the command line or the beautiful web interface.
+                        Select which elder(s) you want to consult.
+                    </div>
+                </div>
+                <div class="flow-arrow">&darr;</div>
+
+                <div class="flow-step">
+                    <div class="flow-number">2</div>
+                    <div class="flow-content">
+                        <strong>The Elder's Mind Is Activated</strong><br>
+                        The system loads that elder's personality&mdash;their way of thinking, their
+                        characteristic phrases, their mental frameworks, and relevant knowledge from
+                        their actual writings and teachings.
+                    </div>
+                </div>
+                <div class="flow-arrow">&darr;</div>
+
+                <div class="flow-step">
+                    <div class="flow-number">3</div>
+                    <div class="flow-content">
+                        <strong>The AI Thinks as That Person</strong><br>
+                        A powerful language model running on your computer generates a response while
+                        "inhabiting" that elder's perspective. The response streams to you in real-time.
+                    </div>
+                </div>
+                <div class="flow-arrow">&darr;</div>
+
+                <div class="flow-step">
+                    <div class="flow-number">4</div>
+                    <div class="flow-content">
+                        <strong>In Roundtables: Elders Respond to Each Other</strong><br>
+                        If you've convened multiple advisors, each subsequent elder sees what the
+                        previous ones said. They build on, contrast with, or complement each other's
+                        perspectives&mdash;creating a genuine dialogue.
+                    </div>
+                </div>
+                <div class="flow-arrow">&darr;</div>
+
+                <div class="flow-step">
+                    <div class="flow-number">5</div>
+                    <div class="flow-content">
+                        <strong>You Receive the Wisdom</strong><br>
+                        The response appears beautifully formatted in your terminal or as an elegant
+                        HTML document you can save, print, or share.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Ways to Interact</h2>
+
+            <h3>Single Consultation</h3>
+            <p>
+                Ask one elder a specific question. Good for getting a focused perspective from a
+                particular domain. For example, asking Munger about a business decision or Aurelius
+                about handling a difficult situation.
+            </p>
+
+            <h3>Roundtable Discussion</h3>
+            <p>
+                Convene multiple elders to discuss a topic together. Each elder contributes their
+                unique perspective while engaging with what others have said. This creates a rich,
+                multi-dimensional view of your question.
+            </p>
+
+            <h3>Interactive Chat</h3>
+            <p>
+                Have an ongoing conversation with a single elder. Ask follow-up questions, dive
+                deeper into topics, and explore ideas together over multiple exchanges.
+            </p>
+
+            <h3>Web Interface</h3>
+            <p>
+                A beautiful, parchment-styled web page where you can select advisors with checkboxes,
+                type your question, and watch the responses stream in with elegant formatting.
+            </p>
+
+            <h3>Intake Debate Mode</h3>
+            <p>
+                Before diving into advice, the council can engage in a preliminary debate about
+                what clarifying questions would help them give you better guidance. In this mode:
+            </p>
+            <ul>
+                <li>Each elder proposes questions based on their unique perspective</li>
+                <li>They build on, contrast with, or complement each other's suggestions</li>
+                <li>A synthesis produces the most valuable clarifying questions</li>
+                <li>You answer the questions, then receive more targeted wisdom</li>
+            </ul>
+            <p>
+                This mirrors how a real advisory board would approach a complex problem&mdash;first
+                ensuring they understand the full context before offering recommendations.
+            </p>
+        </section>
+
+        <section>
+            <h2>What Makes Each Elder Unique?</h2>
+            <p>
+                Each elder isn't just a name&mdash;they're a carefully crafted personality with:
+            </p>
+            <ul>
+                <li><strong>Core Identity:</strong> Who they are, their era, their life's work</li>
+                <li><strong>Communication Style:</strong> How they speak, their characteristic phrases and mannerisms</li>
+                <li><strong>Mental Frameworks:</strong> The specific thinking tools they use to analyze problems</li>
+                <li><strong>Knowledge Base:</strong> Relevant excerpts from their actual writings and teachings</li>
+                <li><strong>Guidelines:</strong> What they would and wouldn't say, keeping them authentic</li>
+            </ul>
+            <p>
+                This means Munger will naturally think in mental models and inversions, Aurelius will
+                reference Stoic principles and the transience of life, and Jung will explore shadow
+                work and the collective unconscious&mdash;without being explicitly told to do so.
+            </p>
+        </section>
+
+        <section>
+            <h2>Privacy & Data</h2>
+            <p>
+                The Council runs entirely on your local machine using Ollama, an open-source tool for
+                running AI models locally. This means:
+            </p>
+            <ul>
+                <li>No internet connection required once set up</li>
+                <li>Your conversations are never sent to any external server</li>
+                <li>No accounts, no API keys, no subscriptions</li>
+                <li>Complete control over your data</li>
+                <li>Session history stored locally (and can be disabled)</li>
+            </ul>
+        </section>
+
+        <!-- PART 2: TECHNICAL APPENDIX -->
+
+        <div class="appendix">
+            <h2>Technical Appendix</h2>
+            <p style="font-style: italic; color: var(--ink-light);">
+                For engineering leadership, technical recruiters, and those evaluating the system architecture.
+            </p>
+
+            <h3>Technology Stack</h3>
+            <table class="tech-table">
+                <tr>
+                    <th>Layer</th>
+                    <th>Technology</th>
+                    <th>Purpose</th>
+                </tr>
+                <tr>
+                    <td>LLM Runtime</td>
+                    <td><span class="tech-badge">Ollama</span></td>
+                    <td>Local inference of language models (llama, qwen, mistral, etc.)</td>
+                </tr>
+                <tr>
+                    <td>Default Model</td>
+                    <td><span class="tech-badge">qwen2.5:14b</span></td>
+                    <td>14B parameter model balancing quality and performance</td>
+                </tr>
+                <tr>
+                    <td>CLI Framework</td>
+                    <td><span class="tech-badge">Typer</span></td>
+                    <td>Type-annotated CLI with automatic help generation</td>
+                </tr>
+                <tr>
+                    <td>Terminal UI</td>
+                    <td><span class="tech-badge">Rich</span></td>
+                    <td>Colored output, panels, tables, live streaming display</td>
+                </tr>
+                <tr>
+                    <td>Web Framework</td>
+                    <td><span class="tech-badge">Flask</span></td>
+                    <td>REST API with Server-Sent Events for streaming</td>
+                </tr>
+                <tr>
+                    <td>Configuration</td>
+                    <td><span class="tech-badge">PyYAML</span></td>
+                    <td>YAML-based config at ~/.council/config.yaml</td>
+                </tr>
+                <tr>
+                    <td>RAG/Knowledge</td>
+                    <td><span class="tech-badge optional">ChromaDB</span></td>
+                    <td>Optional vector store for knowledge retrieval</td>
+                </tr>
+                <tr>
+                    <td>Language</td>
+                    <td><span class="tech-badge">Python 3.10+</span></td>
+                    <td>Type hints, dataclasses, modern Python features</td>
+                </tr>
+            </table>
+
+            <h3>System Architecture</h3>
+            <pre>
+┌─────────────────────────────────────────────────────────────────┐
+│                        User Interfaces                          │
+├─────────────────┬─────────────────┬─────────────────────────────┤
+│   CLI (Typer)   │   Web (Flask)   │   Interactive Chat          │
+└────────┬────────┴────────┬────────┴──────────────┬──────────────┘
+         │                 │                       │
+         └─────────────────┼───────────────────────┘
+                           │
+                           ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                      Orchestrator Layer                         │
+│  • Conversation state management                                │
+│  • Message role transformation for multi-agent context          │
+│  • Knowledge injection into system prompts                      │
+│  • Streaming coordination                                       │
+└─────────────────────────────┬───────────────────────────────────┘
+                              │
+              ┌───────────────┼───────────────┐
+              ▼               ▼               ▼
+┌─────────────────┐ ┌─────────────────┐ ┌─────────────────────────┐
+│  Elder Registry │ │   LLM Wrapper   │ │    Knowledge Store      │
+│  • 28 profiles  │ │  • Ollama API   │ │  • ChromaDB (optional)  │
+│  • System prompts│ │  • Streaming    │ │  • Embedded wisdom      │
+│  • Personalities │ │  • Config       │ │  • Semantic retrieval   │
+└─────────────────┘ └────────┬────────┘ └─────────────────────────┘
+                             │
+                             ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                    Ollama (Local LLM)                           │
+│  • Runs on localhost:11434                                      │
+│  • Supports multiple models (qwen, llama, mistral, etc.)        │
+│  • No external API calls                                        │
+└─────────────────────────────────────────────────────────────────┘
+            </pre>
+
+            <h3>Key Design Patterns</h3>
+            <table class="tech-table">
+                <tr>
+                    <th>Pattern</th>
+                    <th>Implementation</th>
+                    <th>Benefit</th>
+                </tr>
+                <tr>
+                    <td>Singleton Registry</td>
+                    <td><code>ElderRegistry</code> class with class methods</td>
+                    <td>Global access to elder definitions, loaded once at import</td>
+                </tr>
+                <tr>
+                    <td>Generator-Based Streaming</td>
+                    <td>All LLM calls return <code>Generator[str]</code></td>
+                    <td>Real-time response display, memory efficient</td>
+                </tr>
+                <tr>
+                    <td>System Prompt Injection</td>
+                    <td>Personality + knowledge appended dynamically</td>
+                    <td>Flexible persona composition without model fine-tuning</td>
+                </tr>
+                <tr>
+                    <td>Message Role Transformation</td>
+                    <td><code>to_messages(for_elder=X)</code></td>
+                    <td>Same conversation appears differently to each elder</td>
+                </tr>
+                <tr>
+                    <td>SSE Streaming</td>
+                    <td>Flask response with <code>text/event-stream</code></td>
+                    <td>Real-time updates in web UI without WebSockets</td>
+                </tr>
+            </table>
+
+            <h3>Module Responsibilities</h3>
+            <table class="tech-table">
+                <tr>
+                    <th>Module</th>
+                    <th>Lines</th>
+                    <th>Responsibility</th>
+                </tr>
+                <tr>
+                    <td><code>council/elders/base.py</code></td>
+                    <td>~150</td>
+                    <td>Elder interface, registry pattern, base class</td>
+                </tr>
+                <tr>
+                    <td><code>council/elders/profiles/*.py</code></td>
+                    <td>~100 each</td>
+                    <td>Individual elder personality definitions</td>
+                </tr>
+                <tr>
+                    <td><code>council/orchestrator.py</code></td>
+                    <td>~325</td>
+                    <td>Conversation management, roundtable coordination, intake debate orchestration</td>
+                </tr>
+                <tr>
+                    <td><code>council/llm.py</code></td>
+                    <td>~80</td>
+                    <td>Ollama client wrapper, streaming interface</td>
+                </tr>
+                <tr>
+                    <td><code>council/cli.py</code></td>
+                    <td>~400</td>
+                    <td>Typer commands, user interaction, display</td>
+                </tr>
+                <tr>
+                    <td><code>council/web/app.py</code></td>
+                    <td>~150</td>
+                    <td>Flask REST API, SSE endpoints</td>
+                </tr>
+                <tr>
+                    <td><code>council/formats/html_formatter.py</code></td>
+                    <td>~290</td>
+                    <td>Markdown to HTML, document generation</td>
+                </tr>
+                <tr>
+                    <td><code>council/debate_engine.py</code></td>
+                    <td>~500</td>
+                    <td>Multi-phase structured debate orchestration</td>
+                </tr>
+            </table>
+
+            <h3>API Endpoints (Web Interface)</h3>
+            <table class="tech-table">
+                <tr>
+                    <th>Endpoint</th>
+                    <th>Method</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>/</code></td>
+                    <td>GET</td>
+                    <td>Main HTML interface with elder selection</td>
+                </tr>
+                <tr>
+                    <td><code>/api/status</code></td>
+                    <td>GET</td>
+                    <td>System health check (Ollama connection, model)</td>
+                </tr>
+                <tr>
+                    <td><code>/api/elders</code></td>
+                    <td>GET</td>
+                    <td>List all available elders with metadata</td>
+                </tr>
+                <tr>
+                    <td><code>/api/ask</code></td>
+                    <td>POST</td>
+                    <td>Single elder query (SSE streaming response)</td>
+                </tr>
+                <tr>
+                    <td><code>/api/roundtable</code></td>
+                    <td>POST</td>
+                    <td>Multi-elder discussion (SSE with speaker metadata)</td>
+                </tr>
+                <tr>
+                    <td><code>/api/intake-debate</code></td>
+                    <td>POST</td>
+                    <td>Elders debate clarifying questions before advising</td>
+                </tr>
+                <tr>
+                    <td><code>/api/roundtable-with-context</code></td>
+                    <td>POST</td>
+                    <td>Roundtable with user's answers to clarifying questions</td>
+                </tr>
+            </table>
+
+            <h3>Configuration Options</h3>
+            <pre>
+# ~/.council/config.yaml
+model: qwen2.5:14b           # Ollama model name
+ollama_host: http://localhost:11434
+temperature: 0.7             # Response creativity (0.0-1.0)
+max_tokens: 2048             # Maximum response length
+privacy_mode: private        # ephemeral | private | synced
+default_elders:              # Default roundtable participants
+  - munger
+  - aurelius
+  - franklin
+roundtable_turns: 3          # Discussion rounds
+history_enabled: true        # Save conversations locally
+history_max_sessions: 100    # Auto-cleanup threshold
+output_format: html          # terminal | html | both
+auto_open_html: true         # Open HTML output in browser
+            </pre>
+
+            <h3>Extensibility Points</h3>
+            <ul>
+                <li><strong>New Elder:</strong> Create dataclass in <code>profiles/</code>, register in <code>__init__.py</code></li>
+                <li><strong>New Orchestration Pattern:</strong> Extend <code>Orchestrator</code> class</li>
+                <li><strong>Custom Knowledge:</strong> Use <code>KnowledgeStore.add_file()</code> API</li>
+                <li><strong>New CLI Command:</strong> Add <code>@app.command()</code> decorated function</li>
+                <li><strong>New Output Format:</strong> Create formatter in <code>council/formats/</code></li>
+            </ul>
+
+            <h3>Performance Characteristics</h3>
+            <ul>
+                <li><strong>Cold start:</strong> ~2-3s (model loading depends on hardware)</li>
+                <li><strong>Token generation:</strong> ~20-50 tokens/sec on M1/M2 Mac with 14B model</li>
+                <li><strong>Memory usage:</strong> ~10-16GB RAM for 14B parameter model</li>
+                <li><strong>Disk usage:</strong> ~8-10GB per model downloaded</li>
+                <li><strong>Streaming latency:</strong> First token in ~500ms after model loaded</li>
+            </ul>
+
+            <h3>Security & Privacy</h3>
+            <ul>
+                <li>All inference runs locally via Ollama (no external API calls)</li>
+                <li>No authentication required (localhost only by default)</li>
+                <li>Conversation history stored in <code>~/.council/history/</code></li>
+                <li>No telemetry, no data collection, no network requests</li>
+                <li>Optional ephemeral mode disables all persistence</li>
+            </ul>
+
+            <h3>Dependencies</h3>
+            <p><strong>Required:</strong></p>
+            <p>
+                <span class="tech-badge">typer>=0.9.0</span>
+                <span class="tech-badge">rich>=13.0.0</span>
+                <span class="tech-badge">ollama>=0.4.0</span>
+                <span class="tech-badge">pyyaml>=6.0</span>
+                <span class="tech-badge">flask>=3.0.0</span>
+                <span class="tech-badge">prompt-toolkit>=3.0.0</span>
+            </p>
+            <p><strong>Optional:</strong></p>
+            <p>
+                <span class="tech-badge optional">chromadb>=0.4.0</span> (RAG)
+                <span class="tech-badge optional">ebooklib>=0.18</span> (Kindle import)
+                <span class="tech-badge optional">beautifulsoup4>=4.12.0</span> (HTML parsing)
+            </p>
+        </div>
+
+        <footer>
+            <p>Council of Elders &mdash; Local AI Advisory System</p>
+            <p style="font-size: 0.85em; margin-top: 10px;">
+                Built with Python, Ollama, Flask, and the wisdom of the ages.
+            </p>
+        </footer>
+    </div>
+</body>
+</html>

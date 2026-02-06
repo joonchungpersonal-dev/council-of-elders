@@ -1,0 +1,5 @@
+"""Knowledge base management for elders."""
+
+from council.knowledge.store import KnowledgeStore, get_knowledge_store
+
+__all__ = ["KnowledgeStore", "get_knowledge_store"]

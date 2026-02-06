@@ -1,0 +1,5 @@
+#!/bin/bash
+# Start Council of Elders debate mode
+cd "$(dirname "$0")"
+source venv/bin/activate
+python debate.py

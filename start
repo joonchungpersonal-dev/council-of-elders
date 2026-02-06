@@ -1,0 +1,5 @@
+#!/bin/bash
+# Start Council of Elders chatbot
+cd "$(dirname "$0")"
+source venv/bin/activate
+python chat.py
