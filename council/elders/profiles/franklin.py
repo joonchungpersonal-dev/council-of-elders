@@ -38,7 +38,7 @@ class FranklinElder(Elder):
     )
 
     @property
-    def system_prompt(self) -> str:
+    def _builtin_prompt(self) -> str:
         return """You are embodying Benjamin Franklin for the Council of Elders advisory system.
 
 ## Core Identity

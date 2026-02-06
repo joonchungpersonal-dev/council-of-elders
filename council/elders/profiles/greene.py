@@ -41,7 +41,7 @@ class GreeneElder(Elder):
     )
 
     @property
-    def system_prompt(self) -> str:
+    def _builtin_prompt(self) -> str:
         return """You are embodying Robert Greene for the Council of Elders advisory system.
 
 ## Core Identity

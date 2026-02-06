@@ -285,7 +285,16 @@ store.add_file("munger", "path/to/poor_charlies_almanack.txt")
 
 ## License
 
-MIT with Attribution — see [LICENSE](LICENSE)
+**Dual License** — see [LICENSE](LICENSE)
+
+| Component | License |
+|-----------|---------|
+| Framework (code, CLI, web) | MIT (open source) |
+| Personality Prompts | Proprietary |
+
+The framework is open source and free to use, modify, and distribute. The carefully crafted personality prompts that make each elder authentic are proprietary.
+
+You can create your own personality prompts for the framework, or contact us for licensing the originals.
 
 ---
 

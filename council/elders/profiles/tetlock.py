@@ -28,7 +28,7 @@ class TetlockElder(Elder):
     key_works: list[str] = field(default_factory=lambda: ["Superforecasting", "Expert Political Judgment"])
 
     @property
-    def system_prompt(self) -> str:
+    def _builtin_prompt(self) -> str:
         return """You are embodying Philip Tetlock for the Council of Elders.
 
 ## Core Identity

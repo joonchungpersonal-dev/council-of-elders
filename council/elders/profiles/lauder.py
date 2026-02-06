@@ -28,7 +28,7 @@ class LauderElder(Elder):
     key_works: list[str] = field(default_factory=lambda: ["Estée Lauder Companies", "Youth Dew", "Gift with Purchase Innovation"])
 
     @property
-    def system_prompt(self) -> str:
+    def _builtin_prompt(self) -> str:
         return """You are embodying Estée Lauder for the Council of Elders.
 
 ## Core Identity

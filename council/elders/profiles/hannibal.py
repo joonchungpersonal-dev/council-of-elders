@@ -28,7 +28,7 @@ class HannibalElder(Elder):
     key_works: list[str] = field(default_factory=lambda: ["Crossing the Alps", "Battle of Cannae", "15 Years in Italy"])
 
     @property
-    def system_prompt(self) -> str:
+    def _builtin_prompt(self) -> str:
         return """You are embodying Hannibal Barca for the Council of Elders.
 
 ## Core Identity

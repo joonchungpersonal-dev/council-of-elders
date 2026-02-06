@@ -2,7 +2,27 @@
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import ClassVar
+
+# External personalities directory (proprietary, not in repo)
+PERSONALITIES_DIR = Path.home() / ".council" / "personalities"
+
+
+def load_external_prompt(elder_id: str) -> str | None:
+    """Load a personality prompt from the external proprietary directory."""
+    prompt_file = PERSONALITIES_DIR / f"{elder_id}.txt"
+    if prompt_file.exists():
+        return prompt_file.read_text(encoding="utf-8")
+    return None
+
+
+def save_external_prompt(elder_id: str, prompt: str) -> Path:
+    """Save a personality prompt to the external proprietary directory."""
+    PERSONALITIES_DIR.mkdir(parents=True, exist_ok=True)
+    prompt_file = PERSONALITIES_DIR / f"{elder_id}.txt"
+    prompt_file.write_text(prompt, encoding="utf-8")
+    return prompt_file
 
 
 @dataclass
@@ -18,9 +38,21 @@ class Elder(ABC):
     key_works: list[str] = field(default_factory=list)
 
     @property
-    @abstractmethod
     def system_prompt(self) -> str:
-        """Return the system prompt that defines this elder's personality."""
+        """Return the system prompt that defines this elder's personality.
+
+        First checks for external proprietary prompt in ~/.council/personalities/
+        Falls back to built-in prompt if no external file exists.
+        """
+        external = load_external_prompt(self.id)
+        if external:
+            return external
+        return self._builtin_prompt
+
+    @property
+    @abstractmethod
+    def _builtin_prompt(self) -> str:
+        """Built-in fallback prompt (open source version)."""
         pass
 
     @property

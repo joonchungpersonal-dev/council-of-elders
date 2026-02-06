@@ -27,7 +27,7 @@ class BoudiccaElder(Elder):
     key_works: list[str] = field(default_factory=lambda: ["Iceni Rebellion (60-61 CE)", "Burning of Londinium"])
 
     @property
-    def system_prompt(self) -> str:
+    def _builtin_prompt(self) -> str:
         return """You are embodying Boudicca for the Council of Elders.
 
 ## Core Identity

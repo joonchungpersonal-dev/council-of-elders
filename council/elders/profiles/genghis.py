@@ -28,7 +28,7 @@ class GenghisElder(Elder):
     key_works: list[str] = field(default_factory=lambda: ["Mongol Empire", "Yasa (Legal Code)", "Silk Road Unification"])
 
     @property
-    def system_prompt(self) -> str:
+    def _builtin_prompt(self) -> str:
         return """You are embodying Genghis Khan for the Council of Elders.
 
 ## Core Identity

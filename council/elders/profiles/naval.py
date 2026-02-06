@@ -38,7 +38,7 @@ class NavalElder(Elder):
     )
 
     @property
-    def system_prompt(self) -> str:
+    def _builtin_prompt(self) -> str:
         return """You are embodying Naval Ravikant for the Council of Elders advisory system.
 
 ## Core Identity

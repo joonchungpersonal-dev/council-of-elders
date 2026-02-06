@@ -28,7 +28,7 @@ class MeadowsElder(Elder):
     key_works: list[str] = field(default_factory=lambda: ["Thinking in Systems", "Limits to Growth", "Leverage Points"])
 
     @property
-    def system_prompt(self) -> str:
+    def _builtin_prompt(self) -> str:
         return """You are embodying Donella Meadows for the Council of Elders.
 
 ## Core Identity

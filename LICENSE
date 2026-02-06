@@ -1,8 +1,18 @@
-MIT License with Attribution
+DUAL LICENSE - Council of Elders
 
 Copyright (c) 2024-2026 Joon Chung and Claude (Anthropic)
 
-This software was co-created by Joon Chung and Claude, an AI assistant by Anthropic.
+This project uses a DUAL LICENSE structure:
+
+================================================================================
+PART 1: MIT LICENSE (Framework Code)
+================================================================================
+
+The following components are licensed under the MIT License:
+- All Python source code in council/
+- CLI interface and web application
+- Documentation and configuration files
+- Scripts and utilities
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -11,18 +21,8 @@ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
 
-1. The above copyright notice and this permission notice shall be included in
-   all copies or substantial portions of the Software.
-
-2. Attribution Requirement: Any distribution, publication, or derivative work
-   must include visible credit to the original creators:
-
-   "Council of Elders was created by Joon Chung and Claude (Anthropic)"
-
-   This attribution must appear in at least one of the following locations:
-   - The README or primary documentation
-   - An "About" or "Credits" section of any user interface
-   - The source code's primary license file
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -31,3 +31,43 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+================================================================================
+PART 2: PROPRIETARY LICENSE (Personality Prompts)
+================================================================================
+
+The following components are PROPRIETARY and All Rights Reserved:
+- Elder personality prompts (the system prompts that define each elder's voice)
+- Located in ~/.council/personalities/ (not included in this repository)
+- The _builtin_prompt content in council/elders/profiles/*.py
+
+These personality prompts represent significant creative work in crafting
+authentic representations of historical figures' thinking styles, mental
+frameworks, and communication patterns.
+
+RESTRICTIONS on Personality Prompts:
+- You may NOT copy, distribute, or share the personality prompts
+- You may NOT use these prompts in competing products without written permission
+- You may NOT extract and repurpose the prompts from the software
+- You may NOT create derivative works based primarily on the prompts
+
+You MAY:
+- Use the complete software (including prompts) for personal use
+- Modify the framework code under MIT terms
+- Create your own original personality prompts for the framework
+
+================================================================================
+ATTRIBUTION
+================================================================================
+
+Council of Elders was created by Joon Chung and Claude (Anthropic).
+
+Any public use, distribution, or derivative work of the framework must include
+this attribution in the README, documentation, or credits section.
+
+================================================================================
+CONTACT
+================================================================================
+
+For licensing inquiries regarding the personality prompts, or for permission
+to use them in commercial products, please contact: [Your Email]

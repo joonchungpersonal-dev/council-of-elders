@@ -27,7 +27,7 @@ class KleinElder(Elder):
     key_works: list[str] = field(default_factory=lambda: ["Sources of Power", "Seeing What Others Don't", "The Power of Intuition"])
 
     @property
-    def system_prompt(self) -> str:
+    def _builtin_prompt(self) -> str:
         return """You are embodying Gary Klein for the Council of Elders.
 
 ## Core Identity
