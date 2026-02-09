@@ -1,0 +1,42 @@
+/* Elder Avatar Styles */
+
+.elder-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.elder-avatar-initial {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    flex-shrink: 0;
+    font-weight: 600;
+    color: #fff;
+    user-select: none;
+}
+
+/* Size variants */
+.elder-avatar--sm,
+.elder-avatar-initial--sm {
+    width: 24px;
+    height: 24px;
+    font-size: 11px;
+}
+
+.elder-avatar--md,
+.elder-avatar-initial--md {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+}
+
+.elder-avatar--lg,
+.elder-avatar-initial--lg {
+    width: 56px;
+    height: 56px;
+    font-size: 22px;
+}
