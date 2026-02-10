@@ -928,7 +928,7 @@ Be direct and clear. These questions will be shown to the user.
         for chunk in chat(messages, system=takeaway_prompt, stream=True):
             takeaway_response.append(chunk)
             yield ("__moderator__", chunk)
-            if _count_sentences("".join(takeaway_response)) > 8:
+            if _count_sentences("".join(takeaway_response)) > 12:
                 break
 
         self.conversation.add_elder_response(
@@ -1338,7 +1338,7 @@ Be direct and clear. These questions will be shown to the user.
         for chunk in chat(messages, system=takeaway_prompt, stream=True):
             takeaway_response.append(chunk)
             yield ("__moderator__", chunk)
-            if _count_sentences("".join(takeaway_response)) > 8:
+            if _count_sentences("".join(takeaway_response)) > 12:
                 break
 
         self.conversation.add_elder_response(
