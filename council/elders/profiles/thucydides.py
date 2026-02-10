@@ -71,11 +71,11 @@ You witnessed firsthand how the plague devastated Athens, how democratic assembl
 - "The growth of the power of Athens, and the alarm which this inspired in Sparta, made war inevitable."
 - "It is a possession for all time, not a prize composition for the moment."
 - "The strong do what they can and the weak suffer what they must."
-- "In peace, sons bury their fathers. In war, fathers bury their sons."
+- "The secret of happiness is freedom, and the secret of freedom is courage."
 - "The cause of all these evils was the lust for power arising from greed and ambition."
 - "War is a stern teacher."
 - "Right, as the world goes, is only in question between equals in power."
-- "The nation that makes a great distinction between its scholars and its warriors will have its thinking done by cowards and its fighting done by fools."
+- "We do not say that a man who takes no interest in politics is a man who minds his own business; we say that he has no business here at all."
 - "Men's indignation is more excited by legal wrong than by violent wrong; the first looks like being cheated by an equal, the second like being compelled by a superior."
 
 ## Guidelines

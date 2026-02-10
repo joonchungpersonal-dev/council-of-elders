@@ -277,39 +277,37 @@ EMBEDDED_WISDOM = {
 """,
 
     "buddha": """
-## Key Passages from the Dhammapada and Suttas
+## Key Passages from the Dhammapada and Suttas (verified from the Pali Canon)
 
-"We are what we think. All that we are arises with our thoughts. With our thoughts, we make the world."
+"Mind precedes all mental states. Mind is their chief; they are all mind-wrought. If with an impure mind a person speaks or acts, suffering follows him like the wheel that follows the foot of the ox." (Dhammapada 1, trans. Buddharakkhita)
 
-"Peace comes from within. Do not seek it without."
+"Hatred is never appeased by hatred in this world. By non-hatred alone is hatred appeased. This is a law eternal." (Dhammapada 5, trans. Buddharakkhita)
 
-"Three things cannot be long hidden: the sun, the moon, and the truth."
+"Heedfulness is the path to the Deathless. Heedlessness is the path to death. The heedful die not. The heedless are as if dead already." (Dhammapada 21, trans. Buddharakkhita)
 
-"You yourself, as much as anybody in the entire universe, deserve your love and affection."
+"Irrigators regulate the rivers; fletchers straighten the arrow shaft; carpenters shape the wood; the wise control themselves." (Dhammapada 80, trans. Buddharakkhita)
 
-"Holding onto anger is like grasping a hot coal with the intent of throwing it at someone else; you are the one who gets burned."
+"Though one may conquer a thousand times a thousand men in battle, yet he indeed is the noblest victor who conquers himself." (Dhammapada 103, trans. Buddharakkhita)
 
-"In the end, only three things matter: how much you loved, how gently you lived, and how gracefully you let go of things not meant for you."
+"One truly is the protector of oneself; who else could the protector be? With oneself fully controlled, one gains a mastery that is hard to gain." (Dhammapada 160, trans. Buddharakkhita)
 
-"Do not dwell in the past, do not dream of the future, concentrate the mind on the present moment."
+"By oneself is evil done; by oneself is one defiled. By oneself is evil left undone; by oneself is one made pure. Purity and impurity depend on oneself; no one can purify another." (Dhammapada 165, trans. Buddharakkhita)
 
-"The trouble is, you think you have time."
+"One who looks upon the world as a bubble and a mirage, him the King of Death sees not." (Dhammapada 170, trans. Buddharakkhita)
 
-"Pain is certain, suffering is optional."
+"To avoid all evil, to cultivate good, and to cleanse one's mind — this is the teaching of the Buddhas." (Dhammapada 183, trans. Buddharakkhita)
 
-"No one saves us but ourselves. No one can and no one may. We ourselves must walk the path."
+"Overcome the angry by non-anger; overcome the wicked by goodness; overcome the miser by generosity; overcome the liar by truth." (Dhammapada 223, trans. Buddharakkhita)
 
-"There is no path to happiness: happiness is the path."
+"All conditioned things are impermanent — when one sees this with wisdom, one turns away from suffering. This is the path to purification." (Dhammapada 277, trans. Buddharakkhita)
 
-"If you light a lamp for somebody, it will also brighten your path."
+"You yourselves must strive; the Buddhas only point the way. Those meditative ones who tread the path are released from the bonds of Mara." (Dhammapada 276, trans. Buddharakkhita)
 
-"An idea that is developed and put into action is more important than an idea that exists only as an idea."
+"You shouldn't chase after the past or place expectations on the future. What is past is left behind. The future is as yet unreached. Whatever quality is present you clearly see right there, right there." (Bhaddekaratta Sutta, MN 131, trans. Thanissaro Bhikkhu)
 
-"Work out your own salvation. Do not depend on others."
+"There is, monks, an unborn — unbecome — unmade — unfabricated. If there were not that unborn — unbecome — unmade — unfabricated, there would not be the case that emancipation from the born — become — made — fabricated would be discerned." (Udana 8.3, trans. Thanissaro Bhikkhu)
 
-"Every morning we are born again. What we do today is what matters most."
-
-"Nothing ever exists entirely alone; everything is in relation to everything else."
+"As a mother would risk her life to protect her child, her only child, even so should one cultivate a limitless heart with regard to all beings." (Karaniya Metta Sutta, Sn 1.8, trans. Thanissaro Bhikkhu)
 """,
 
     "franklin": """

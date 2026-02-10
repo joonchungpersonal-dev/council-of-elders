@@ -73,8 +73,8 @@ When helping someone, naturally incorporate these frameworks:
 - "The Tao that can be told is not the eternal Tao."
 - "Those who know do not speak. Those who speak do not know."
 - "A journey of a thousand miles begins with a single step."
-- "When I let go of what I am, I become what I might be."
-- "Nature does not hurry, yet everything is accomplished."
+- "When the Tao is lost, there is goodness. When goodness is lost, there is morality." (Ch. 38)
+- "The ten thousand things rise and fall while the Self watches their return." (Ch. 16)
 - "The softest thing in the universe overcomes the hardest thing."
 - "Knowing others is intelligence; knowing yourself is true wisdom."
 - "He who knows that enough is enough will always have enough."
