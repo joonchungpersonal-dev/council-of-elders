@@ -14,6 +14,13 @@ from typing import Generator
 
 from council.elders import Elder, ElderRegistry
 from council.llm import chat
+from council.config import get_config_value
+from council.nomination import (
+    NOMINATION_INSTRUCTION,
+    parse_nomination,
+    strip_nomination_tag,
+    create_nominated_elder,
+)
 
 
 class DebatePhase(Enum):
@@ -62,7 +69,13 @@ Be concise. Your interventions should be brief and purposeful."""
 class DebateEngine:
     """Multi-agent debate engine with moderator and structured phases."""
 
-    def __init__(self, elders: list[Elder], topic: str):
+    def __init__(
+        self,
+        elders: list[Elder],
+        topic: str,
+        allow_nominations: bool | None = None,
+        max_nominations: int | None = None,
+    ):
         self.elders = elders
         self.topic = topic
         self.transcript: list[dict] = []
@@ -70,13 +83,24 @@ class DebateEngine:
         self.disagreements: list[Disagreement] = []
         self.current_phase = DebatePhase.OPENING
 
-    def _add_to_transcript(self, speaker: str, speaker_type: str, content: str, phase: DebatePhase):
+        # Nomination state
+        if allow_nominations is None:
+            allow_nominations = get_config_value("nominations_enabled", True)
+        if max_nominations is None:
+            max_nominations = get_config_value("max_nominations_per_session", 2)
+        self.allow_nominations = allow_nominations
+        self.max_nominations = max_nominations
+        self.nomination_count = 0
+        self.guest_elders: list[Elder] = []
+
+    def _add_to_transcript(self, speaker: str, speaker_type: str, content: str, phase: DebatePhase, elder_id: str | None = None):
         """Add a statement to the transcript."""
         self.transcript.append({
             "speaker": speaker,
             "speaker_type": speaker_type,  # "elder" or "moderator"
             "content": content,
-            "phase": phase.value
+            "phase": phase.value,
+            "elder_id": elder_id,
         })
 
     def _get_debate_context(self, for_elder: str | None = None, last_n: int = 10) -> str:
@@ -88,7 +112,12 @@ class DebateEngine:
 
         context = "Recent debate:\n\n"
         for entry in recent:
-            prefix = "[MODERATOR]" if entry["speaker_type"] == "moderator" else f"[{entry['speaker']}]"
+            if entry["speaker_type"] == "moderator":
+                prefix = "[MODERATOR]"
+            elif for_elder and entry.get("elder_id") == for_elder:
+                prefix = "[You]"
+            else:
+                prefix = f"[{entry['speaker']}]"
             context += f"{prefix}: {entry['content']}\n\n"
 
         return context
@@ -143,10 +172,10 @@ Do not simply give a monologue - this is a conversation."""
             for chunk in chat(messages, system=elder.system_prompt, stream=True):
                 full_response.append(chunk)
                 yield chunk
-            self._add_to_transcript(elder.name, "elder", "".join(full_response), self.current_phase)
+            self._add_to_transcript(elder.name, "elder", "".join(full_response), self.current_phase, elder_id=elder.id)
         else:
             response = "".join(chat(messages, system=elder.system_prompt, stream=True))
-            self._add_to_transcript(elder.name, "elder", response, self.current_phase)
+            self._add_to_transcript(elder.name, "elder", response, self.current_phase, elder_id=elder.id)
             return response
 
     def _analyze_positions(self) -> str:
@@ -293,11 +322,42 @@ This is your chance to defend your view and strengthen your case."""
                 yield (elder.name, "elder", chunk)
             yield (elder.name, "elder", None)
 
+    def _nominations_available(self) -> bool:
+        """Check if nominations are still allowed."""
+        return self.allow_nominations and self.nomination_count < self.max_nominations
+
+    def _handle_nomination(
+        self, elder: Elder, response_text: str
+    ) -> tuple[str, Elder | None]:
+        """Check for and handle a nomination in an elder's response.
+
+        Returns (cleaned_response, guest_elder_or_none).
+        """
+        if not self._nominations_available():
+            return response_text, None
+
+        nomination = parse_nomination(response_text)
+        if not nomination:
+            return response_text, None
+
+        name, expertise = nomination
+        cleaned = strip_nomination_tag(response_text)
+        guest = create_nominated_elder(
+            name=name,
+            expertise=expertise,
+            topic=self.topic,
+            nominated_by=elder.name,
+        )
+        self.nomination_count += 1
+        self.guest_elders.append(guest)
+        return cleaned, guest
+
     def run_free_debate(self, exchanges: int = 3) -> Generator[tuple[str, str, str], None, None]:
         """
         Run a free-form debate section with moderator guidance.
 
         Yields: (speaker_name, speaker_type, chunk)
+        Special: ("__nomination__", "nomination", guest_elder) signals a new guest.
         """
         self.current_phase = DebatePhase.FREE_DEBATE
 
@@ -309,21 +369,41 @@ Identify the most important unresolved question and direct it to the debater bes
             yield ("Moderator", "moderator", chunk)
         yield ("Moderator", "moderator", None)
 
+        guest_queue: list[Elder] = []
+
         for exchange in range(exchanges):
-            # Pick an elder to respond (rotate)
+            # Pick an elder to respond (rotate through original elders)
             elder = self.elders[exchange % len(self.elders)]
 
             yield (elder.name, "elder", "")
+
+            nomination_suffix = ""
+            if self._nominations_available():
+                nomination_suffix = NOMINATION_INSTRUCTION
 
             instruction = """Respond to the moderator's question or the previous speaker's point.
 Be concise but substantive. Then either:
 - Pose a follow-up question to another debater, OR
 - Make a new argument that advances your position
 
-Keep the debate moving forward."""
+Keep the debate moving forward.""" + nomination_suffix
 
+            full_response = []
             for chunk in self._call_elder(elder, instruction):
+                full_response.append(chunk)
                 yield (elder.name, "elder", chunk)
+
+            response_text = "".join(full_response)
+
+            # Check for nomination
+            cleaned, guest = self._handle_nomination(elder, response_text)
+            if guest:
+                # Fix the transcript entry (replace last one with cleaned text)
+                if self.transcript and self.transcript[-1]["speaker"] == elder.name:
+                    self.transcript[-1]["content"] = cleaned
+                guest_queue.append(guest)
+                yield ("__nomination__", "nomination", guest)
+
             yield (elder.name, "elder", None)
 
             # Moderator keeps things on track every 2 exchanges
@@ -335,6 +415,20 @@ Either: probe deeper on a point, highlight an overlooked disagreement, or ask a 
                 for chunk in self._call_moderator(guide_prompt):
                     yield ("Moderator", "moderator", chunk)
                 yield ("Moderator", "moderator", None)
+
+        # Let queued guests speak
+        for guest in guest_queue:
+            yield (guest.name, "elder", "")
+
+            guest_instruction = (
+                f"You are {guest.name}, a guest expert invited to this debate. "
+                "Consider the arguments made so far and offer your unique perspective. "
+                "Be direct and substantive. Engage with the points that have been raised."
+            )
+
+            for chunk in self._call_elder(guest, guest_instruction):
+                yield (guest.name, "elder", chunk)
+            yield (guest.name, "elder", None)
 
     def run_closing_statements(self) -> Generator[tuple[str, str, str], None, None]:
         """
@@ -352,10 +446,20 @@ Then invite each debater to give their closing statement."""
             yield ("Moderator", "moderator", chunk)
         yield ("Moderator", "moderator", None)
 
-        for elder in self.elders:
+        # Include guest elders in closing statements
+        all_speakers = list(self.elders) + self.guest_elders
+
+        for elder in all_speakers:
             yield (elder.name, "elder", "")
 
-            instruction = f"""Give your closing statement on: {self.topic}
+            is_guest = elder in self.guest_elders
+            if is_guest:
+                instruction = f"""Give a brief closing statement on: {self.topic}
+
+As a guest expert, summarize your key contribution to this debate in 1-2 paragraphs.
+What perspective did you bring that was missing? What is your takeaway?"""
+            else:
+                instruction = f"""Give your closing statement on: {self.topic}
 
 In 1-2 paragraphs:
 1. Restate your core position

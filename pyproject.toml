@@ -37,8 +37,14 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+cloud = [
+    "anthropic>=0.40.0",
+]
 rag = [
     "chromadb>=0.4.0",
+]
+tts = [
+    "elevenlabs>=1.0.0",
 ]
 kindle = [
     "ebooklib>=0.18",

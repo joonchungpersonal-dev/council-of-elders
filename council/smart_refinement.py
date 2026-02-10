@@ -81,7 +81,7 @@ ELDER_EXPERTISE = {
     },
     "naval": {
         "domains": ["wealth", "happiness", "startups", "leverage", "philosophy", "freedom"],
-        "style": "aphoristic, first-principles, modern"],
+        "style": "aphoristic, first-principles, modern",
     },
     "rubin": {
         "domains": ["creativity", "art", "process", "intuition", "presence", "inspiration"],

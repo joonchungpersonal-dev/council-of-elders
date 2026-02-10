@@ -109,6 +109,21 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
             border-radius: 3px;
             font-family: monospace;
         }}
+        .guest-badge {{
+            display: inline-block;
+            background: #8b5cf6;
+            color: white;
+            font-size: 0.55em;
+            padding: 2px 8px;
+            border-radius: 3px;
+            vertical-align: middle;
+            margin-left: 10px;
+            letter-spacing: 1px;
+        }}
+        .nominated-by {{
+            font-size: 0.85em;
+            color: #8b5cf6;
+        }}
         @media print {{
             body {{
                 background: white;
@@ -136,8 +151,8 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
 
 SPEAKER_TEMPLATE = '''
     <div class="speaker">
-        <div class="speaker-name">{name}</div>
-        <div class="speaker-title">{title} ({era})</div>
+        <div class="speaker-name">{name}{guest_badge}</div>
+        <div class="speaker-title">{title}{era_display}{nominated_by}</div>
         <div class="speaker-content">
             {content}
         </div>
@@ -237,23 +252,32 @@ def format_response_html(
         elder_id = resp.get('elder_id')
         content = resp.get('content', '')
 
+        is_guest = elder_id and elder_id.startswith("nominated_")
+
         elder = ElderRegistry.get(elder_id)
         if elder:
             name = elder.name
             elder_title = elder.title
             era = elder.era
         else:
-            name = elder_id.upper() if elder_id else "ELDER"
-            elder_title = "Advisor"
-            era = "Unknown"
+            name = elder_id.replace("nominated_", "").replace("_", " ").title() if elder_id else "ELDER"
+            elder_title = resp.get('title', "Guest Expert") if is_guest else "Advisor"
+            era = resp.get('era', '')
 
         content_html = markdown_to_html(content)
+
+        guest_badge = ' <span class="guest-badge">GUEST</span>' if is_guest else ""
+        era_display = f" ({era})" if era else ""
+        nominated_by_name = resp.get('nominated_by', '')
+        nominated_by = f' <span class="nominated-by">— Nominated by {nominated_by_name}</span>' if nominated_by_name else ""
 
         speakers_html.append(SPEAKER_TEMPLATE.format(
             name=name.upper(),
             title=elder_title,
-            era=era,
-            content=content_html
+            era_display=era_display,
+            content=content_html,
+            guest_badge=guest_badge,
+            nominated_by=nominated_by,
         ))
 
     timestamp = datetime.now().strftime("%B %d, %Y at %I:%M %p")

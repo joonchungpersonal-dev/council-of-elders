@@ -50,13 +50,15 @@ PUBLIC_SOURCES = {
             "url": "https://www.gutenberg.org/cache/epub/2017/pg2017.txt",
             "type": "gutenberg",
         },
-    ],
-    "buffett": [
-        # Berkshire Hathaway shareholder letters are freely available
         {
-            "title": "Berkshire Hathaway Letters to Shareholders",
-            "url": "https://www.berkshirehathaway.com/letters/letters.html",
-            "type": "berkshire_index",
+            "title": "The Diamond Sutra",
+            "url": "https://www.gutenberg.org/cache/epub/64623/pg64623.txt",
+            "type": "gutenberg",
+        },
+        {
+            "title": "The Buddha's Path of Virtue (Dhammapada - Woodward)",
+            "url": "https://www.gutenberg.org/cache/epub/35185/pg35185.txt",
+            "type": "gutenberg",
         },
     ],
     "laotzu": [
@@ -78,7 +80,6 @@ PUBLIC_SOURCES = {
             "type": "gutenberg",
         },
     ],
-    # Additional Stoic sources
     "seneca": [
         {
             "title": "Seneca's Morals of a Happy Life, Benefits, Anger and Clemency",
@@ -113,21 +114,70 @@ PUBLIC_SOURCES = {
             "type": "gutenberg",
         },
     ],
-    # Additional Buddhist texts
-    "buddha": [
+    "machiavelli": [
         {
-            "title": "The Dhammapada - F. Max Müller Translation",
-            "url": "https://www.gutenberg.org/cache/epub/2017/pg2017.txt",
+            "title": "The Prince",
+            "url": "https://www.gutenberg.org/cache/epub/1232/pg1232.txt",
             "type": "gutenberg",
         },
         {
-            "title": "The Diamond Sutra",
-            "url": "https://www.gutenberg.org/cache/epub/64623/pg64623.txt",
+            "title": "Discourses on the First Decade of Titus Livius",
+            "url": "https://www.gutenberg.org/cache/epub/10827/pg10827.txt",
+            "type": "gutenberg",
+        },
+    ],
+    "william_james": [
+        {
+            "title": "The Principles of Psychology",
+            "url": "https://www.gutenberg.org/cache/epub/57634/pg57634.txt",
             "type": "gutenberg",
         },
         {
-            "title": "The Buddha's Path of Virtue (Dhammapada - Woodward)",
-            "url": "https://www.gutenberg.org/cache/epub/35185/pg35185.txt",
+            "title": "Pragmatism: A New Name for Some Old Ways of Thinking",
+            "url": "https://www.gutenberg.org/cache/epub/5116/pg5116.txt",
+            "type": "gutenberg",
+        },
+        {
+            "title": "The Varieties of Religious Experience",
+            "url": "https://www.gutenberg.org/cache/epub/621/pg621.txt",
+            "type": "gutenberg",
+        },
+    ],
+    "thucydides": [
+        {
+            "title": "The History of the Peloponnesian War",
+            "url": "https://www.gutenberg.org/cache/epub/7142/pg7142.txt",
+            "type": "gutenberg",
+        },
+    ],
+    "bacon": [
+        {
+            "title": "The Essays of Francis Bacon",
+            "url": "https://www.gutenberg.org/cache/epub/575/pg575.txt",
+            "type": "gutenberg",
+        },
+        {
+            "title": "Novum Organum",
+            "url": "https://www.gutenberg.org/cache/epub/45988/pg45988.txt",
+            "type": "gutenberg",
+        },
+        {
+            "title": "The Advancement of Learning",
+            "url": "https://www.gutenberg.org/cache/epub/5500/pg5500.txt",
+            "type": "gutenberg",
+        },
+    ],
+    "epicurus": [
+        {
+            "title": "Epicurus: The Extant Remains (Cyril Bailey)",
+            "url": "https://www.gutenberg.org/cache/epub/57488/pg57488.txt",
+            "type": "gutenberg",
+        },
+    ],
+    "rumi": [
+        {
+            "title": "The Masnavi (E.H. Whinfield Translation)",
+            "url": "https://www.gutenberg.org/cache/epub/5339/pg5339.txt",
             "type": "gutenberg",
         },
     ],
@@ -374,139 +424,6 @@ EMBEDDED_WISDOM = {
 21. Never stray from the way.
 """,
 
-    "munger": """
-## Key Wisdom from Charlie Munger
-
-"Invert, always invert: Turn a situation or problem upside down. Look at it backward."
-
-"Show me the incentive and I will show you the outcome."
-
-"I never allow myself to have an opinion on anything that I don't know the other side's argument better than they do."
-
-"Spend each day trying to be a little wiser than you were when you woke up."
-
-"The best thing a human being can do is to help another human being know more."
-
-"In my whole life, I have known no wise people who didn't read all the time – none, zero."
-
-"It is remarkable how much long-term advantage people like us have gotten by trying to be consistently not stupid, instead of trying to be very intelligent."
-
-"You don't have to be brilliant, only a little bit wiser than the other guys, on average, for a long, long time."
-
-"The big money is not in the buying and selling, but in the waiting."
-
-"Acknowledging what you don't know is the dawning of wisdom."
-
-"The iron rule of nature is: you get what you reward for. If you want ants to come, you put sugar on the floor."
-
-"Take a simple idea and take it seriously."
-
-"A great business at a fair price is superior to a fair business at a great price."
-
-"The safest way to get what you want is to deserve what you want."
-
-"Mimicking the herd invites regression to the mean."
-
-"You must know the big ideas in the big disciplines and use them routinely – all of them, not just a few."
-
-## Munger's Mental Models
-
-1. Inversion - Think about what you want to avoid
-2. Circle of Competence - Know what you don't know
-3. First Principles Thinking - Break down problems to fundamentals
-4. Thought Experiment - Imagine outcomes
-5. Second-Order Thinking - Consider the consequences of consequences
-6. Probabilistic Thinking - Consider likely outcomes
-7. Occam's Razor - Simple explanations are preferable
-8. Hanlon's Razor - Don't attribute to malice what can be explained by stupidity
-9. Opportunity Cost - What are you giving up?
-10. Margin of Safety - Leave room for error
-""",
-
-    "buffett": """
-## Key Wisdom from Warren Buffett
-
-"Rule No. 1: Never lose money. Rule No. 2: Never forget Rule No. 1."
-
-"Be fearful when others are greedy, and greedy when others are fearful."
-
-"Price is what you pay. Value is what you get."
-
-"It's far better to buy a wonderful company at a fair price than a fair company at a wonderful price."
-
-"The most important thing to do if you find yourself in a hole is to stop digging."
-
-"Someone's sitting in the shade today because someone planted a tree a long time ago."
-
-"Risk comes from not knowing what you're doing."
-
-"In the business world, the rearview mirror is always clearer than the windshield."
-
-"Chains of habit are too light to be felt until they are too heavy to be broken."
-
-"It takes 20 years to build a reputation and five minutes to ruin it. If you think about that, you'll do things differently."
-
-"The difference between successful people and really successful people is that really successful people say no to almost everything."
-
-"Only when the tide goes out do you discover who's been swimming naked."
-
-"Time is the friend of the wonderful company, the enemy of the mediocre."
-
-"I will tell you how to become rich. Close the doors. Be fearful when others are greedy. Be greedy when others are fearful."
-
-"The stock market is a device for transferring money from the impatient to the patient."
-
-"Our favorite holding period is forever."
-
-"Never invest in a business you cannot understand."
-
-"Diversification is protection against ignorance. It makes little sense if you know what you are doing."
-
-"If you aren't thinking about owning a stock for 10 years, don't even think about owning it for 10 minutes."
-""",
-
-    "bruce_lee": """
-## Key Wisdom from Bruce Lee
-
-"Be water, my friend. Empty your mind. Be formless, shapeless, like water."
-
-"Absorb what is useful, discard what is useless and add what is specifically your own."
-
-"I fear not the man who has practiced 10,000 kicks once, but I fear the man who has practiced one kick 10,000 times."
-
-"The key to immortality is first living a life worth remembering."
-
-"Knowing is not enough, we must apply. Willing is not enough, we must do."
-
-"If you always put limits on everything you do, physical or anything else, it will spread into your work and into your life. There are no limits. There are only plateaus."
-
-"Do not pray for an easy life; pray for the strength to endure a difficult one."
-
-"Mistakes are always forgivable, if one has the courage to admit them."
-
-"A wise man can learn more from a foolish question than a fool can learn from a wise answer."
-
-"To hell with circumstances; I create opportunities."
-
-"The successful warrior is the average man, with laser-like focus."
-
-"Adapt what is useful, reject what is useless, and add what is specifically your own."
-
-"Using no way as way, having no limitation as limitation."
-
-"A goal is not always meant to be reached; it often serves simply as something to aim at."
-
-"Real living is living for others."
-
-"Don't fear failure. Not failure, but low aim, is the crime. In great attempts it is glorious even to fail."
-
-"If you spend too much time thinking about a thing, you'll never get it done."
-
-"Simplicity is the key to brilliance."
-
-"The more we value things, the less we value ourselves."
-""",
-
     "branden": """
 ## Key Wisdom from Nathaniel Branden
 
@@ -546,310 +463,6 @@ EMBEDDED_WISDOM = {
 4. The Practice of Self-Assertiveness
 5. The Practice of Living Purposefully
 6. The Practice of Personal Integrity
-""",
-
-    "peterson": """
-## Key Wisdom from Jordan Peterson
-
-"Set your house in perfect order before you criticize the world."
-
-"Compare yourself to who you were yesterday, not to who someone else is today."
-
-"Pursue what is meaningful, not what is expedient."
-
-"You're not as fragile as you think, and you can handle way more than you believe."
-
-"If you can't even clean up your own room, who are you to give advice to the world?"
-
-"The purpose of life is finding the largest burden that you can bear and bearing it."
-
-"You should be a monster, an absolute monster, and then learn to control it."
-
-"Tell the truth, or at least don't lie."
-
-"To stand up straight with your shoulders back is to accept the terrible responsibility of life, with eyes wide open."
-
-"It's in responsibility that most people find the meaning that sustains them through life."
-
-"If you fulfill your obligations every day, you don't need to worry about the future."
-
-"When you have something to say, silence is a lie."
-
-"You cannot be protected from the things that frighten you and hurt you, but if you identify with the part of your being that is responsible for transformation, then you are always the equal, or more than the equal of the things that frighten you."
-
-"The way that you make people resilient is by voluntarily exposing them to things that they are afraid of and that make them uncomfortable."
-
-"What you aim at determines what you see."
-
-"You must determine where you are going in your life, because you cannot get there unless you move in that direction."
-
-"Life is suffering. That's clear. There is no more basic, irrefutable truth."
-
-"Act so that you can tell the truth about how you act."
-
-## 12 Rules for Life (Summary)
-
-1. Stand up straight with your shoulders back
-2. Treat yourself like someone you are responsible for helping
-3. Make friends with people who want the best for you
-4. Compare yourself to who you were yesterday, not to who someone else is today
-5. Do not let your children do anything that makes you dislike them
-6. Set your house in perfect order before you criticize the world
-7. Pursue what is meaningful, not what is expedient
-8. Tell the truth – or, at least, don't lie
-9. Assume that the person you are listening to might know something you don't
-10. Be precise in your speech
-11. Do not bother children when they are skateboarding
-12. Pet a cat when you encounter one on the street
-""",
-
-    "clear": """
-## Key Wisdom from James Clear
-
-"You do not rise to the level of your goals. You fall to the level of your systems."
-
-"Every action is a vote for the type of person you wish to become."
-
-"Habits are the compound interest of self-improvement."
-
-"The most practical way to change who you are is to change what you do."
-
-"You should be far more concerned with your current trajectory than with your current results."
-
-"Be the designer of your world and not merely the consumer of it."
-
-"Time magnifies the margin between success and failure. It will multiply whatever you feed it."
-
-"Goals are good for setting a direction, but systems are best for making progress."
-
-"The ultimate form of intrinsic motivation is when a habit becomes part of your identity."
-
-"Success is the product of daily habits—not once-in-a-lifetime transformations."
-
-"Getting 1 percent better every day counts for a lot in the long-run."
-
-"Changes that seem small and unimportant at first will compound into remarkable results if you're willing to stick with them for years."
-
-"All big things come from small beginnings. The seed of every habit is a single, tiny decision."
-
-"When you fall in love with the process rather than the product, you don't have to wait to give yourself permission to be happy."
-
-"The greatest threat to success is not failure but boredom."
-
-"Professionals stick to the schedule; amateurs let life get in the way."
-
-"Missing once is an accident. Missing twice is the start of a new habit."
-
-## The Four Laws of Behavior Change
-
-To build a good habit:
-1. Make it obvious (Cue)
-2. Make it attractive (Craving)
-3. Make it easy (Response)
-4. Make it satisfying (Reward)
-
-To break a bad habit:
-1. Make it invisible
-2. Make it unattractive
-3. Make it difficult
-4. Make it unsatisfying
-
-## Key Concepts from Atomic Habits
-
-**Habit Stacking**: "After I [CURRENT HABIT], I will [NEW HABIT]."
-
-**The Two-Minute Rule**: When you start a new habit, it should take less than two minutes to do.
-
-**Environment Design**: Make the cues of good habits obvious and the cues of bad habits invisible.
-
-**Temptation Bundling**: Link an action you want to do with an action you need to do.
-
-**Implementation Intentions**: "I will [BEHAVIOR] at [TIME] in [LOCATION]."
-
-**Identity-Based Habits**: Focus on who you wish to become, not what you want to achieve.
-
-**The Plateau of Latent Potential**: Your work is not wasted; it is just being stored. The breakthrough will come.
-
-**Decisive Moments**: Each day is made up of many moments, but it is really a few habitual choices that determine the path you take.
-""",
-
-    "greene": """
-## Key Wisdom from Robert Greene
-
-"The future belongs to those who learn more skills and combine them in creative ways."
-
-"Never waste valuable time, or mental peace of mind, on the affairs of others."
-
-"When you show yourself to the world and display your talents, you naturally stir all kinds of resentment, envy, and other manifestations of insecurity."
-
-"Do not leave your reputation to chance or gossip; it is your life's artwork, and you must craft it, hone it, and display it with the care of an artist."
-
-"Never be distracted by people's glamorous portraits of themselves and their lives; search and dig for what really imprisons them."
-
-"Mastery is not a function of genius or talent. It is a function of time and intense focus applied to a particular field of knowledge."
-
-"The time that leads to mastery is dependent on the intensity of our focus."
-
-"Think of it this way: There are two kinds of time in our lives: dead time, when people are passive and waiting, and alive time, when people are learning and acting."
-
-"The key to power is the ability to judge who is best able to further your interests in all situations."
-
-"When you meet a swordsman, draw your sword: Do not recite poetry to one who is not a poet."
-
-## The 48 Laws of Power (Selected)
-
-Law 1: Never Outshine the Master
-Law 3: Conceal Your Intentions
-Law 4: Always Say Less Than Necessary
-Law 6: Court Attention at All Costs
-Law 15: Crush Your Enemy Totally
-Law 16: Use Absence to Increase Respect and Honor
-Law 25: Re-Create Yourself
-Law 28: Enter Action with Boldness
-Law 29: Plan All the Way to the End
-Law 33: Discover Each Man's Thumbscrew
-Law 35: Master the Art of Timing
-Law 48: Assume Formlessness
-""",
-
-    "naval": """
-## Key Wisdom from Naval Ravikant
-
-"Seek wealth, not money or status. Wealth is having assets that earn while you sleep."
-
-"Arm yourself with specific knowledge, accountability, and leverage."
-
-"Specific knowledge is knowledge that you cannot be trained for. If society can train you, it can train someone else, and replace you."
-
-"Learn to sell. Learn to build. If you can do both, you will be unstoppable."
-
-"Reading is faster than listening. Doing is faster than watching."
-
-"The most important skill for getting rich is becoming a perpetual learner."
-
-"If you can't code, write books and blogs, record videos and podcasts."
-
-"There are no get rich quick schemes. That's just someone else getting rich off you."
-
-"You're not going to get rich renting out your time. You must own equity - a piece of a business - to gain your financial freedom."
-
-"Play iterated games. All the returns in life, whether in wealth, relationships, or knowledge, come from compound interest."
-
-"Pick business partners with high intelligence, energy, and, above all, integrity."
-
-"A calm mind, a fit body, and a house full of love. These things cannot be bought. They must be earned."
-
-"Desire is a contract you make with yourself to be unhappy until you get what you want."
-
-"Happiness is a skill that can be learned."
-
-"The three big ones in life are wealth, health, and happiness. We pursue them in that order, but their importance is reverse."
-""",
-
-    "rubin": """
-## Key Wisdom from Rick Rubin
-
-"The goal is not to do what you can do. It's to do what you can't yet do."
-
-"Nothing is more important than the work being great."
-
-"Art is a conversation with the unconscious."
-
-"Rules are there to understand, then to transcend."
-
-"Great art comes from removing, not adding."
-
-"The best work comes from being present, not from trying."
-
-"Trust the process more than the product."
-
-"Create your work in a bubble. Share it with the world when you're ready."
-
-"Living life as an artist is a practice. You are either engaging in the practice or you're not."
-
-"The audience comes last. You are first."
-
-"If you have an idea you're excited about and you don't bring it to life, it's not uncommon for the idea to find its voice through another maker."
-
-"Look for what you notice but no one else sees."
-
-"The sensitivity that allows us to be great artists is the same sensitivity that makes life challenging."
-
-"Creativity has nothing to do with any activity. Creativity is a way of operating."
-
-"Cleaning up your field of vision allows new things to emerge."
-""",
-
-    "oprah": """
-## Key Wisdom from Oprah Winfrey
-
-"The biggest adventure you can take is to live the life of your dreams."
-
-"Turn your wounds into wisdom."
-
-"You get in life what you have the courage to ask for."
-
-"Be thankful for what you have; you'll end up having more."
-
-"The more you praise and celebrate your life, the more there is in life to celebrate."
-
-"Surround yourself with only people who are going to lift you higher."
-
-"Doing the best at this moment puts you in the best place for the next moment."
-
-"Think like a queen. A queen is not afraid to fail. Failure is another stepping stone to greatness."
-
-"Lots of people want to ride with you in the limo, but what you want is someone who will take the bus with you when the limo breaks down."
-
-"The whole point of being alive is to evolve into the complete person you were intended to be."
-
-"You teach people how to treat you."
-
-"Passion is energy. Feel the power that comes from focusing on what excites you."
-
-"Real integrity is doing the right thing, knowing that nobody's going to know whether you did it or not."
-
-"What I know for sure is that speaking your truth is the most powerful tool we all have."
-
-"The greatest discovery of all time is that a person can change their future by merely changing their attitude."
-""",
-
-    "thich": """
-## Key Wisdom from Thich Nhat Hanh
-
-"Breathing in, I calm body and mind. Breathing out, I smile."
-
-"Walk as if you are kissing the Earth with your feet."
-
-"Present moment, wonderful moment."
-
-"No mud, no lotus."
-
-"The seed of suffering in you may be strong, but don't wait until there is no more suffering to allow yourself to be happy."
-
-"Because you are alive, everything is possible."
-
-"Smile, breathe, and go slowly."
-
-"Understanding is love's other name."
-
-"When another person makes you suffer, it is because he suffers deeply within himself, and his suffering is spilling over."
-
-"People have a hard time letting go of their suffering. Out of a fear of the unknown, they prefer suffering that is familiar."
-
-"To be beautiful means to be yourself. You don't need to be accepted by others. You need to accept yourself."
-
-"Many people think excitement is happiness. But when you are excited you are not peaceful. True happiness is based on peace."
-
-"Feelings come and go like clouds in a windy sky. Conscious breathing is my anchor."
-
-"If you love someone but rarely make yourself available to him or her, that is not true love."
-
-"Life can be found only in the present moment. The past is gone, the future is not yet here."
-
-"Waking up this morning, I smile. Twenty-four brand new hours are before me."
-
-"Letting go gives us freedom, and freedom is the only condition for happiness."
 """,
 
     "jung": """
@@ -902,52 +515,6 @@ Law 48: Assume Formlessness
 **Synchronicity**: Meaningful coincidences with no causal relationship.
 
 **Collective Unconscious**: Inherited potentials activated by personal experience.
-""",
-
-    "kabatzinn": """
-## Key Wisdom from Jon Kabat-Zinn
-
-"You can't stop the waves, but you can learn to surf."
-
-"Mindfulness is awareness that arises through paying attention, on purpose, in the present moment, non-judgmentally."
-
-"The little things? The little moments? They aren't little."
-
-"Wherever you go, there you are."
-
-"The best way to capture moments is to pay attention. This is how we cultivate mindfulness."
-
-"Almost everything will work again if you unplug it for a few minutes, including you."
-
-"In Asian languages, the word for 'mind' and the word for 'heart' are the same. So if you're not hearing mindfulness in some deep way as heartfulness, you're not really understanding it."
-
-"We take care of the future best by taking care of the present now."
-
-"Patience is a form of wisdom. It demonstrates that we understand and accept the fact that sometimes things must unfold in their own time."
-
-"The present moment is filled with joy and happiness. If you are attentive, you will see it."
-
-"Meditation is the only intentional, systematic human activity which at bottom is about not trying to improve yourself or get anywhere else."
-
-"Life only unfolds in moments. The healing power of mindfulness lies in living each of those moments as fully as we can."
-
-"Perhaps the most 'spiritual' thing any of us can do is simply to look through our own eyes, see with eyes of wholeness, and act with integrity and kindness."
-
-## MBSR Foundations
-
-**The Body Scan**: Systematic attention to sensations throughout the body.
-
-**Sitting Meditation**: Awareness of breath, body, sounds, thoughts, and choiceless awareness.
-
-**Mindful Movement**: Yoga and walking meditation with full presence.
-
-**Informal Practice**: Bringing mindfulness to everyday activities.
-
-**Non-Judging**: Observing experience without evaluating it as good or bad.
-
-**Beginner's Mind**: Approaching each moment as if for the first time.
-
-**Non-Striving**: Not trying to get anywhere or achieve any particular state.
 """,
 
     "laotzu": """
@@ -1050,54 +617,6 @@ Law 48: Assume Formlessness
 **Connessione**: A recognition of and appreciation for the interconnectedness of all things.
 """,
 
-    "kahneman": """
-## Key Wisdom from Daniel Kahneman
-
-"Nothing in life is as important as you think it is, while you are thinking about it."
-
-"A reliable way to make people believe in falsehoods is frequent repetition, because familiarity is not easily distinguished from truth."
-
-"We can be blind to the obvious, and we are also blind to our blindness."
-
-"The confidence that individuals have in their beliefs depends mostly on the quality of the story they can tell about what they see."
-
-"Our comforting conviction that the world makes sense rests on a secure foundation: our almost unlimited ability to ignore our ignorance."
-
-"We are prone to overestimate how much we understand about the world and to underestimate the role of chance in events."
-
-"The easiest way to increase happiness is to control your use of time."
-
-"Intelligence is not only the ability to reason; it is also the ability to find relevant material in memory and to deploy attention when needed."
-
-"Loss aversion is a powerful conservative force that favors minimal changes from the status quo."
-
-"The planning fallacy is the tendency to underestimate the time, costs, and risks of future actions."
-
-"What you see is all there is." (WYSIATI)
-
-"Intuition is nothing more and nothing less than recognition."
-
-## System 1 and System 2
-
-**System 1**: Fast, automatic, emotional, stereotypic, unconscious. Operates effortlessly.
-
-**System 2**: Slow, effortful, logical, calculating, conscious. Requires attention.
-
-## Key Biases and Heuristics
-
-**Anchoring**: Relying too heavily on the first piece of information encountered.
-
-**Availability Heuristic**: Judging probability by how easily examples come to mind.
-
-**Representativeness**: Judging probability by similarity to stereotypes.
-
-**Loss Aversion**: Losses loom larger than gains (roughly 2:1).
-
-**Overconfidence**: Systematic tendency to overestimate the accuracy of our beliefs.
-
-**Hindsight Bias**: "I knew it all along" after learning an outcome.
-""",
-
     "tubman": """
 ## Key Wisdom from Harriet Tubman
 
@@ -1134,101 +653,6 @@ Law 48: Assume Formlessness
 **Resolve**: Never turning back, never giving up.
 
 **Service**: Dedicating her freedom to freeing others.
-""",
-
-    "tetlock": """
-## Key Wisdom from Philip Tetlock
-
-"The fox knows many things, but the hedgehog knows one big thing."
-
-"Beliefs are hypotheses to be tested, not treasures to be protected."
-
-"The key to being a superforecaster is perpetual beta—the mindset of always testing and refining your beliefs."
-
-"Superforecasters are not brilliant. They are tenacious and have an appetite for evidence."
-
-"Good judgment requires you to think about what might be and not just what is."
-
-"Forecasting is not about predicting the unpredictable but about being less wrong over time."
-
-"The single most important factor in good forecasting is trying hard."
-
-"Overconfidence is the mother of all psychological biases."
-
-"Good forecasters tend to be actively open-minded."
-
-"Break problems into components. Distinguish knowable from unknowable."
-
-"The goal is not to be right but to be calibrated—knowing what you know and don't know."
-
-## Superforecasting Principles
-
-**Triage**: Focus on questions that are neither too easy nor too hard to answer.
-
-**Break Down Problems**: Fermi-ize complex questions into tractable sub-questions.
-
-**Strike the Right Balance**: Weight inside and outside views appropriately.
-
-**Update Incrementally**: Adjust beliefs in response to new evidence, but don't overreact.
-
-**Look for Clashing Causal Forces**: Consider what pushes toward and against outcomes.
-
-**Distinguish As Many Degrees of Uncertainty**: Fine-grained probability estimates.
-
-**Strike Balance Between Under- and Over-Confidence**: Humility about uncertainty.
-
-**Look for Errors Behind Your Mistakes**: Conduct postmortems on predictions.
-
-**Bring Out the Best in Others**: Harness collective wisdom through teams.
-
-**Master the Skill-Luck Balance**: Understand the role of chance in outcomes.
-""",
-
-    "klein": """
-## Key Wisdom from Gary Klein
-
-"Intuition is the way we translate our experience into action."
-
-"The power of intuition lies in the stories we build up over time."
-
-"Experts see the world differently than novices. They notice things others miss."
-
-"Recognition-primed decision making: In familiar situations, experienced decision makers recognize patterns and act accordingly."
-
-"In complex, time-pressured situations, the first option that comes to mind is usually the best option."
-
-"Analytical methods work well in laboratories but often fail in the field."
-
-"The pre-mortem: Imagine the project has failed. Now explain why."
-
-"Insight is the unexpected shift to a better story."
-
-"Experts don't make decisions by comparing options. They assess the situation and respond."
-
-"The real problem with novices isn't that they think slow—it's that they see less."
-
-## Naturalistic Decision Making Principles
-
-**Recognition-Primed Decision Making (RPD)**: Experienced decision makers recognize situations as typical cases and rapidly identify an appropriate response.
-
-**Mental Simulation**: Running through a course of action in your mind to see if it will work.
-
-**Leverage Points**: Finding the key factor that makes the biggest difference.
-
-**The Pre-Mortem**: Before starting a project, imagine it has failed and explain why.
-
-**Satisficing**: Finding a good enough option quickly rather than optimizing.
-
-**Situation Assessment**: Understanding the situation is more important than comparing options.
-
-## Sources of Power
-
-- Pattern recognition
-- Mental simulation
-- Leverage points
-- Seeing the invisible
-- Story building
-- Noticing anomalies
 """,
 
     "meadows": """
@@ -1405,49 +829,589 @@ Law 48: Assume Formlessness
 - Integration of siege technology from conquered peoples
 """,
 
-    "lauder": """
-## Key Wisdom from Estée Lauder
+    "graham": """
+## Key Passages from Benjamin Graham
 
-"I have never worked a day in my life without selling. If I believe in something, I sell it, and I sell it hard."
+"The intelligent investor is a realist who sells to optimists and buys from pessimists." — The Intelligent Investor
 
-"I didn't get here by dreaming about it or thinking about it—I got here by doing it."
+"In the short run, the market is a voting machine but in the long run, it is a weighing machine." — Security Analysis
 
-"All great things began as dreams. There is always someone who, if they have the dream, will make it come true."
+"The investor's chief problem — and even his worst enemy — is likely to be himself." — The Intelligent Investor
 
-"Look for a sweet person and everything else will follow."
+"Have the courage of your knowledge and experience. If you have formed a conclusion from the facts and if you know your judgment is sound, act on it — even though others may hesitate or differ." — The Intelligent Investor
 
-"Touch your customer and you're halfway there."
+"To achieve satisfactory investment results is easier than most people realize; to achieve superior results is harder than it looks." — The Intelligent Investor
 
-"Risk-taking is the cornerstone of empires."
+"The margin of safety is always dependent on the price paid. It will be large at one price, small at some higher price, nonexistent at some still higher price." — The Intelligent Investor
 
-"I never dreamed about success. I worked for it."
+"An investment operation is one which, upon thorough analysis, promises safety of principal and an adequate return. Operations not meeting these requirements are speculative." — Security Analysis
 
-"When you stop talking, you've lost your customer. When you turn your back, you've lost her."
+"Those who do not remember the past are condemned to repeat it." — The Intelligent Investor (quoting Santayana)
 
-"If you don't sell, it's not the product that's wrong, it's you."
+"The individual investor should act consistently as an investor and not as a speculator." — The Intelligent Investor
 
-"Beauty is an attitude. There's no secret. Why are all brides beautiful? Because on their wedding day they care about how they look."
+"The essence of investment management is the management of risks, not the management of returns." — Security Analysis
 
-"Telephone, telegraph, tell a woman."
+"Obvious prospects for physical growth in a business do not translate into obvious profits for investors." — The Intelligent Investor
 
-"I made mistakes. I admitted them. But above all, I learned from them."
+"The best way to measure your investing success is not by whether you're beating the market but by whether you've put in place a financial plan and a behavioral discipline that are likely to get you where you want to go." — The Intelligent Investor
 
-## Estée Lauder's Business Principles
+"Price fluctuations have only one significant meaning for the true investor. They provide him with an opportunity to buy wisely when prices fall sharply and to sell wisely when they advance a great deal." — The Intelligent Investor
 
-**Personal Touch**: The gift with purchase. The sample. The hand-to-hand selling.
+"People who invest make money for themselves; people who speculate make money for their brokers." — The Intelligent Investor
 
-**Quality Obsession**: Never compromise on the product. Your name is on it.
+## Graham's Key Concepts
 
-**Persistence**: "No" is just the beginning of the conversation.
+**Margin of Safety**: The central concept of investment — always buy at a significant discount to intrinsic value to allow room for error in analysis or bad luck in outcomes.
 
-**Customer Intimacy**: Know your customer. Touch her. Talk to her. Understand her.
+**Mr. Market**: The market is like an emotional business partner who offers to buy or sell shares daily at different prices. You are free to ignore him or take advantage of his moods, but never let him guide your judgment.
 
-**Word of Mouth**: One satisfied customer tells five friends.
+**Intrinsic Value**: Every security has an underlying worth based on its assets, earnings, dividends, and prospects. The intelligent investor focuses on determining this value independently of market price.
 
-**Elegant Presentation**: The packaging is part of the product. Luxury is in the details.
+**The Defensive Investor vs. The Enterprising Investor**: Two approaches — the defensive investor seeks adequate returns with minimal effort through diversification and quality; the enterprising investor puts in extra work for potentially superior returns.
 
-**Dream Selling**: You don't sell cream—you sell hope, beauty, transformation.
+**Quantitative vs. Qualitative Analysis**: Favor measurable factors (earnings, assets, dividends) over speculative qualities (management genius, future growth). Numbers lie less than narratives.
 
-**Leading by Example**: Be the embodiment of what you sell. Represent the dream.
+**Diversification**: Adequate but not excessive diversification — enough to reduce risk, but not so much that you cannot understand your holdings.
+
+**Emotional Discipline**: The investor's greatest asset is temperament, not intellect. The ability to remain rational when others are panicking or euphoric is the true edge.
+
+**Contrarian Thinking**: The best opportunities come when the crowd is wrong. Buy when others are fearful, maintain skepticism during euphoria.
+""",
+
+    "seneca": """
+## Key Passages from Seneca's Letters and Essays
+
+"It is not that we have a short time to live, but that we waste a great deal of it." — On the Shortness of Life
+
+"We suffer more often in imagination than in reality." — Letters to Lucilius, Letter 13
+
+"While we are postponing, life speeds by." — Letters to Lucilius, Letter 1
+
+"Difficulties strengthen the mind, as labor does the body." — Letters to Lucilius, Letter 78
+
+"He who is brave is free." — Letters to Lucilius, Letter 51
+
+"It is not because things are difficult that we do not dare; it is because we do not dare that things are difficult." — Letters to Lucilius, Letter 104
+
+"Begin at once to live, and count each separate day as a separate life." — Letters to Lucilius, Letter 101
+
+"If a man knows not to which port he sails, no wind is favorable." — Letters to Lucilius, Letter 71
+
+"True happiness is to enjoy the present, without anxious dependence upon the future." — On the Happy Life
+
+"We are more often frightened than hurt; and we suffer more often in imagination than in reality." — Letters to Lucilius, Letter 13
+
+"The whole future lies in uncertainty: live immediately." — On the Shortness of Life
+
+"As long as you live, keep learning how to live." — Letters to Lucilius
+
+"A gem cannot be polished without friction, nor a man perfected without trials." — On Providence
+
+"Hang on to your youthful enthusiasms — you'll be able to use them better when you're older." — Letters to Lucilius
+
+"People are frugal in guarding their personal property; but as soon as it comes to squandering time, they are most wasteful of the one thing in which it is right to be stingy." — On the Shortness of Life
+
+"Associate with people who are likely to improve you. Welcome those whom you are capable of improving." — Letters to Lucilius, Letter 7
+
+## Seneca's Key Concepts
+
+**Premeditatio Malorum**: The premeditation of evils — mentally rehearsing potential hardships so they lose their power to disturb you when they arrive.
+
+**Amor Fati**: Love of fate — embracing everything that happens, including suffering, as necessary and even beneficial for growth.
+
+**Memento Mori**: Remember that you will die — use awareness of mortality to focus on what truly matters and live with urgency.
+
+**The Dichotomy of Control**: Distinguish between what is in your power (your thoughts, actions, attitudes) and what is not (others' behavior, external events). Focus only on the former.
+
+**Voluntary Discomfort**: Periodically practice poverty and hardship to build resilience and appreciate what you have.
+
+**The Inner Citadel**: Build an impregnable fortress within your own mind — no external event can harm you unless you allow it to.
+
+**Rational Compassion**: Combine Stoic reason with genuine care for others — anger and cruelty are signs of weakness, not strength.
+
+**The Shortness of Life**: Life is long enough if you use it well. The problem is not insufficient time but wasteful living.
+
+**Wise Friendship**: Choose companions carefully — we become like those we associate with. Seek friends who elevate you.
+
+**Present-Moment Living**: The past is gone, the future uncertain. Only the present moment is truly yours.
+""",
+
+    "william_james": """
+## Key Passages from William James
+
+"The greatest discovery of my generation is that a human being can alter his life by altering his attitudes." — The Principles of Psychology
+
+"Act as if what you do makes a difference. It does." — The Will to Believe
+
+"The art of being wise is the art of knowing what to overlook." — The Principles of Psychology
+
+"Begin to be now what you will be hereafter." — The Principles of Psychology
+
+"Believe that life is worth living and your belief will help create the fact." — The Will to Believe
+
+"The greatest weapon against stress is our ability to choose one thought over another." — The Principles of Psychology
+
+"Could the young but realize how soon they will become mere walking bundles of habits, they would give more heed to their conduct while in the plastic state." — The Principles of Psychology
+
+"Nothing is so fatiguing as the eternal hanging on of an uncompleted task." — The Principles of Psychology
+
+"If you want a quality, act as if you already had it." — The Principles of Psychology
+
+"Whenever you're in conflict with someone, there is one factor that can make the difference between damaging your relationship and deepening it. That factor is attitude." — Pragmatism
+
+"Be not afraid of life. Believe that life is worth living, and your belief will help create the fact." — The Will to Believe
+
+"The deepest principle in human nature is the craving to be appreciated." — The Principles of Psychology
+
+"We are like islands in the sea, separate on the surface but connected in the deep." — The Varieties of Religious Experience
+
+"Compared to what we ought to be, we are only half awake." — The Energies of Men
+
+"A chain is no stronger than its weakest link, and life is after all a chain." — The Principles of Psychology
+
+"The world we see that seems so insane is the result of a belief system that is not working." — Pragmatism
+
+## William James's Key Concepts
+
+**Habit Formation**: Habits are the flywheel of society. The brain forms neural pathways through repetition. To change behavior, never allow an exception until the new habit is securely rooted.
+
+**The Will to Believe**: In cases where evidence is insufficient, we have the right — even the duty — to believe what serves life and action. Faith can create its own verification.
+
+**Pragmatism**: The meaning of an idea lies in its practical consequences. Truth is not abstract — it is what works in experience.
+
+**Stream of Consciousness**: The mind is not a collection of static ideas but a continuous, flowing stream. Thought is always changing, always personal, always selective.
+
+**The Varieties of Religious Experience**: Mystical and religious experiences are real psychological phenomena that deserve serious study regardless of their metaphysical truth.
+
+**Radical Empiricism**: Experience is the only reality. Relations between things are as real as the things themselves.
+
+**The James-Lange Theory of Emotion**: We don't cry because we're sad — we're sad because we cry. Bodily changes come first; emotion follows.
+
+**Attention and Will**: The effort of attention is the essential phenomenon of will. What we attend to becomes our reality.
+
+**Pluralism**: The universe is not one monolithic block but a genuine plurality of interacting forces. Reality is fundamentally diverse and open-ended.
+
+**The Energies of Men**: Most people live far within their limits. There are vast reserves of energy available when we push past our usual stopping points.
+""",
+
+    "machiavelli": """
+## Key Passages from Niccolo Machiavelli
+
+"Everyone sees what you appear to be, few experience what you really are." — The Prince, Ch. 18
+
+"It is much safer to be feared than loved, if one of the two has to be wanting." — The Prince, Ch. 17
+
+"The lion cannot protect himself from traps, and the fox cannot defend himself from wolves. One must therefore be a fox to recognize traps, and a lion to frighten wolves." — The Prince, Ch. 18
+
+"There is no other way to guard yourself against flattery than by making men understand that telling you the truth will not offend you." — The Prince, Ch. 23
+
+"Men are driven by two principal impulses, either by love or by fear." — Discourses, Book III
+
+"Whoever desires to found a state and give it laws, must start with assuming that all men are bad and ever ready to display their vicious nature." — Discourses, Book I
+
+"Where the willingness is great, the difficulties cannot be great." — The Prince, Ch. 26
+
+"Men judge generally more by the eye than by the hand, for everyone can see and few can feel." — The Prince, Ch. 18
+
+"The first method for estimating the intelligence of a ruler is to look at the men he has around him." — The Prince, Ch. 22
+
+"He who wishes to be obeyed must know how to command." — Discourses, Book III
+
+"There is nothing more difficult to take in hand, more perilous to conduct, or more uncertain in its success, than to take the lead in the introduction of a new order of things." — The Prince, Ch. 6
+
+"Benefits should be conferred gradually; and in that way they will taste better." — The Prince, Ch. 8
+
+"It is necessary for him who lays out a state and arranges laws for it to presuppose that all men are evil." — Discourses, Book I
+
+"Men ought either to be well treated or crushed, because they can avenge themselves of lighter injuries, of more serious ones they cannot." — The Prince, Ch. 3
+
+"Whoever believes that great advancement and new benefits make men forget old injuries is mistaken." — The Prince, Ch. 7
+
+"The wise man does at once what the fool does finally." — Discourses, Book I
+
+## Machiavelli's Key Concepts
+
+**Virtù**: Not virtue in the moral sense, but the combination of energy, foresight, boldness, and practical skill needed to master fortune and achieve political success.
+
+**Fortuna**: Fortune or chance — the unpredictable half of human affairs. The prince must build levees in calm times to contain fortune's floods.
+
+**The Lion and the Fox**: A ruler must combine brute force (the lion) with cunning (the fox). Neither alone is sufficient.
+
+**Necessity (Necessità)**: Circumstances often compel actions that morality alone would forbid. The statesman must act as the situation demands, not as ideals dictate.
+
+**The Effectual Truth**: Focus on how things are, not on how they ought to be. Political theory must be grounded in observed reality, not utopian fantasies.
+
+**Reading History**: Study the great figures of the past as living teachers. History is the laboratory of political science.
+
+**Arms and Laws**: The two pillars of any state. Without good arms, good laws cannot exist. Military strength is the foundation of political order.
+
+**Adaptability**: The prince who adapts his methods to the times will succeed; the one who clashes with the times will fail. Rigidity is fatal.
+
+**Reputation Management**: It is useful to appear merciful, faithful, humane, religious, and upright — and to be so — but with a mind prepared to act against these qualities when necessity requires.
+""",
+
+    "epicurus": """
+## Key Passages from Epicurus
+
+"Do not spoil what you have by desiring what you have not; remember that what you now have was once among the things you only hoped for." — Vatican Sayings, 35
+
+"He who is not satisfied with a little is satisfied with nothing." — Vatican Sayings, 68
+
+"Of all the means to insure happiness throughout the whole life, by far the most important is the acquisition of friends." — Principal Doctrines, 27
+
+"It is not so much our friends' help that helps us, as the confidence of their help." — Vatican Sayings, 34
+
+"The wealth required by nature is limited and is easy to procure; but the wealth required by vain ideals extends to infinity." — Principal Doctrines, 15
+
+"Nothing is sufficient for the person who finds sufficiency too little." — Vatican Sayings, 68 (variant)
+
+"Death is nothing to us; for that which has been dissolved into its elements experiences no sensations, and that which has no sensation is nothing to us." — Principal Doctrines, 2
+
+"A free life cannot acquire many possessions, because this is not easy to do without servility to mobs or monarchs." — Vatican Sayings, 67
+
+"Let no one delay the study of philosophy while young nor weary of it when old. For no one is either too young or too old for the health of the soul." — Letter to Menoeceus
+
+"It is impossible to live a pleasant life without living wisely and well and justly, and it is impossible to live wisely and well and justly without living a pleasant life." — Principal Doctrines, 5
+
+"We must exercise ourselves in the things which bring happiness, since, if that be present, we have everything, and if that be absent, all our actions are directed towards attaining it." — Letter to Menoeceus
+
+"Empty is the argument of the philosopher which does not relieve any human suffering." — fragment attributed by Porphyry
+
+"The man who says that all events are necessitated has no ground for criticizing the man who says that not all events are necessitated. For according to him this is itself a necessitated event." — fragment
+
+"You don't develop courage by being happy in your relationships every day. You develop it by surviving difficult times and challenging adversity." — attributed
+
+## Epicurus's Key Concepts
+
+**The Tetrapharmakos (Four-Part Remedy)**: (1) God is not to be feared. (2) Death is not to be worried about. (3) What is good is easy to get. (4) What is terrible is easy to endure.
+
+**Ataraxia**: Tranquility of mind — the state of robust equanimity and freedom from disturbance that is the goal of Epicurean philosophy.
+
+**Aponia**: The absence of physical pain — together with ataraxia, constitutes the Epicurean definition of pleasure and happiness.
+
+**The Pleasure Calculus**: Not all pleasures are worth pursuing — some bring greater pain in their wake. The wise person calculates the net outcome and chooses accordingly.
+
+**Natural and Necessary Desires**: Desires are categorized as (1) natural and necessary (food, shelter, friendship), (2) natural but unnecessary (luxury food, sexual variety), or (3) vain and empty (fame, power, unlimited wealth). Happiness comes from satisfying only the first.
+
+**The Garden**: Epicurus's school was a garden where friends gathered to philosophize and live simply. The ideal community is small, intimate, and devoted to mutual care.
+
+**Friendship as the Highest Good**: Of all the external goods, friendship is the most important. A life without friends is not worth living, regardless of other possessions.
+
+**Lathe Biosas (Live Hidden)**: Withdraw from public life and political ambition. Happiness is found in quiet living, not in the pursuit of power or fame.
+
+**Philosophical Medicine**: Philosophy is the medicine of the soul. Just as medicine heals the body, philosophy heals the mind of its irrational fears and desires.
+""",
+
+    "sojourner_truth": """
+## Key Words and Wisdom of Sojourner Truth
+
+"Ain't I a woman? Look at me! Look at my arm! I have ploughed and planted, and gathered into barns, and no man could head me! And ain't I a woman?" — Women's Rights Convention, Akron, Ohio, 1851 (Robinson transcription)
+
+"I feel safe in the midst of my enemies, for the truth is all powerful and will prevail." — Narrative of Sojourner Truth
+
+"Truth is powerful and it prevails." — Narrative of Sojourner Truth
+
+"I am not going to die, I'm going home like a shooting star." — attributed, near the end of her life
+
+"If the first woman God ever made was strong enough to turn the world upside down all alone, these women together ought to be able to turn it back, and get it right side up again!" — Akron Convention, 1851
+
+"I sell the shadow to support the substance." — inscription on her carte de visite photographs, which she sold to fund her activism
+
+"Religion without humanity is poor human stuff." — Narrative of Sojourner Truth
+
+"Where did your Christ come from? From God and a woman! Man had nothing to do with Him." — Akron Convention, 1851
+
+"I have borne thirteen children, and seen most all sold off to slavery, and when I cried out with my mother's grief, none but Jesus heard me! And ain't I a woman?" — Akron Convention, 1851
+
+"If women want any rights more than they's got, why don't they just take them, and not be talking about it." — attributed
+
+"I know that it is hard for one who has held the reins for so long to give up; it cuts like a knife. It will feel all the better when it closes up again." — Women's Rights Convention, 1853
+
+"That man over there says that women need to be helped into carriages, and lifted over ditches, and to have the best place everywhere. Nobody ever helps me into carriages, or over mud-puddles, or gives me any best place! And ain't I a woman?" — Akron Convention, 1851
+
+"Frederick, is God dead?" — to Frederick Douglass, after a speech in which he despaired of peaceful change, 1852
+
+## Sojourner Truth's Key Principles
+
+**Embodied Authority**: Truth drew authority not from education or credentials but from lived experience — her scarred body, her labor, her suffering. The most powerful argument is a life fully lived.
+
+**Intersectional Justice**: Before the term existed, Truth argued that the liberation of women and the liberation of Black people were inseparable. She challenged white feminists and male abolitionists alike.
+
+**Plain Speech**: Truth spoke in direct, common language that cut through pretension and intellectual posturing. Simplicity is a form of power.
+
+**Faith as Fuel**: Her deep, personal relationship with God sustained her through enslavement, loss, and decades of activism. Spirituality was not separate from justice — it was the engine of it.
+
+**Strategic Self-Presentation**: By selling her photographs ("the shadow") to fund her work ("the substance"), Truth was an early master of personal branding in service of a cause.
+
+**Courage Without Weapons**: Truth faced hostile crowds, hecklers, and threats with nothing but her voice and her truth. Moral courage is the highest form of bravery.
+
+**The Power of Questions**: "Ain't I a woman?" is one of history's most powerful rhetorical questions — it exposes hypocrisy by simply asking for consistency.
+
+**Persistence Across a Lifetime**: Born enslaved around 1797, Truth continued her activism until her death in 1883. The work of justice is never finished in a single generation.
+""",
+
+    "rumi": """
+## Key Passages from Rumi
+
+"The wound is the place where the Light enters you." — Divan-e Shams-e Tabrizi
+
+"What you seek is seeking you." — attributed, Fihi Ma Fihi (Discourses)
+
+"Out beyond ideas of wrongdoing and rightdoing, there is a field. I'll meet you there." — Divan-e Shams-e Tabrizi
+
+"Yesterday I was clever, so I wanted to change the world. Today I am wise, so I am changing myself." — Masnavi
+
+"Don't grieve. Anything you lose comes round in another form." — Masnavi
+
+"You were born with wings, why prefer to crawl through life?" — Masnavi
+
+"Silence is the language of God, all else is poor translation." — attributed, Fihi Ma Fihi
+
+"The beauty you see in me is a reflection of you." — Divan-e Shams-e Tabrizi
+
+"Let yourself be silently drawn by the strange pull of what you really love. It will not lead you astray." — Masnavi
+
+"Raise your words, not your voice. It is rain that grows flowers, not thunder." — attributed
+
+"These pains you feel are messengers. Listen to them." — Masnavi
+
+"When you do things from your soul, you feel a river moving in you, a joy." — Masnavi
+
+"Why do you stay in prison when the door is so wide open?" — Masnavi
+
+"Be empty of worrying. Think of who created thought." — Masnavi
+
+"The garden of the world has no limits, except in your mind." — Masnavi
+
+"Sell your cleverness and buy bewilderment." — Masnavi
+
+## Rumi's Key Concepts
+
+**The Beloved**: In Rumi's poetry, the Beloved is simultaneously the divine, the lost friend (Shams of Tabriz), and the deepest self. All love is ultimately love of the divine expressed through human connection.
+
+**The Reed Flute (Ney)**: The opening metaphor of the Masnavi — the reed, cut from its bed, cries with longing. Human beings are like this reed: separated from our source, our deepest impulse is the yearning to return.
+
+**Fana (Annihilation of the Self)**: Spiritual growth requires dissolving the ego — not destroying yourself, but letting go of the false self so the true self can emerge.
+
+**The Inner Journey**: The real pilgrimage is inward. External travel, rituals, and even religious forms are secondary to the transformation of the heart.
+
+**Love as the Ultimate Teacher**: Reason is valuable but limited. Love transcends logic and is the primary way of knowing God and reality. The heart knows what the mind cannot grasp.
+
+**Creative Suffering**: Pain is not punishment but pedagogy. Grief, loss, and longing crack open the heart so that light can enter. Every wound is a door.
+
+**Unity of Being (Wahdat al-Wujud)**: Beneath the apparent diversity of the world lies a single divine reality. Separation is an illusion; all things are expressions of the One.
+
+**The Guest House**: Every emotion — joy, depression, shame, malice — is a visitor to be welcomed. Each has been sent as a guide from beyond. Hospitality toward all experience is the path to wisdom.
+
+**Bewilderment over Certainty**: Intellectual certainty is a trap. True wisdom begins in wonder, confusion, and the admission that you do not know.
+
+**Whirling (Sama)**: Movement as meditation. The spinning of the Mevlevi dervishes is not mere ritual but a physical expression of the soul's rotation around the divine center.
+""",
+
+    "thucydides": """
+## Key Passages from Thucydides
+
+"The strong do what they can and the weak suffer what they must." — The History of the Peloponnesian War, Book V (The Melian Dialogue)
+
+"It is a general rule of human nature that people despise those who treat them well, and look up to those who make no concessions." — Book III
+
+"The society that separates its scholars from its warriors will have its thinking done by cowards and its fighting done by fools." — attributed
+
+"War is a stern teacher." — Book III
+
+"Self-control is the chief element in self-respect, and self-respect is the chief element in courage." — Pericles' Funeral Oration, Book II
+
+"The secret of happiness is freedom, and the secret of freedom is courage." — Pericles' Funeral Oration, Book II
+
+"We do not say that a man who takes no interest in politics is a man who minds his own business; we say that he has no business here at all." — Pericles' Funeral Oration, Book II
+
+"Men's indignation, it seems, is more excited by legal wrong than by violent wrong; the first looks like being cheated by an equal, the second like being compelled by a superior." — Book I
+
+"In practice we always base our preparations against an enemy on the assumption that his plans are good; indeed, it is right to rest our hopes not on a belief in his blunders, but on the soundness of our provisions." — Book I
+
+"History is Philosophy teaching by examples." — attributed (paraphrased from his method)
+
+"It is from the greatest dangers that the greatest glory is to be won." — Book I
+
+"Hope, danger's comforter, may be indulged in by those who have abundant resources." — Book V (The Melian Dialogue)
+
+"The nation that makes a great distinction between its scholars and its warriors will have its thinking done by cowards and its fighting by fools." — attributed
+
+"Right, as the world goes, is only in question between equals in power." — Book V (The Melian Dialogue)
+
+## Thucydides's Key Concepts
+
+**Political Realism**: States act according to interest, not justice. International relations are governed by power, not morality. Understanding this is not cynicism — it is clear sight.
+
+**The Thucydides Trap**: When a rising power threatens a ruling power, the resulting structural stress makes war more likely. This dynamic recurs across history.
+
+**Human Nature as Constant**: While circumstances change, human nature — with its fear, honor, and self-interest — remains fundamentally the same. This is why history can be useful.
+
+**The Plague and Social Breakdown**: Catastrophe reveals character. Under extreme stress, laws and norms dissolve. The true nature of individuals and institutions is exposed in crisis.
+
+**Pericles vs. Cleon — Leadership Quality**: Democratic societies thrive under wise, moderate leadership and degrade under demagogues who flatter the mob. The quality of leadership determines a nation's fate.
+
+**Stasis (Civil Strife)**: Internal division is more destructive than external enemies. Faction, class warfare, and ideological extremism tear societies apart from within.
+
+**The Melian Dialogue**: The most famous exploration of power politics — Athens tells the Melians that justice only exists between equals. The powerful impose, the weak submit. A permanent challenge to moral idealism.
+
+**Speeches as Analysis**: Thucydides reconstructs speeches not to record exact words but to reveal the reasoning, motivations, and persuasive strategies of leaders. Rhetoric shapes history.
+
+**Ktema es Aei (A Possession for All Time)**: Thucydides wrote not to entertain but to create a permanent resource for understanding human conflict. His work is meant to be useful forever because human nature does not change.
+""",
+
+    "walker": """
+## Key Words and Wisdom of Madam C.J. Walker
+
+"I am a woman who came from the cotton fields of the South. From there I was promoted to the washtub. From there I was promoted to the cook kitchen. And from there I promoted myself into the business of manufacturing hair goods and preparations. I have built my own factory on my own ground." — National Negro Business League Convention, 1912
+
+"I got my start by giving myself a start." — attributed
+
+"Don't sit down and wait for the opportunities to come. Get up and make them." — attributed
+
+"I had to make my own living and my own opportunity. But I made it! Don't sit down and wait for the opportunities to come. You have to get up and make them." — convention speech
+
+"Perseverance is my motto." — personal motto
+
+"There is no royal flower-strewn path to success. And if there is, I have not found it, for if I have accomplished anything in life it is because I have been willing to work hard." — speech, 1914
+
+"I am not merely satisfied in making money for myself, for I am endeavoring to provide employment for hundreds of the women of my race." — National Negro Business League, 1912
+
+"The girls and women of our race must not be afraid to take hold of business endeavor." — attributed
+
+"I want the great masses of my people to take a greater pride in their personal appearance and to give their hair proper attention." — early business writings
+
+"I had little or no opportunity when I started out in life, having been left an orphan. I had to make my own living and my own opportunity. But I made it!" — convention speech
+
+## Madam C.J. Walker's Key Principles
+
+**Self-Made Success**: Walker rejected the narrative of dependence. She created her own opportunity through initiative, not by waiting for permission or patronage.
+
+**Dignified Enterprise**: Her business was not just about hair products — it was about dignity, self-respect, and helping Black women present themselves with pride in a society that denied them value.
+
+**Economic Empowerment**: Walker built a network of thousands of "Walker Agents" — independent saleswomen who earned their own income. She saw entrepreneurship as liberation.
+
+**Giving Back**: Walker was one of the largest philanthropic donors in Black America, supporting schools, orphanages, the NAACP, and anti-lynching campaigns. Wealth was a tool for community uplift.
+
+**Persistence Over Pedigree**: Born Sarah Breedlove in 1867 to parents who had been enslaved, orphaned at 7, married at 14, widowed at 20. She proved that background does not determine destiny.
+
+**Marketing Innovation**: Walker pioneered door-to-door sales, mail-order marketing, and the agent-based distribution model. She was a business innovator decades ahead of her time.
+
+**Community Building**: Her annual conventions brought together thousands of Black businesswomen for education, networking, and collective action — combining commerce with civil rights.
+""",
+
+    "bacon": """
+## Key Passages from Francis Bacon
+
+"Knowledge is power." — Meditationes Sacrae (1597)
+
+"If a man will begin with certainties, he shall end in doubts; but if he will be content to begin with doubts, he shall end in certainties." — The Advancement of Learning
+
+"Read not to contradict and confute; nor to believe and take for granted; nor to find talk and discourse; but to weigh and consider." — Essay 50, "Of Studies"
+
+"Some books are to be tasted, others to be swallowed, and some few to be chewed and digested." — Essay 50, "Of Studies"
+
+"Nature, to be commanded, must be obeyed." — Novum Organum
+
+"The remedy for ill-gotten power is not weakness but well-applied power." — attributed, paraphrase of his method
+
+"A prudent question is one-half of wisdom." — attributed
+
+"Truth is so hard to tell, it sometimes needs fiction to make it plausible." — attributed
+
+"A wise man will make more opportunities than he finds." — Essay 52, "Of Ceremonies and Respects"
+
+"There is no excellent beauty that hath not some strangeness in the proportion." — Essay 43, "Of Beauty"
+
+"They are ill discoverers that think there is no land, when they can see nothing but sea." — The Advancement of Learning
+
+"The human understanding is no dry light, but receives an infusion from the will and affections." — Novum Organum
+
+"It is a strange desire, to seek power, and to lose liberty." — Essay 11, "Of Great Place"
+
+"In taking revenge, a man is but even with his enemy; but in passing it over, he is superior." — Essay 4, "Of Revenge"
+
+"The subtlety of nature is greater many times over than the subtlety of the senses and understanding." — Novum Organum
+
+"He that will not apply new remedies must expect new evils; for time is the greatest innovator." — Essay 24, "Of Innovations"
+
+## Bacon's Key Concepts
+
+**The Idols of the Mind**: Four categories of cognitive error that distort human understanding:
+- **Idols of the Tribe** (Idola Tribus): Errors inherent in human nature — we see patterns where none exist, favor confirming evidence, and let emotions color perception.
+- **Idols of the Cave** (Idola Specus): Individual biases from personal education, temperament, and experience — each person's private "cave" distorts the light of truth.
+- **Idols of the Marketplace** (Idola Fori): Errors caused by the imprecision of language — words create false categories and misleading associations.
+- **Idols of the Theatre** (Idola Theatri): Errors from received dogma, philosophical systems, and false demonstrations — we accept inherited frameworks without questioning them.
+
+**The Inductive Method**: Rather than deducing conclusions from axioms (the Aristotelian way), start from careful observation and experiment, then build up to general principles gradually. Let nature speak rather than forcing it into preconceived frameworks.
+
+**Knowledge as Power Over Nature**: The purpose of knowledge is not contemplation but practical application. Understanding nature's laws allows us to harness them for human benefit.
+
+**The New Organon**: A replacement for Aristotle's logical works. Bacon proposed a new instrument of thought — systematic empirical investigation rather than syllogistic reasoning.
+
+**Experientia Literata (Literate Experience)**: Not random trial-and-error but methodical experimentation — varying one condition at a time, recording results, and drawing careful inferences.
+
+**The Great Instauration**: Bacon's grand vision of a complete reformation of human knowledge — from clearing away old errors to building new sciences on a foundation of observation.
+
+**Skepticism as Method**: Begin with doubt, not certainty. Question everything, especially what seems obvious. Intellectual humility is the foundation of genuine discovery.
+
+**The Advancement of Learning**: All knowledge is interconnected. Specialization without integration leads to blindness. The greatest discoveries happen at the boundaries between fields.
+
+**Practical Wisdom**: Knowledge divorced from action is sterile. The goal is not abstract truth but truth that can be used to improve human life.
+""",
+
+    "dogen": """
+## Key Passages from Dogen Zenji
+
+"To study the self is to forget the self. To forget the self is to be enlightened by the ten thousand things." — Genjokoan (Actualizing the Fundamental Point)
+
+"If you cannot find the truth right where you are, where else do you expect to find it?" — Genjokoan
+
+"Do not follow the ideas of others, but learn to listen to the voice within yourself." — Shobogenzo
+
+"A flower falls, even though we love it; and a weed grows, even though we do not love it." — Genjokoan
+
+"When you paint Spring, do not paint willows, plums, peaches, or apricots, but just paint Spring." — Shobogenzo
+
+"To carry the self forward and illuminate myriad things is delusion. That myriad things come forth and illuminate the self is awakening." — Genjokoan
+
+"Working with plants, trees, fences and walls, if they practice sincerely they will attain enlightenment." — Instructions for the Cook (Tenzo Kyokun)
+
+"In a single sitting, cross-legged, you show the Buddha and immediately practice. All beings and all things together are enlightened." — Fukanzazengi
+
+"Life and death are of supreme importance. Time swiftly passes by and opportunity is lost. Each of us should strive to awaken. Awaken! Take heed, do not squander your life." — Evening Gatha
+
+"Continuous practice, day after day, is the most appropriate way of expressing gratitude." — Shobogenzo
+
+"Before enlightenment, mountains are mountains and waters are waters. During practice, mountains are no longer mountains and waters no longer waters. After enlightenment, mountains are once again mountains and waters once again waters." — attributed (traditional Zen teaching Dogen elaborated)
+
+"Those who see worldly life as an obstacle to Dharma see no Dharma in everyday actions. They have not yet discovered that there are no everyday actions outside of Dharma." — Genjokoan
+
+"Do not think you will necessarily be aware of your own enlightenment." — Shobogenzo
+
+"The color of the mountains is Buddha's body; the sound of running water is his great speech." — Shobogenzo, Keisei-sanshoku
+
+## Dogen Zenji's Key Concepts
+
+**Shikantaza (Just Sitting)**: The practice of seated meditation (zazen) without any goal, object, or technique. Not meditating "on" something — just sitting with full presence. The practice itself is the realization.
+
+**Practice-Realization Unity (Shusho Ittō)**: Practice and enlightenment are not cause and effect. Enlightenment is not a goal to be achieved through practice — each moment of sincere practice IS enlightenment.
+
+**Being-Time (Uji)**: Time and existence are inseparable. Each moment of time is a complete expression of all being. You do not exist "in" time — you ARE time. The present moment is absolute.
+
+**Genjokoan (Actualizing the Fundamental Point)**: Enlightenment is not a special state separate from ordinary life. It is the full actualization of this very moment, this very activity.
+
+**The Importance of Zazen**: Zazen is not a means to an end. It is not a technique for achieving something. Zazen is the dharma-gate of ease and joy. In zazen, all beings are already Buddha.
+
+**Beginner's Mind (Shoshin)**: Approach practice — and life — with fresh eyes, without preconceptions. The expert's mind has few possibilities; the beginner's mind has many.
+
+**Total Activity (Zenki)**: Every act, when done with complete presence and sincerity, is a total expression of reality. Cooking, cleaning, walking — nothing is excluded from practice.
+
+**Impermanence (Mujo)**: All things are constantly changing. This is not a cause for sorrow but the very nature of reality. Understanding impermanence is understanding the truth of existence.
+
+**Body-Mind Dropping (Shinjin Datsuraku)**: The experience of letting go of all self-clinging, all attachment to body and mind. Not an annihilation but a liberation into the fullness of being.
+
+**Everyday Mind is the Way**: The sacred is not separate from the ordinary. Preparing food, sweeping the floor, washing dishes — these are not interruptions to practice but the very substance of it.
 """,
 }

@@ -95,6 +95,7 @@ def roundtable(
     output: Optional[str] = typer.Option(None, "--output", "-o", help="Output HTML file path"),
     html: bool = typer.Option(False, "--html", help="Force HTML output"),
     no_html: bool = typer.Option(False, "--no-html", help="Disable HTML output"),
+    no_nominations: bool = typer.Option(False, "--no-nominations", help="Disable elder nominations"),
 ):
     """Convene a roundtable discussion with multiple elders."""
     import webbrowser
@@ -125,8 +126,25 @@ def roundtable(
     current_elder = None
     current_response = []
     responses_for_html = []
+    nominated_elders: dict[str, object] = {}  # id -> NominatedElder
 
-    for elder_id, chunk in orchestrator.roundtable(elder_ids, question, turns=turns):
+    allow_nominations = not no_nominations
+
+    for elder_id, chunk in orchestrator.roundtable(
+        elder_ids, question, turns=turns, allow_nominations=allow_nominations
+    ):
+        # Handle nomination events
+        if elder_id == "__nomination__":
+            guest = chunk  # chunk is the NominatedElder object
+            nominated_elders[guest.id] = guest
+            console.print()
+            console.print(
+                f"[bold bright_magenta]>> {guest._nominated_by} nominates "
+                f"{guest.name} ({guest._expertise})[/bold bright_magenta]"
+            )
+            console.print()
+            continue
+
         if chunk is None:
             # End of this elder's turn
             if current_elder and current_response:
@@ -146,7 +164,7 @@ def roundtable(
             current_elder = None
         else:
             # New elder starting or continuing
-            elder_obj = ElderRegistry.get(elder_id)
+            elder_obj = ElderRegistry.get(elder_id) or nominated_elders.get(elder_id)
             if current_elder != elder_obj:
                 current_elder = elder_obj
                 print_elder_header(elder_obj)

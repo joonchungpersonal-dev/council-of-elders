@@ -1,0 +1,94 @@
+/* Theme variables — Light & Dark */
+
+:root,
+[data-theme="light"] {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8f9fa;
+    --bg-tertiary: #f0f1f3;
+    --bg-sidebar: #f5f5f7;
+    --bg-input: #ffffff;
+    --bg-hover: #e8e9eb;
+    --bg-user-msg: #6366f1;
+    --bg-elder-msg: #ffffff;
+    --bg-nomination: #f3e8ff;
+    --bg-synthesis: #fffbeb;
+    --bg-system: transparent;
+    --bg-intake-form: #f8f9fa;
+    --bg-moderator: #ecfdf5;
+
+    --text-primary: #1a1a2e;
+    --text-secondary: #64748b;
+    --text-tertiary: #94a3b8;
+    --text-on-accent: #ffffff;
+    --text-user-msg: #ffffff;
+    --text-link: #6366f1;
+
+    --border-primary: #e2e8f0;
+    --border-secondary: #f0f1f3;
+    --border-nomination: #c084fc;
+    --border-synthesis: #f59e0b;
+    --border-moderator: #10b981;
+
+    --accent: #6366f1;
+    --accent-hover: #4f46e5;
+    --accent-subtle: #eef2ff;
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.12);
+
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --radius-full: 9999px;
+
+    --sidebar-width: 280px;
+    --header-height: 48px;
+    --input-height: 64px;
+
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-mono: 'SF Mono', 'Fira Code', monospace;
+
+    --scrollbar-thumb: #c1c1c1;
+    --scrollbar-track: transparent;
+}
+
+[data-theme="dark"] {
+    --bg-primary: #1e1e2e;
+    --bg-secondary: #252535;
+    --bg-tertiary: #2a2a3c;
+    --bg-sidebar: #181825;
+    --bg-input: #252535;
+    --bg-hover: #313244;
+    --bg-user-msg: #6366f1;
+    --bg-elder-msg: #252535;
+    --bg-nomination: #2d1b4e;
+    --bg-synthesis: #2d2615;
+    --bg-system: transparent;
+    --bg-intake-form: #252535;
+    --bg-moderator: #1a2e26;
+
+    --text-primary: #cdd6f4;
+    --text-secondary: #a6adc8;
+    --text-tertiary: #6c7086;
+    --text-on-accent: #ffffff;
+    --text-user-msg: #ffffff;
+    --text-link: #89b4fa;
+
+    --border-primary: #313244;
+    --border-secondary: #2a2a3c;
+    --border-nomination: #9333ea;
+    --border-synthesis: #d97706;
+    --border-moderator: #34d399;
+
+    --accent: #89b4fa;
+    --accent-hover: #74c7ec;
+    --accent-subtle: #1e2740;
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+    --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.4);
+
+    --scrollbar-thumb: #45475a;
+    --scrollbar-track: transparent;
+}

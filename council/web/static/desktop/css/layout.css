@@ -1,0 +1,51 @@
+/* Three-region flexbox layout: sidebar + main area */
+
+body {
+    display: flex;
+    flex-direction: row;
+}
+
+.sidebar {
+    width: var(--sidebar-width);
+    min-width: var(--sidebar-width);
+    max-width: var(--sidebar-width);
+    height: 100vh;
+    background: var(--bg-sidebar);
+    border-right: 1px solid var(--border-primary);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    /* macOS traffic light spacing */
+    padding-top: 28px;
+}
+
+.main-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.top-bar {
+    height: var(--header-height);
+    min-height: var(--header-height);
+    /* Drag region for macOS hidden title bar */
+    -webkit-app-region: drag;
+}
+
+.top-bar * {
+    -webkit-app-region: no-drag;
+}
+
+.chat-area {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.input-area {
+    min-height: var(--input-height);
+    flex-shrink: 0;
+}

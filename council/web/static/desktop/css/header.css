@@ -1,0 +1,97 @@
+/* Top bar: status dot, model selector, theme toggle */
+
+.top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    border-bottom: 1px solid var(--border-primary);
+    background: var(--bg-primary);
+}
+
+.top-bar-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.top-bar-center {
+    display: flex;
+    align-items: center;
+}
+
+.top-bar-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Status dot */
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--text-tertiary);
+    transition: background 0.3s;
+}
+
+.status-dot.connected {
+    background: #22c55e;
+}
+
+.status-dot.disconnected {
+    background: #ef4444;
+}
+
+.status-text {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* Model selector */
+.model-select {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-sm);
+    padding: 4px 24px 4px 10px;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%2364748b' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+}
+
+.model-select:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+/* Theme toggle */
+.theme-toggle {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s, color 0.15s;
+}
+
+.theme-toggle:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+}
+
+.theme-icon {
+    font-size: 18px;
+    line-height: 1;
+}

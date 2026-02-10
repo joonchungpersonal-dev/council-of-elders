@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="/static/desktop/css/enrichment.css">
     <link rel="stylesheet" href="/static/desktop/css/elder-profile.css">
     <link rel="stylesheet" href="/static/desktop/css/avatars.css">
+    <link rel="stylesheet" href="/static/desktop/css/journal.css">
 </head>
 <body>
     <!-- Sidebar -->
@@ -31,14 +32,22 @@
         <div class="sidebar-section">
             <div class="section-label">Mode</div>
             <div class="mode-selector" id="mode-selector">
-                <button class="mode-btn active" data-mode="panel">Panel</button>
-                <button class="mode-btn" data-mode="salon">Salon</button>
-                <button class="mode-btn" data-mode="roundtable">Roundtable</button>
-                <button class="mode-btn" data-mode="ask">Ask</button>
-                <button class="mode-btn" data-mode="intake">Intake</button>
-                <span class="mode-divider"></span>
-                <button class="mode-btn mode-btn-fun" data-mode="rap">Rap</button>
-                <button class="mode-btn mode-btn-fun" data-mode="poetry">Poetry</button>
+                <!-- Default: simple Ask / Council -->
+                <div class="mode-simple" id="mode-simple">
+                    <button class="mode-btn" data-mode="ask">Ask</button>
+                    <button class="mode-btn active" data-mode="council">Council</button>
+                </div>
+                <!-- Power-user: all modes (hidden by default) -->
+                <div class="mode-all" id="mode-all" style="display: none;">
+                    <button class="mode-btn active" data-mode="panel">Panel</button>
+                    <button class="mode-btn" data-mode="salon">Salon</button>
+                    <button class="mode-btn" data-mode="roundtable">Roundtable</button>
+                    <button class="mode-btn" data-mode="ask">Ask</button>
+                    <button class="mode-btn" data-mode="intake">Intake</button>
+                    <span class="mode-divider"></span>
+                    <button class="mode-btn mode-btn-fun" data-mode="rap">Rap</button>
+                    <button class="mode-btn mode-btn-fun" data-mode="poetry">Poetry</button>
+                </div>
             </div>
             <div class="discussion-style-section" id="discussion-style-section">
                 <div class="section-label" style="margin-top: 10px; margin-bottom: 2px; font-size: 10px;"
@@ -88,16 +97,32 @@
             </div>
         </div>
 
+        <div class="sidebar-section" style="flex-shrink: 0; padding-top: 0;">
+            <button class="add-elder-btn" id="add-elder-btn">+ Add Elder</button>
+        </div>
+
         <div class="sidebar-section" style="flex-shrink: 0;">
             <div class="section-label">Provider</div>
             <div class="provider-selector" id="provider-selector">
                 <button class="mode-btn active" data-provider="ollama">Ollama</button>
-                <button class="mode-btn" data-provider="anthropic">Claude API</button>
+                <button class="mode-btn" data-provider="anthropic">Claude</button>
+                <button class="mode-btn" data-provider="openai">OpenAI</button>
+                <button class="mode-btn" data-provider="google">Gemini</button>
             </div>
-            <div class="api-key-row" id="api-key-row" style="display: none;">
-                <input type="password" class="api-key-input" id="api-key-input"
+            <div class="api-key-row" id="anthropic-key-row" style="display: none;">
+                <input type="password" class="api-key-input" id="anthropic-key-input"
                     placeholder="sk-ant-..." autocomplete="off">
-                <button class="api-key-save" id="api-key-save">Save</button>
+                <button class="api-key-save" id="anthropic-key-save">Save</button>
+            </div>
+            <div class="api-key-row" id="openai-key-row" style="display: none;">
+                <input type="password" class="api-key-input" id="openai-key-input"
+                    placeholder="sk-..." autocomplete="off">
+                <button class="api-key-save" id="openai-key-save">Save</button>
+            </div>
+            <div class="api-key-row" id="google-key-row" style="display: none;">
+                <input type="password" class="api-key-input" id="google-key-input"
+                    placeholder="AIza..." autocomplete="off">
+                <button class="api-key-save" id="google-key-save">Save</button>
             </div>
             <div class="model-pull-row" id="model-pull-row">
                 <input type="text" class="api-key-input" id="model-pull-input"
@@ -107,6 +132,13 @@
             <div class="pull-progress" id="pull-progress" style="display: none;">
                 <div class="pull-progress-bar"><div class="pull-progress-fill" id="pull-progress-fill"></div></div>
                 <div class="pull-progress-text" id="pull-progress-text">Downloading...</div>
+            </div>
+        </div>
+
+        <div class="sidebar-section" id="journal-section" style="display: none;">
+            <div class="section-label">Journals</div>
+            <div class="journal-list" id="journal-list">
+                <!-- Populated by JS -->
             </div>
         </div>
 
@@ -151,14 +183,14 @@
                         </select>
                     </div>
                     <div class="settings-row" id="duration-row">
-                        <span class="settings-label">Duration</span>
+                        <span class="settings-label">Discussion Depth</span>
                         <select class="settings-select" id="discussion-length-select">
-                            <option value="lightning">Lightning (~5 min)</option>
-                            <option value="quick" selected>Quick (~10 min)</option>
-                            <option value="short">Short (~20 min)</option>
-                            <option value="medium">Medium (~30 min)</option>
-                            <option value="long">Long (~45 min)</option>
-                            <option value="extended">Extended (~60 min)</option>
+                            <option value="lightning">Lightning</option>
+                            <option value="quick" selected>Quick</option>
+                            <option value="short">Short</option>
+                            <option value="medium">Medium</option>
+                            <option value="long">Long</option>
+                            <option value="extended">Extended</option>
                         </select>
                     </div>
                     <div class="settings-row" id="poetry-form-row" style="display: none;">
@@ -175,6 +207,14 @@
                             <option value="tanka">Tanka (5-7-5-7-7)</option>
                             <option value="ode">Ode</option>
                         </select>
+                    </div>
+                </div>
+
+                <div class="settings-group">
+                    <div class="settings-group-label">Advanced</div>
+                    <div class="settings-row">
+                        <span class="settings-label">Show all discussion modes</span>
+                        <input type="checkbox" id="show-all-modes-checkbox" class="settings-checkbox">
                     </div>
                 </div>
 
@@ -203,6 +243,58 @@
                     <a class="settings-link" href="/static/desktop/img/avatars/ATTRIBUTION.md" target="_blank" rel="noopener">Image Credits</a>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Add Elder Modal -->
+    <div class="add-elder-overlay" id="add-elder-overlay">
+        <div class="add-elder-modal" id="add-elder-modal">
+            <div class="settings-modal-header">
+                <h3>Add Custom Elder</h3>
+                <button class="settings-modal-close" id="add-elder-modal-close">&times;</button>
+            </div>
+            <form class="settings-modal-body" id="add-elder-form">
+                <div class="settings-row">
+                    <span class="settings-label">Name *</span>
+                    <input type="text" class="add-elder-input" id="add-elder-name" placeholder="e.g. Nikola Tesla" required>
+                </div>
+                <div class="settings-row">
+                    <span class="settings-label">Title</span>
+                    <input type="text" class="add-elder-input" id="add-elder-title" placeholder="e.g. Inventor & Electrical Engineer">
+                </div>
+                <div class="settings-row">
+                    <span class="settings-label">Era</span>
+                    <input type="text" class="add-elder-input" id="add-elder-era" placeholder="e.g. 1856–1943">
+                </div>
+                <div class="settings-row">
+                    <span class="settings-label">Expertise</span>
+                    <input type="text" class="add-elder-input" id="add-elder-expertise" placeholder="e.g. Electrical engineering, invention">
+                </div>
+                <div class="add-elder-field">
+                    <span class="settings-label">System Prompt</span>
+                    <textarea class="add-elder-textarea" id="add-elder-prompt" rows="3" placeholder="Optional: Define how this elder speaks and thinks..."></textarea>
+                </div>
+                <div class="settings-row">
+                    <span class="settings-label">Color</span>
+                    <select class="settings-select" id="add-elder-color">
+                        <option value="bright_blue">Blue</option>
+                        <option value="purple">Purple</option>
+                        <option value="medium_purple">Medium Purple</option>
+                        <option value="deep_pink3">Pink</option>
+                        <option value="dark_orange">Orange</option>
+                        <option value="orange3">Dark Orange</option>
+                        <option value="gold">Gold</option>
+                        <option value="green3">Green</option>
+                        <option value="cyan">Cyan</option>
+                        <option value="cyan3">Teal</option>
+                        <option value="steel_blue">Steel Blue</option>
+                        <option value="red3">Red</option>
+                        <option value="dark_goldenrod">Goldenrod</option>
+                        <option value="dark_sea_green">Sea Green</option>
+                    </select>
+                </div>
+                <button type="submit" class="add-elder-submit">Create Elder</button>
+            </form>
         </div>
     </div>
 
@@ -262,13 +354,13 @@
                             <div class="welcome-mode-desc">Elders perform spoken-word poetry on your topic. The Slam MC scores each performance and crowns a champion.</div>
                         </div>
                     </div>
-                    <p class="welcome-hint">Choose a mode and ask your question. The AI will select the best elders, or pick your own.</p>
+                    <p class="welcome-hint">Just ask your question — the AI will choose the best mode and elders for you. You can also request a specific mode or elder in your message.</p>
                     <div class="welcome-privacy">
                         <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;margin-top:1px">
                             <path d="M8 1L2 4V7.5C2 11.1 4.5 14.4 8 15.5C11.5 14.4 14 11.1 14 7.5V4L8 1Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
                             <path d="M6 8L7.5 9.5L10.5 6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
-                        <span>Your conversations stay on your device. When using Claude API, Anthropic does not train on API data. When using Ollama, everything runs 100% locally.</span>
+                        <span>Your conversation history is stored locally on your device. With Ollama, everything runs 100% locally. With external LLMs (Claude, OpenAI, etc.), your messages are sent to their servers for processing — these providers do not use API data for model training.</span>
                     </div>
                 </div>
             </div>
@@ -301,6 +393,17 @@
         </footer>
     </div>
 
+    <!-- Journal slide-out panel -->
+    <div class="journal-panel" id="journal-panel">
+        <div class="journal-panel-header">
+            <h3>Wisdom Journal</h3>
+            <button class="journal-panel-close" id="journal-panel-close">&times;</button>
+        </div>
+        <div class="journal-panel-body" id="journal-panel-content">
+            <!-- Populated by JS -->
+        </div>
+    </div>
+
     <!-- Elder data for JS -->
     <script>
         window.__ELDERS__ = {{ elders | tojson }};
@@ -318,6 +421,7 @@
     <script src="/static/desktop/js/input.js"></script>
     <script src="/static/desktop/js/enrichment.js"></script>
     <script src="/static/desktop/js/elder-profile.js"></script>
+    <script src="/static/desktop/js/journal.js"></script>
     <script src="/static/desktop/js/app.js"></script>
 </body>
 </html>

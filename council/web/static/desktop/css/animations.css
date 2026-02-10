@@ -1,0 +1,66 @@
+/* Streaming cursor, fade-ins, transitions */
+
+/* Blinking cursor on streaming text */
+.streaming-cursor::after {
+    content: '';
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    background: var(--accent);
+    margin-left: 2px;
+    vertical-align: text-bottom;
+    animation: blink 0.8s step-end infinite;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+/* Message fade in */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Thinking dots */
+.thinking-dots::after {
+    content: '';
+    animation: dots 1.5s steps(4, end) infinite;
+}
+
+@keyframes dots {
+    0% { content: ''; }
+    25% { content: '.'; }
+    50% { content: '..'; }
+    75% { content: '...'; }
+    100% { content: ''; }
+}
+
+/* Smooth transitions for theme switching */
+body,
+.sidebar,
+.top-bar,
+.input-area,
+.message-card,
+.synthesis-card,
+.nomination-banner,
+.intake-form-card {
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+/* Status dot pulse when connecting */
+.status-dot.connecting {
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}

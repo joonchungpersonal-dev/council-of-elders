@@ -36,6 +36,7 @@ class Elder(ABC):
     color: str  # Rich color for terminal display
     mental_models: list[str] = field(default_factory=list)
     key_works: list[str] = field(default_factory=list)
+    is_custom: bool = False
 
     @property
     def system_prompt(self) -> str:
@@ -94,3 +95,27 @@ class ElderRegistry:
     def exists(cls, elder_id: str) -> bool:
         """Check if an elder exists."""
         return elder_id in cls._elders
+
+    @classmethod
+    def unregister(cls, elder_id: str) -> bool:
+        """Remove an elder from the registry."""
+        if elder_id in cls._elders:
+            del cls._elders[elder_id]
+            return True
+        return False
+
+
+@dataclass
+class NominatedElder(Elder):
+    """A dynamically-created elder nominated during a discussion.
+
+    Never registered in ElderRegistry -- exists only for the session.
+    """
+
+    _prompt: str = ""
+    _nominated_by: str = ""
+    _expertise: str = ""
+
+    @property
+    def _builtin_prompt(self) -> str:
+        return self._prompt

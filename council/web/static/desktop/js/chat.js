@@ -323,28 +323,16 @@ window.ChatComponent = (() => {
         msg.innerHTML = `
             <div class="session-complete-banner">
                 <span class="session-complete-text">Discussion complete</span>
-                <button class="podcast-generate-btn">
+                <button class="podcast-generate-btn" disabled title="Podcast generation is under development" style="opacity: 0.5; cursor: default;">
                     <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="margin-right:6px">
                         <path d="M4 2L14 8L4 14V2Z" fill="currentColor"/>
                     </svg>
-                    Generate Podcast
+                    Podcast (coming soon)
                 </button>
             </div>
         `;
         chatMessages.appendChild(msg);
         scrollToBottom();
-
-        msg.querySelector('.podcast-generate-btn').addEventListener('click', async (e) => {
-            const btn = e.currentTarget;
-            btn.disabled = true;
-            btn.innerHTML = '<span class="thinking-dots">Generating audio</span>';
-            try {
-                await onClickCallback(btn, msg);
-            } catch (err) {
-                btn.textContent = 'Error: ' + err.message;
-                btn.disabled = false;
-            }
-        });
     }
 
     /**

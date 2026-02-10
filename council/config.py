@@ -6,10 +6,21 @@ from typing import Any
 
 import yaml
 
+# In-memory config cache with mtime-based invalidation
+_config_cache: dict[str, Any] | None = None
+_config_mtime: float = 0.0
+
 # Default configuration
 DEFAULT_CONFIG = {
+    "provider": "ollama",  # ollama, anthropic, openai, google
     "model": "qwen2.5:14b",
     "ollama_host": "http://localhost:11434",
+    "anthropic_api_key": "",
+    "anthropic_model": "claude-sonnet-4-5-20250929",
+    "openai_api_key": "",
+    "openai_model": "gpt-4o",
+    "google_api_key": "",
+    "google_model": "gemini-2.0-flash",
     "temperature": 0.7,
     "max_tokens": 2048,
     "privacy_mode": "private",  # ephemeral, private, synced
@@ -20,6 +31,15 @@ DEFAULT_CONFIG = {
     "output_format": "html",  # terminal, html, both
     "output_dir": ".",  # where to save HTML files
     "auto_open_html": True,  # automatically open HTML in browser
+    "nominations_enabled": True,  # allow elders to nominate guest experts
+    "max_nominations_per_session": 2,  # prevent runaway context growth
+    "amazon_affiliate_tag": "",  # Amazon Associates tag for book links
+    "enrichment_enabled": True,  # auto-enrich nominated elders in background
+    "enrichment_youtube_max": 5,  # max YouTube videos per enrichment run
+    "tts_provider": "macos",  # "macos" or "elevenlabs"
+    "elevenlabs_api_key": "",  # BYOK key for ElevenLabs
+    "elevenlabs_model": "eleven_multilingual_v2",  # or "eleven_flash_v2_5"
+    "elevenlabs_voice_overrides": {},  # {elder_id: voice_id} for advanced users
 }
 
 
@@ -56,24 +76,51 @@ def get_custom_elders_dir() -> Path:
     return elders_dir
 
 
+def get_profile_path() -> Path:
+    """Get the path to the user profile file."""
+    return get_config_dir() / "profile.json"
+
+
 def load_config() -> dict[str, Any]:
-    """Load configuration from file, with defaults."""
-    config = DEFAULT_CONFIG.copy()
+    """Load configuration from file, with defaults. Cached with mtime invalidation."""
+    global _config_cache, _config_mtime
+
     config_path = get_config_path()
+
+    # Check if cached config is still valid
+    if _config_cache is not None:
+        try:
+            current_mtime = config_path.stat().st_mtime if config_path.exists() else 0.0
+            if current_mtime == _config_mtime:
+                return _config_cache.copy()
+        except OSError:
+            pass
+
+    config = DEFAULT_CONFIG.copy()
 
     if config_path.exists():
         with open(config_path) as f:
             user_config = yaml.safe_load(f) or {}
             config.update(user_config)
+        _config_mtime = config_path.stat().st_mtime
+    else:
+        _config_mtime = 0.0
 
-    return config
+    _config_cache = config
+    return config.copy()
 
 
 def save_config(config: dict[str, Any]) -> None:
-    """Save configuration to file."""
+    """Save configuration to file. Invalidates the in-memory cache."""
+    global _config_cache, _config_mtime
+
     config_path = get_config_path()
     with open(config_path, "w") as f:
         yaml.dump(config, f, default_flow_style=False)
+
+    # Invalidate cache so next load_config() re-reads from disk
+    _config_cache = None
+    _config_mtime = 0.0
 
 
 def get_config_value(key: str, default: Any = None) -> Any:

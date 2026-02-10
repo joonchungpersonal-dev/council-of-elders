@@ -43,3 +43,6 @@ youtube_pipeline_log.txt
 council_roundtable_*.html
 munger_checklist.html
 roundtable_output.html
+
+# Audit report (private, regenerated on demand)
+AUDIT_REPORT.html

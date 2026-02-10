@@ -436,6 +436,15 @@
     padding: 8px;
 }
 
+/* Journal list */
+.journal-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    max-height: 160px;
+    overflow-y: auto;
+}
+
 /* Custom elders */
 .custom-elder-item {
     border-left: 2px solid var(--border-nomination, #a855f7);
@@ -595,6 +604,29 @@
     text-decoration: underline;
 }
 
+/* Simple / All mode containers */
+.mode-simple,
+.mode-all {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    width: 100%;
+}
+
+.mode-simple .mode-btn {
+    flex: 1;
+    padding: 6px 10px;
+}
+
+/* Settings checkbox */
+.settings-checkbox {
+    width: 14px;
+    height: 14px;
+    accent-color: var(--accent);
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
 /* Fun mode buttons */
 .mode-btn-fun {
     font-style: italic;
@@ -603,4 +635,124 @@
 
 .mode-btn-fun:hover {
     opacity: 1;
+}
+
+/* Add Elder button */
+.add-elder-btn {
+    width: 100%;
+    padding: 6px 12px;
+    background: none;
+    color: var(--text-tertiary);
+    border: 1px dashed var(--border-primary);
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.add-elder-btn:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: var(--accent-subtle);
+}
+
+/* Add Elder modal overlay */
+.add-elder-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(2px);
+    align-items: center;
+    justify-content: center;
+}
+
+.add-elder-overlay.open {
+    display: flex;
+}
+
+.add-elder-modal {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-lg, 12px);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
+    width: 380px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+/* Add Elder form fields */
+.add-elder-input {
+    flex: 1;
+    padding: 5px 8px;
+    font-size: 12px;
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-sm);
+    background: var(--bg-input);
+    color: var(--text-primary);
+    min-width: 0;
+}
+
+.add-elder-input:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+.add-elder-input::placeholder {
+    color: var(--text-tertiary);
+}
+
+.add-elder-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 6px;
+}
+
+.add-elder-textarea {
+    width: 100%;
+    padding: 6px 8px;
+    font-size: 12px;
+    font-family: inherit;
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-sm);
+    background: var(--bg-input);
+    color: var(--text-primary);
+    resize: vertical;
+    min-height: 48px;
+    box-sizing: border-box;
+}
+
+.add-elder-textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+.add-elder-textarea::placeholder {
+    color: var(--text-tertiary);
+}
+
+.add-elder-submit {
+    width: 100%;
+    padding: 8px 12px;
+    margin-top: 8px;
+    background: var(--accent);
+    color: var(--text-on-accent);
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.add-elder-submit:hover {
+    background: var(--accent-hover);
+}
+
+.add-elder-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }

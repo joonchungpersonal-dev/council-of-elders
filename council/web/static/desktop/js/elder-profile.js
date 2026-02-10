@@ -222,6 +222,11 @@ window.ElderProfileComponent = (() => {
 
             let html = '';
 
+            // Show LLM error for documentaries if present
+            if (data.error) {
+                html += `<div class="profile-error">${_esc(data.error)}</div>`;
+            }
+
             // YouTube videos
             if (data.youtube && data.youtube.length > 0) {
                 html += '<div class="profile-video-section">';
@@ -265,18 +270,28 @@ window.ElderProfileComponent = (() => {
 
             pane.innerHTML = html;
         } catch (e) {
-            pane.innerHTML = '<div class="profile-loading">Could not load videos.</div>';
+            pane.innerHTML = e.message === 'Failed to fetch'
+                ? '<div class="profile-error">Could not reach the server.</div>'
+                : '<div class="profile-error">Something went wrong loading videos.</div>';
         }
     }
 
     async function loadBooks(elderId, name, expertise) {
         const pane = contentEl.querySelector('#pane-books');
         try {
-            const books = await API.getElderBooks(elderId, name, expertise);
+            const data = await API.getElderBooks(elderId, name, expertise);
             cache[elderId] = cache[elderId] || {};
-            cache[elderId].books = books;
+            cache[elderId].books = data;
 
-            if (!books || books.length === 0) {
+            // Check for LLM error response
+            if (data.error) {
+                pane.innerHTML = `<div class="profile-error">${_esc(data.error)}</div>`;
+                return;
+            }
+
+            const books = Array.isArray(data) ? data : (data.items || []);
+
+            if (books.length === 0) {
                 pane.innerHTML = '<div class="profile-loading">No books found.</div>';
                 return;
             }
@@ -296,18 +311,28 @@ window.ElderProfileComponent = (() => {
 
             pane.innerHTML = html;
         } catch (e) {
-            pane.innerHTML = '<div class="profile-loading">Could not load books.</div>';
+            pane.innerHTML = e.message === 'Failed to fetch'
+                ? '<div class="profile-error">Could not reach the server.</div>'
+                : '<div class="profile-error">Something went wrong loading books.</div>';
         }
     }
 
     async function loadMemorabilia(elderId, name, expertise) {
         const pane = contentEl.querySelector('#pane-memorabilia');
         try {
-            const items = await API.getElderMemorabilia(elderId, name, expertise);
+            const data = await API.getElderMemorabilia(elderId, name, expertise);
             cache[elderId] = cache[elderId] || {};
-            cache[elderId].memorabilia = items;
+            cache[elderId].memorabilia = data;
 
-            if (!items || items.length === 0) {
+            // Check for LLM error response
+            if (data.error) {
+                pane.innerHTML = `<div class="profile-error">${_esc(data.error)}</div>`;
+                return;
+            }
+
+            const items = Array.isArray(data) ? data : (data.items || []);
+
+            if (items.length === 0) {
                 pane.innerHTML = '<div class="profile-loading">No memorabilia found.</div>';
                 return;
             }
@@ -327,7 +352,9 @@ window.ElderProfileComponent = (() => {
 
             pane.innerHTML = html;
         } catch (e) {
-            pane.innerHTML = '<div class="profile-loading">Could not load memorabilia.</div>';
+            pane.innerHTML = e.message === 'Failed to fetch'
+                ? '<div class="profile-error">Could not reach the server.</div>'
+                : '<div class="profile-error">Something went wrong loading memorabilia.</div>';
         }
     }
 

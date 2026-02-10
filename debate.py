@@ -316,6 +316,16 @@ def run_debate_ui(engine: DebateEngine, intensity: str = "standard") -> list[dic
             phase_name = PHASE_NAMES.get(phase, phase)
             console.print(f"\n[bold magenta]{'─' * 20} {phase_name} {'─' * 20}[/bold magenta]\n")
 
+        # Handle nomination events from free debate phase
+        if speaker == "__nomination__" and speaker_type == "nomination":
+            guest = chunk  # chunk is the NominatedElder object
+            ELDER_COLORS[guest.name] = guest.color
+            console.print(
+                f"\n[bold bright_magenta]>> {guest._nominated_by} nominates "
+                f"{guest.name} ({guest._expertise})[/bold bright_magenta]\n"
+            )
+            continue
+
         if speaker != current_speaker:
             current_speaker = speaker
             if chunk == "":

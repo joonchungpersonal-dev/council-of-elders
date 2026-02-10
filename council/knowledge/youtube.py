@@ -608,6 +608,64 @@ def search_youtube(query: str, max_results: int = 5) -> list[str]:
         return []
 
 
+def get_video_links(elder_id: str, max_results: int = 8) -> list[dict]:
+    """Get watchable YouTube video links with metadata (no transcript download).
+
+    Returns a list of dicts with title, url, channel, duration, and thumbnail.
+    Uses known videos from YOUTUBE_SOURCES and optionally searches for more.
+    """
+    if elder_id not in YOUTUBE_SOURCES:
+        return []
+
+    sources = YOUTUBE_SOURCES[elder_id]
+    video_urls = list(sources.get("known_videos", []))
+
+    # Search for additional videos if we don't have enough known ones
+    if len(video_urls) < max_results:
+        for query in sources.get("search_queries", [])[:2]:
+            found = search_youtube(query, max_results=3)
+            for url in found:
+                if url not in video_urls:
+                    video_urls.append(url)
+            if len(video_urls) >= max_results:
+                break
+
+    video_urls = video_urls[:max_results]
+
+    def _fetch_metadata(url):
+        """Fetch metadata for a single video URL."""
+        try:
+            result = subprocess.run(
+                ["yt-dlp", "--dump-json", "--no-download", url],
+                capture_output=True,
+                text=True,
+                timeout=10,
+            )
+            if result.returncode != 0:
+                return None
+            info = json.loads(result.stdout)
+            video_id = info.get("id", "")
+            return {
+                "title": info.get("title", "Unknown"),
+                "url": url,
+                "channel": info.get("channel", info.get("uploader", "Unknown")),
+                "duration": info.get("duration", 0),
+                "thumbnail": info.get("thumbnail", f"https://img.youtube.com/vi/{video_id}/mqdefault.jpg"),
+            }
+        except (subprocess.TimeoutExpired, Exception):
+            return None
+
+    from concurrent.futures import ThreadPoolExecutor
+
+    results = []
+    with ThreadPoolExecutor(max_workers=4) as executor:
+        for item in executor.map(_fetch_metadata, video_urls):
+            if item is not None:
+                results.append(item)
+
+    return results
+
+
 def process_elder_youtube(
     elder_id: str,
     max_videos: int = 10,

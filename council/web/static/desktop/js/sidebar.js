@@ -3,7 +3,10 @@
  */
 window.SidebarComponent = (() => {
     let modeSelector, elderList, historyList, newChatBtn, clearHistoryBtn;
-    let providerSelector, apiKeyRow, apiKeyInput, apiKeySave;
+    let providerSelector;
+    let anthropicKeyRow, anthropicKeyInput, anthropicKeySave;
+    let openaiKeyRow, openaiKeyInput, openaiKeySave;
+    let googleKeyRow, googleKeyInput, googleKeySave;
     let modelPullRow, modelPullInput, modelPullBtn, pullProgress, pullProgressFill, pullProgressText;
     let discussionStyleSection, tensionSlider;
     let customEldersSection, customElderList;
@@ -12,6 +15,8 @@ window.SidebarComponent = (() => {
     let responseLengthSelect, discussionLengthSelect, autoSelectLimitSelect, autoSelectLimitRow;
     let poetryFormSelect, poetryFormRow;
     let settingsOverlay, settingsGearBtn, settingsModalClose, durationRow;
+    let addElderBtn, addElderOverlay, addElderForm, addElderModalClose;
+    let showAllModesCheckbox, modeSimple, modeAll;
 
     function init() {
         modeSelector = document.getElementById('mode-selector');
@@ -20,9 +25,15 @@ window.SidebarComponent = (() => {
         newChatBtn = document.getElementById('btn-new-chat');
         clearHistoryBtn = document.getElementById('btn-clear-history');
         providerSelector = document.getElementById('provider-selector');
-        apiKeyRow = document.getElementById('api-key-row');
-        apiKeyInput = document.getElementById('api-key-input');
-        apiKeySave = document.getElementById('api-key-save');
+        anthropicKeyRow = document.getElementById('anthropic-key-row');
+        anthropicKeyInput = document.getElementById('anthropic-key-input');
+        anthropicKeySave = document.getElementById('anthropic-key-save');
+        openaiKeyRow = document.getElementById('openai-key-row');
+        openaiKeyInput = document.getElementById('openai-key-input');
+        openaiKeySave = document.getElementById('openai-key-save');
+        googleKeyRow = document.getElementById('google-key-row');
+        googleKeyInput = document.getElementById('google-key-input');
+        googleKeySave = document.getElementById('google-key-save');
         modelPullRow = document.getElementById('model-pull-row');
         modelPullInput = document.getElementById('model-pull-input');
         modelPullBtn = document.getElementById('model-pull-btn');
@@ -59,11 +70,10 @@ window.SidebarComponent = (() => {
             switchProvider(provider);
         });
 
-        // API key save
-        apiKeySave.addEventListener('click', saveApiKey);
-        apiKeyInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') saveApiKey();
-        });
+        // API key save — per-provider
+        wireKeySave(anthropicKeyInput, anthropicKeySave, 'anthropic_api_key');
+        wireKeySave(openaiKeyInput, openaiKeySave, 'openai_api_key');
+        wireKeySave(googleKeyInput, googleKeySave, 'google_api_key');
 
         // Model pull
         modelPullBtn.addEventListener('click', pullModel);
@@ -240,6 +250,45 @@ window.SidebarComponent = (() => {
             durationRow.style.display = modesWithDuration.includes(initialMode) ? 'flex' : 'none';
         }
 
+        // Add Elder modal
+        addElderBtn = document.getElementById('add-elder-btn');
+        addElderOverlay = document.getElementById('add-elder-overlay');
+        addElderForm = document.getElementById('add-elder-form');
+        addElderModalClose = document.getElementById('add-elder-modal-close');
+
+        if (addElderBtn && addElderOverlay) {
+            addElderBtn.addEventListener('click', () => {
+                addElderOverlay.classList.add('open');
+            });
+            addElderModalClose.addEventListener('click', () => {
+                addElderOverlay.classList.remove('open');
+            });
+            addElderOverlay.addEventListener('click', (e) => {
+                if (e.target === addElderOverlay) {
+                    addElderOverlay.classList.remove('open');
+                }
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && addElderOverlay.classList.contains('open')) {
+                    addElderOverlay.classList.remove('open');
+                }
+            });
+            addElderForm.addEventListener('submit', handleAddElderSubmit);
+        }
+
+        // Show all modes toggle
+        showAllModesCheckbox = document.getElementById('show-all-modes-checkbox');
+        modeSimple = document.getElementById('mode-simple');
+        modeAll = document.getElementById('mode-all');
+
+        if (showAllModesCheckbox) {
+            showAllModesCheckbox.addEventListener('change', () => {
+                const show = showAllModesCheckbox.checked;
+                AppState.set('showAllModes', show);
+                updateModeVisibility(show);
+            });
+        }
+
         // Restore persisted preferences from localStorage
         restorePreferences();
 
@@ -250,6 +299,27 @@ window.SidebarComponent = (() => {
         loadCustomElders();
     }
 
+    const KEY_ROW_MAP = {
+        anthropic: () => anthropicKeyRow,
+        openai: () => openaiKeyRow,
+        google: () => googleKeyRow,
+    };
+
+    function showKeyRowForProvider(provider) {
+        // Hide all key rows
+        [anthropicKeyRow, openaiKeyRow, googleKeyRow].forEach(r => {
+            if (r) r.style.display = 'none';
+        });
+        // Show the matching one (if cloud provider)
+        const getter = KEY_ROW_MAP[provider];
+        if (getter) {
+            const row = getter();
+            if (row) row.style.display = 'flex';
+        }
+        // Model pull row is only for ollama
+        modelPullRow.style.display = provider === 'ollama' ? 'flex' : 'none';
+    }
+
     async function loadProviderState() {
         try {
             const config = await API.getConfig();
@@ -257,10 +327,15 @@ window.SidebarComponent = (() => {
             providerSelector.querySelectorAll('.mode-btn').forEach(b => {
                 b.classList.toggle('active', b.dataset.provider === provider);
             });
-            apiKeyRow.style.display = provider === 'anthropic' ? 'flex' : 'none';
-            modelPullRow.style.display = provider === 'ollama' ? 'flex' : 'none';
-            if (config.anthropic_api_key_set) {
-                apiKeyInput.placeholder = 'Key saved (enter new to replace)';
+            showKeyRowForProvider(provider);
+            if (config.anthropic_api_key_set && anthropicKeyInput) {
+                anthropicKeyInput.placeholder = 'Key saved (enter new to replace)';
+            }
+            if (config.openai_api_key_set && openaiKeyInput) {
+                openaiKeyInput.placeholder = 'Key saved (enter new to replace)';
+            }
+            if (config.google_api_key_set && googleKeyInput) {
+                googleKeyInput.placeholder = 'Key saved (enter new to replace)';
             }
             AppState.set('provider', provider);
 
@@ -286,8 +361,7 @@ window.SidebarComponent = (() => {
     }
 
     async function switchProvider(provider) {
-        apiKeyRow.style.display = provider === 'anthropic' ? 'flex' : 'none';
-        modelPullRow.style.display = provider === 'ollama' ? 'flex' : 'none';
+        showKeyRowForProvider(provider);
         pullProgress.style.display = 'none';
         AppState.set('provider', provider);
         await API.setConfig({ provider });
@@ -372,33 +446,38 @@ window.SidebarComponent = (() => {
         }
     }
 
-    async function saveApiKey() {
-        const key = apiKeyInput.value.trim();
-        if (!key) return;
+    function wireKeySave(input, saveBtn, configKey) {
+        const handler = async () => {
+            const key = input.value.trim();
+            if (!key) return;
 
-        apiKeySave.textContent = '...';
-        apiKeySave.disabled = true;
+            saveBtn.textContent = '...';
+            saveBtn.disabled = true;
 
-        try {
-            await API.setConfig({ anthropic_api_key: key });
-            apiKeyInput.value = '';
-            apiKeyInput.placeholder = 'Key saved (enter new to replace)';
-            apiKeySave.textContent = 'Saved';
-            apiKeySave.classList.add('api-key-saved');
-            setTimeout(() => {
-                apiKeySave.textContent = 'Save';
-                apiKeySave.classList.remove('api-key-saved');
-            }, 2000);
-            // Refresh status
-            if (typeof HeaderComponent !== 'undefined') {
-                HeaderComponent.refresh();
+            try {
+                await API.setConfig({ [configKey]: key });
+                input.value = '';
+                input.placeholder = 'Key saved (enter new to replace)';
+                saveBtn.textContent = 'Saved';
+                saveBtn.classList.add('api-key-saved');
+                setTimeout(() => {
+                    saveBtn.textContent = 'Save';
+                    saveBtn.classList.remove('api-key-saved');
+                }, 2000);
+                if (typeof HeaderComponent !== 'undefined') {
+                    HeaderComponent.refresh();
+                }
+            } catch (e) {
+                saveBtn.textContent = 'Error';
+                setTimeout(() => { saveBtn.textContent = 'Save'; }, 2000);
+            } finally {
+                saveBtn.disabled = false;
             }
-        } catch (e) {
-            apiKeySave.textContent = 'Error';
-            setTimeout(() => { apiKeySave.textContent = 'Save'; }, 2000);
-        } finally {
-            apiKeySave.disabled = false;
-        }
+        };
+        saveBtn.addEventListener('click', handler);
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') handler();
+        });
     }
 
     function updateSelectedElders() {
@@ -514,11 +593,29 @@ window.SidebarComponent = (() => {
         }
     }
 
+    function updateModeVisibility(showAll) {
+        if (modeSimple) modeSimple.style.display = showAll ? 'none' : '';
+        if (modeAll) modeAll.style.display = showAll ? '' : 'none';
+
+        // When switching back to simple mode, ensure mode is ask or council
+        if (!showAll) {
+            const currentMode = AppState.get('mode');
+            if (currentMode !== 'ask' && currentMode !== 'council') {
+                AppState.set('mode', 'council');
+                if (modeSimple) {
+                    modeSimple.querySelectorAll('.mode-btn').forEach(b => {
+                        b.classList.toggle('active', b.dataset.mode === 'council');
+                    });
+                }
+            }
+        }
+    }
+
     // --- localStorage preference persistence ---
     const PREFS_KEY = 'council-prefs';
     const PERSISTED_KEYS = [
         'mode', 'responseLength', 'discussionLength', 'dialecticTension',
-        'autoSelectElders', 'autoSelectLimit', 'poetryForm'
+        'autoSelectElders', 'autoSelectLimit', 'poetryForm', 'showAllModes'
     ];
 
     function savePreferences() {
@@ -575,6 +672,13 @@ window.SidebarComponent = (() => {
             }
         }
 
+        // Restore show all modes
+        if (prefs.showAllModes != null && showAllModesCheckbox) {
+            showAllModesCheckbox.checked = prefs.showAllModes;
+            AppState.set('showAllModes', prefs.showAllModes);
+            updateModeVisibility(prefs.showAllModes);
+        }
+
         // Re-trigger visibility updates
         if (discussionStyleSection) {
             const m = AppState.get('mode');
@@ -593,6 +697,37 @@ window.SidebarComponent = (() => {
     PERSISTED_KEYS.forEach(k => {
         AppState.on(k, () => savePreferences());
     });
+
+    async function handleAddElderSubmit(e) {
+        e.preventDefault();
+        const name = document.getElementById('add-elder-name').value.trim();
+        if (!name) return;
+
+        const elderData = {
+            name,
+            title: document.getElementById('add-elder-title').value.trim(),
+            era: document.getElementById('add-elder-era').value.trim(),
+            expertise: document.getElementById('add-elder-expertise').value.trim(),
+            prompt: document.getElementById('add-elder-prompt').value.trim(),
+            color: document.getElementById('add-elder-color').value,
+        };
+
+        const submitBtn = addElderForm.querySelector('.add-elder-submit');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Creating...';
+
+        try {
+            await API.saveCustomElder(elderData);
+            addElderOverlay.classList.remove('open');
+            addElderForm.reset();
+            loadCustomElders();
+        } catch (err) {
+            alert('Could not create elder: ' + err.message);
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Create Elder';
+        }
+    }
 
     return { init, loadHistory, loadCustomElders, selectElders };
 })();
