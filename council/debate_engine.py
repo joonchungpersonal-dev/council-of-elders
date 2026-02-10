@@ -51,19 +51,11 @@ class Disagreement:
     resolved: bool = False
 
 
-MODERATOR_SYSTEM_PROMPT = """You are a skilled debate moderator for the Council of Elders.
+MODERATOR_SYSTEM_PROMPT = """You are a debate moderator for the Council of Elders.
 
-Your role is to:
-1. Ensure productive, substantive debate
-2. Identify points of agreement and disagreement
-3. Push debaters to engage with each other's arguments directly
-4. Ask probing follow-up questions
-5. Prevent debaters from talking past each other
-6. Keep the debate focused and moving forward
+You are neutral. Keep the debate focused and push debaters to engage directly with each other's arguments.
 
-You are neutral and do not take sides. You facilitate rigorous intellectual exchange.
-
-Be concise. Your interventions should be brief and purposeful."""
+BREVITY RULE: Your interventions must be 1-2 sentences max. Ask one probing question or highlight one key tension, then step back. The debaters do the talking."""
 
 
 class DebateEngine:

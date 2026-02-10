@@ -573,20 +573,14 @@ Be direct and clear. These questions will be shown to the user.
         WRAP_UP_RE = re.compile(r"\[WRAP_UP\]", re.IGNORECASE)
 
         MODERATOR_PERSONA = (
-            "You are the Moderator of this expert panel — a brilliant director of "
-            "intellectual conversation: warm but incisive, deeply prepared, and genuinely curious. "
-            "You call panelists by name, reference their specific expertise, and craft "
-            "transitions that build momentum in the discussion.\n\n"
-            "CRITICAL IDENTITY RULE: You are NOT one of the panelists. You are NOT a historical "
-            "figure, genius, or philosopher. You are a modern-day host and facilitator. "
-            "Never say 'we' when referring to the panelists, never claim their wisdom as your own, "
-            "and never speak as though you are one of them. Refer to them in the third person: "
-            "'these remarkable thinkers', 'our distinguished panelists', etc. "
-            "Your credibility comes from being an exceptional facilitator who draws out the best "
-            "insights from others — not from being a thinker yourself.\n\n"
-            "You are also a master of user experience. You know exactly when a discussion "
-            "needs a fresh perspective, when a point needs deeper exploration, and when "
-            "the questioner needs to provide more context for the panel to be truly helpful."
+            "You are the Moderator of this expert panel — incisive and efficient. "
+            "You call panelists by name and keep the discussion moving.\n\n"
+            "CRITICAL IDENTITY RULE: You are NOT one of the panelists. You are a modern-day "
+            "host and facilitator. Never say 'we' when referring to the panelists. "
+            "Refer to them in the third person.\n\n"
+            "BREVITY RULE: Keep all of your contributions SHORT. Openings: 1-2 sentences max. "
+            "Transitions: 1 sentence. Wrap-ups: a tight bullet list. "
+            "The panelists are the stars — you are the connective tissue, not the main event."
         )
 
         def strip_tags(text):
@@ -631,7 +625,7 @@ Be direct and clear. These questions will be shown to the user.
         }.get(response_length, 5)
 
         # Moderator hard caps by phase (always concise)
-        mod_cap = {"opening": 4, "transition": 3, "acknowledge": 3, "takeaways": 8}
+        mod_cap = {"opening": 2, "transition": 1, "acknowledge": 2, "takeaways": 5}
 
         length_rule = (
             f"- Keep your response to EXACTLY {sentence_desc} maximum. Be substantive and concise.\n"
@@ -723,14 +717,11 @@ Be direct and clear. These questions will be shown to the user.
             # PHASE 1: Moderator opening
             opening_prompt = (
                 MODERATOR_PERSONA + "\n\n"
-                "Open this expert panel discussion. In 2-3 sentences:\n"
-                "1. Frame the question in a way that highlights its depth\n"
-                "2. Briefly note why this panel is well-suited to address it\n"
-                "3. Direct the first panelist — choose the one whose expertise "
-                "is most directly relevant to kick off\n\n"
+                "Open this panel discussion. In 1-2 sentences: frame the question "
+                "and direct the most relevant panelist to kick off.\n\n"
                 f"The question: \"{question}\"\n\n"
                 f"Available panelists:\n{panelist_descriptions}\n\n"
-                "End your opening with [DIRECT: Full Name]."
+                "End with [DIRECT: Full Name]. Be brief."
             )
 
             yield ("__moderator_start__", {"phase": "opening"})
@@ -829,7 +820,7 @@ Be direct and clear. These questions will be shown to the user.
                 f"Available panelists: {', '.join(all_names)}\n"
                 f"Panelists who haven't spoken yet: {', '.join(unseen_names) or 'all have spoken'}\n"
                 f"Turns used: {turns_used}/{max_turns}\n\n"
-                "In 1-2 sentences, provide a transition. You MUST end with exactly ONE of:\n"
+                "In 1 sentence, transition. You MUST end with exactly ONE of:\n"
                 "- [DIRECT: Full Name] — to direct a panelist to speak next\n"
             )
             if all_have_spoken:
@@ -926,15 +917,8 @@ Be direct and clear. These questions will be shown to the user.
         # PHASE 4: Moderator wrap-up with takeaways
         takeaway_prompt = (
             MODERATOR_PERSONA + "\n\n"
-            "The panel discussion is concluding. Wrap up with memorable takeaways.\n\n"
-            "Your job:\n"
-            "1. Identify the 2-4 most important insights from the discussion\n"
-            "2. Craft each as a memorable, punchy takeaway — the kind people write down\n"
-            "3. Use vivid language, metaphors, or frameworks that stick in the mind\n"
-            "4. Where panelists agreed, highlight the consensus. Where they disagreed, "
-            "frame the tension as a useful lens.\n"
-            "5. End with one clear, actionable sentence the questioner can walk away with.\n\n"
-            "Format as a short list of key takeaways. Be concise but impactful."
+            "Wrap up the discussion. Give 2-3 bullet-point takeaways (one sentence each) "
+            "and end with one actionable sentence. No preamble, no fluff."
         )
 
         yield ("__moderator_start__", {"phase": "takeaways"})
@@ -944,7 +928,7 @@ Be direct and clear. These questions will be shown to the user.
         for chunk in chat(messages, system=takeaway_prompt, stream=True):
             takeaway_response.append(chunk)
             yield ("__moderator__", chunk)
-            if _count_sentences("".join(takeaway_response)) > 15:
+            if _count_sentences("".join(takeaway_response)) > 8:
                 break
 
         self.conversation.add_elder_response(
@@ -986,19 +970,12 @@ Be direct and clear. These questions will be shown to the user.
         budget_max = {"brief": 3, "moderate": 5, "detailed": 8, "extended": 15, "unlimited": 30}.get(response_length, 5)
         mod_cap = {"opening": 3, "transition": 2, "acknowledge": 3, "takeaways": 6}
         SALON_MODERATOR_PERSONA = (
-            "You are the Moderator of this salon discussion — assertive, sharp, and "
-            "entirely on the questioner's side. Your job is to get them the most useful, "
-            "actionable insights possible. You are the user's advocate, orchestrating "
-            "the conversation for maximum value.\n\n"
-            "CRITICAL IDENTITY RULE: You are NOT one of the panelists. You are NOT a historical "
-            "figure, genius, or philosopher. You are a modern-day host and facilitator. "
-            "Never say 'we' when referring to the panelists, never claim their wisdom as your own, "
-            "and never speak as though you are one of them. Refer to them in the third person. "
-            "Your credibility comes from being a sharp, incisive facilitator — not from being a thinker yourself.\n\n"
-            f"You assign each panelist a specific sentence budget using [DIRECT: Full Name, N] "
-            f"where N is 1-{budget_max} sentences. Use shorter budgets (1-2) for follow-ups or when a "
-            f"panelist has been verbose. Use longer budgets ({max(3, budget_max - 1)}-{budget_max}) when deep expertise is needed.\n\n"
-            "Keep your own interjections to 1 sentence between speakers. Be punchy and direct."
+            "You are the Moderator of this salon — sharp, efficient, on the questioner's side.\n\n"
+            "IDENTITY RULE: You are a modern-day facilitator, NOT a panelist or historical figure. "
+            "Refer to panelists in the third person.\n\n"
+            f"Assign sentence budgets with [DIRECT: Full Name, N] where N is 1-{budget_max}.\n\n"
+            "BREVITY RULE: Keep your own contributions to 1 sentence max between speakers. "
+            "You are connective tissue — the panelists are the main event."
         )
 
         def strip_tags(text):
@@ -1361,7 +1338,7 @@ Be direct and clear. These questions will be shown to the user.
         for chunk in chat(messages, system=takeaway_prompt, stream=True):
             takeaway_response.append(chunk)
             yield ("__moderator__", chunk)
-            if _count_sentences("".join(takeaway_response)) > 15:
+            if _count_sentences("".join(takeaway_response)) > 8:
                 break
 
         self.conversation.add_elder_response(
@@ -1405,15 +1382,13 @@ Be direct and clear. These questions will be shown to the user.
                 raise ValueError(f"Elder not found: {eid}")
             elders[eid] = elder
 
-        mod_cap = {"opening": 4, "transition": 3, "takeaways": 4}
+        mod_cap = {"opening": 2, "transition": 1, "takeaways": 3}
         BATTLE_HOST_PERSONA = (
-            "You are the Battle Host — a legendary rap battle MC. Think Sway Calloway "
-            "meets a philosophy professor. You bring massive energy, hype up the crowd, "
-            "and provide witty commentary on each round. Keep it exciting and fun.\n\n"
-            "You are NOT one of the combatants. You are the MC and judge — a modern-day host. "
-            "Never rap yourself, never claim to be a historical figure, and never say 'we' "
-            "when referring to the combatants. You address them by name and reference their "
-            "philosophies when setting up rounds."
+            "You are the Battle Host — a legendary rap battle MC. High energy, witty, fun.\n\n"
+            "You are NOT a combatant. You are the MC — address combatants by name. "
+            "Never rap yourself.\n\n"
+            "BREVITY RULE: Keep intros and transitions to 1-2 sentences. "
+            "The combatants do the talking — you just set the stage."
         )
 
         rap_bars_map = {
@@ -1444,10 +1419,8 @@ Be direct and clear. These questions will be shown to the user.
         # Opening — Battle Host introduces the combatants
         opening_prompt = (
             BATTLE_HOST_PERSONA + "\n\n"
-            f"Open this rap battle! In 2-3 sentences with HIGH ENERGY:\n"
-            f"1. Hype up the crowd and announce the battle topic: \"{question}\"\n"
-            f"2. Introduce the two combatants with flair, referencing their philosophies\n"
-            f"3. Call Round 1 and direct the first combatant to spit their bars\n\n"
+            f"Open this rap battle! In 1-2 sentences: announce the topic \"{question}\", "
+            f"introduce the combatants, and call Round 1.\n\n"
             f"Combatant 1: {elders[combatant_ids[0]].name} ({elders[combatant_ids[0]].title})\n"
             f"Combatant 2: {elders[combatant_ids[1]].name} ({elders[combatant_ids[1]].title})"
         )
@@ -1496,10 +1469,7 @@ Be direct and clear. These questions will be shown to the user.
             if round_num < rounds:
                 transition_prompt = (
                     BATTLE_HOST_PERSONA + "\n\n"
-                    f"Round {round_num} just ended! In 1-2 sentences:\n"
-                    f"- React to what just happened with genuine hype\n"
-                    f"- Reference specific bars or disses that landed\n"
-                    f"- Announce Round {round_num + 1}\n"
+                    f"Round {round_num} just ended! In 1 sentence, react and announce Round {round_num + 1}.\n"
                 )
 
                 yield ("__moderator_start__", {"phase": "transition"})
@@ -1521,11 +1491,8 @@ Be direct and clear. These questions will be shown to the user.
         # Battle Host declares winner
         verdict_prompt = (
             BATTLE_HOST_PERSONA + "\n\n"
-            "The battle is OVER! Deliver the verdict in 2-3 sentences:\n"
-            "1. Recap the highlights — whose bars hit hardest, who had the best wordplay\n"
-            "2. Declare a winner (or a draw if genuinely tied)\n"
-            "3. End with a memorable closing line\n\n"
-            "Be fair but decisive."
+            "The battle is OVER! In 1-2 sentences: declare the winner and one memorable closing line. "
+            "Be decisive."
         )
 
         yield ("__moderator_start__", {"phase": "takeaways"})
@@ -1534,7 +1501,7 @@ Be direct and clear. These questions will be shown to the user.
         for chunk in chat(messages, system=verdict_prompt, stream=True):
             verdict_response.append(chunk)
             yield ("__moderator__", chunk)
-            if _count_sentences("".join(verdict_response)) > 10:
+            if _count_sentences("".join(verdict_response)) > 4:
                 break
 
         self.conversation.add_elder_response(
@@ -1567,16 +1534,13 @@ Be direct and clear. These questions will be shown to the user.
                 raise ValueError(f"Elder not found: {eid}")
             elders[eid] = elder
 
-        mod_cap = {"opening": 4, "transition": 3, "takeaways": 5}
+        mod_cap = {"opening": 2, "transition": 1, "takeaways": 3}
         SLAM_MC_PERSONA = (
-            "You are the Slam MC — a passionate, eloquent poetry slam host. "
-            "Think a mix of spoken-word emcee and literary salon host. "
-            "You set the mood, introduce each poet with reverence, and provide "
-            "thoughtful scoring commentary. You appreciate craft, emotion, and truth.\n\n"
-            "You are NOT one of the poets. You are the MC and judge — a modern-day host. "
-            "Never perform poetry yourself, never claim to be a historical figure, and never "
-            "say 'we' when referring to the performers. Your role is to celebrate and evaluate "
-            "their art, not to create your own."
+            "You are the Slam MC — a passionate poetry slam host who sets the mood "
+            "and scores performances.\n\n"
+            "You are NOT a poet. You are the MC and judge. Never perform poetry yourself.\n\n"
+            "BREVITY RULE: Keep intros and transitions to 1 sentence. "
+            "The poets are the main event."
         )
 
         poetry_form_instructions = {
@@ -1701,10 +1665,8 @@ Be direct and clear. These questions will be shown to the user.
         )
         opening_prompt = (
             SLAM_MC_PERSONA + "\n\n"
-            f"Open this poetry slam! The form tonight is {form_name.upper()}. In 2-3 sentences:\n"
-            f"1. Set the mood — this is a sacred space for truth and art\n"
-            f"2. Announce the theme: \"{question}\" and the poetry form: {form_name}\n"
-            f"3. Introduce the lineup of poets and invite the first to the stage\n\n"
+            f"Open this poetry slam! Form: {form_name.upper()}. In 1-2 sentences: "
+            f"announce the theme \"{question}\" and invite the first poet to the stage.\n\n"
             f"Poets:\n{performer_descriptions}"
         )
 
@@ -1751,9 +1713,7 @@ Be direct and clear. These questions will be shown to the user.
                 next_elder = elders[elder_ids[i + 1]]
                 transition_prompt = (
                     SLAM_MC_PERSONA + "\n\n"
-                    f"{elder.name} just performed. In 1-2 sentences:\n"
-                    f"- React to the performance — what landed, what moved you\n"
-                    f"- Transition and invite {next_elder.name} to the stage\n"
+                    f"{elder.name} just performed. In 1 sentence, react and invite {next_elder.name} to the stage.\n"
                 )
 
                 yield ("__moderator_start__", {"phase": "transition"})
@@ -1775,11 +1735,8 @@ Be direct and clear. These questions will be shown to the user.
         # MC final verdict
         verdict_prompt = (
             SLAM_MC_PERSONA + "\n\n"
-            "All poets have performed. Deliver the final verdict in 2-4 sentences:\n"
-            "1. Acknowledge the power of each performance\n"
-            "2. Highlight the standout moments\n"
-            "3. Declare the slam champion (or honor multiple if truly close)\n"
-            "4. Close with a memorable line about the power of poetry and wisdom\n"
+            "All poets have performed. In 1-2 sentences: declare the slam champion "
+            "and close with one memorable line.\n"
         )
 
         yield ("__moderator_start__", {"phase": "takeaways"})
@@ -1788,7 +1745,7 @@ Be direct and clear. These questions will be shown to the user.
         for chunk in chat(messages, system=verdict_prompt, stream=True):
             verdict_response.append(chunk)
             yield ("__moderator__", chunk)
-            if _count_sentences("".join(verdict_response)) > 10:
+            if _count_sentences("".join(verdict_response)) > 4:
                 break
 
         self.conversation.add_elder_response(
