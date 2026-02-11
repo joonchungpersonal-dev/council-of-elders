@@ -61,9 +61,45 @@ class Conversation:
         return messages
 
 
+def _get_source_confidence(metadata: dict) -> float:
+    """Derive a confidence weight from ChromaDB result metadata.
+
+    Returns a float between 0.0 and 1.0.
+    """
+    source_type = metadata.get("type", "")
+    vetting_confidence = metadata.get("vetting_confidence")
+    audit_passed = metadata.get("audit_passed")
+    quality_score = metadata.get("quality_score")
+
+    # User-uploaded source material
+    if vetting_confidence is not None:
+        try:
+            conf = int(vetting_confidence)
+        except (ValueError, TypeError):
+            conf = 50
+        if conf >= 70:
+            return 0.9  # Verified user source
+        return 0.5  # Unvetted / low-confidence
+
+    # YouTube transcripts
+    if source_type == "youtube":
+        if audit_passed is not None:
+            passed = str(audit_passed).lower() in ("true", "1")
+            if passed:
+                return 0.8  # Audit passed
+            return 0.3  # Audit failed
+        return 0.7  # Default YouTube (no audit data)
+
+    # Default for other types (e.g. Kindle books, letters)
+    return 0.7
+
+
 def get_elder_knowledge(elder_id: str, query: str = "", max_chars: int = 4000) -> str:
     """
-    Get QUERY-RELEVANT knowledge for an elder using semantic search.
+    Get QUERY-RELEVANT knowledge for an elder using confidence-weighted retrieval.
+
+    Higher-confidence sources are prioritized. Low-confidence material is
+    truncated to prevent unreliable content from dominating the context.
 
     Args:
         elder_id: The elder ID
@@ -73,46 +109,81 @@ def get_elder_knowledge(elder_id: str, query: str = "", max_chars: int = 4000) -
     Returns:
         Knowledge context string
     """
-    knowledge_parts = []
+    # list of (confidence, text) tuples
+    knowledge_parts: list[tuple[float, str]] = []
 
-    # 1. Always include embedded wisdom (key quotes) - these are curated
+    # 1. Always include embedded wisdom (key quotes) — curated, full confidence
     if elder_id in EMBEDDED_WISDOM:
-        knowledge_parts.append(EMBEDDED_WISDOM[elder_id])
+        knowledge_parts.append((1.0, EMBEDDED_WISDOM[elder_id]))
 
-    # 2. Use ChromaDB for semantic search of additional knowledge (if available)
+    # 2. Use ChromaDB for semantic search with confidence metadata
     if query:
         try:
             from council.knowledge.store import get_knowledge_store
 
             store = get_knowledge_store()
-            context = store.get_context(elder_id, query, max_tokens=2000)
-            if context:
-                knowledge_parts.append(context)
+            results = store.query(elder_id, query, n_results=8)
+            for result in results:
+                content = result["content"]
+                metadata = result.get("metadata", {})
+                confidence = _get_source_confidence(metadata)
+                knowledge_parts.append((confidence, content))
         except ImportError:
-            # ChromaDB not installed, fall back to file-based approach
             pass
         except Exception:
-            # ChromaDB query failed, fall back to file-based approach
             pass
 
     # 3. Fallback: If no semantic results, check downloaded knowledge files
     if len(knowledge_parts) <= 1:  # Only embedded wisdom so far
         knowledge_dir = get_knowledge_dir() / elder_id
         if knowledge_dir.exists():
-            for filepath in sorted(knowledge_dir.glob("**/*.txt"))[:5]:  # Limit files
+            for filepath in sorted(knowledge_dir.glob("**/*.txt"))[:5]:
                 try:
                     content = filepath.read_text(encoding="utf-8")
-                    # Take first portion of each file
-                    knowledge_parts.append(content[:2000])
+                    # Heuristic confidence from directory name
+                    parts = filepath.parts
+                    if "sources" in parts:
+                        confidence = 0.5  # Unvetted user uploads
+                    elif "youtube" in parts:
+                        confidence = 0.7  # Default YouTube
+                    else:
+                        confidence = 0.7  # Other knowledge files
+                    knowledge_parts.append((confidence, content[:2000]))
                 except Exception:
                     pass
 
     if not knowledge_parts:
         return ""
 
-    combined = "\n\n---\n\n".join(knowledge_parts)
+    # Sort by confidence descending
+    knowledge_parts.sort(key=lambda x: x[0], reverse=True)
 
-    # Truncate if too long
+    # Apply truncation limits by confidence tier
+    final_parts: list[str] = []
+    total_chars = 0
+
+    for confidence, text in knowledge_parts:
+        if total_chars >= max_chars:
+            break
+
+        # Apply per-item char limits based on confidence
+        if confidence < 0.5:
+            item_limit = 500
+        elif confidence < 0.7:
+            item_limit = 1500
+        else:
+            item_limit = max_chars  # No per-item limit for high-confidence
+
+        truncated = text[:item_limit]
+        remaining = max_chars - total_chars
+        if len(truncated) > remaining:
+            truncated = truncated[:remaining]
+
+        final_parts.append(truncated)
+        total_chars += len(truncated)
+
+    combined = "\n\n---\n\n".join(final_parts)
+
     if len(combined) > max_chars:
         combined = combined[:max_chars] + "\n\n[... additional knowledge available ...]"
 
@@ -364,6 +435,10 @@ class Orchestrator:
                     nomination_suffix = NOMINATION_INSTRUCTION
 
                 system_prompt = elder.system_prompt + context_note + nomination_suffix
+                if self.use_knowledge:
+                    knowledge_context = get_elder_knowledge(elder.id, query=question)
+                    if knowledge_context:
+                        system_prompt += knowledge_context
 
                 full_response = []
                 for chunk in chat(messages, system=system_prompt, stream=True):
@@ -409,6 +484,10 @@ class Orchestrator:
             )
             messages = self.conversation.to_messages(for_elder=guest.id)
             system_prompt = guest.system_prompt + context_note
+            if self.use_knowledge:
+                knowledge_context = get_elder_knowledge(guest.id, query=question)
+                if knowledge_context:
+                    system_prompt += knowledge_context
 
             full_response = []
             for chunk in chat(messages, system=system_prompt, stream=True):
@@ -769,6 +848,10 @@ Be direct and clear. These questions will be shown to the user.
             messages = self.conversation.to_messages(for_elder=elder.id)
             system_prompt = elder.system_prompt + panel_instruction + context_note
             system_prompt += _get_tension_prompt(dialectic_tension, role="elder")
+            if self.use_knowledge:
+                knowledge_context = get_elder_knowledge(elder.id, query=question)
+                if knowledge_context:
+                    system_prompt += knowledge_context
 
             if allow_nominations and nomination_count < max_nominations:
                 system_prompt += NOMINATION_INSTRUCTION
@@ -1161,6 +1244,10 @@ Be direct and clear. These questions will be shown to the user.
             messages = self.conversation.to_messages(for_elder=elder.id)
             system_prompt = elder.system_prompt + salon_instruction + context_note
             system_prompt += _get_tension_prompt(dialectic_tension, role="elder")
+            if self.use_knowledge:
+                knowledge_context = get_elder_knowledge(elder.id, query=question)
+                if knowledge_context:
+                    system_prompt += knowledge_context
 
             if allow_nominations and nomination_count < max_nominations:
                 system_prompt += NOMINATION_INSTRUCTION

@@ -1081,7 +1081,79 @@ def api_save_custom_elder():
         data['id'] = data['id'].replace('nominated_', 'custom_')
 
     filepath = save_custom_elder(data)
-    return jsonify({'saved': True, 'id': data['id'], 'path': str(filepath)})
+
+    # Auto-trigger enrichment for new custom elders if enabled
+    enrichment_enabled = get_config_value('enrichment_enabled', True)
+    task_id = None
+    if enrichment_enabled and data.get('name'):
+        try:
+            from council.knowledge.enrichment import enrich_elder
+
+            tm = get_task_manager()
+            elder_id = data['id']
+            task_id = tm.submit(
+                enrich_elder,
+                task_id=f'enrich_{elder_id}',
+                elder_id=elder_id,
+                name=data['name'],
+                expertise=data.get('expertise', data.get('title', '')),
+            )
+        except Exception:
+            pass
+
+    result = {'saved': True, 'id': data['id'], 'path': str(filepath)}
+    if task_id:
+        result['enrichment_task_id'] = task_id
+    return jsonify(result)
+
+
+@app.route('/api/custom-elders/source-material', methods=['POST'])
+def api_upload_source_material():
+    """Upload source material (text and/or files) for a custom elder."""
+    elder_id = request.form.get('elder_id', '')
+    source_text = request.form.get('source_text', '')
+
+    if not elder_id:
+        return jsonify({'error': 'Missing elder_id'}), 400
+
+    # Collect uploaded files (max 10MB each)
+    files = []
+    for f in request.files.getlist('files'):
+        if not f.filename:
+            continue
+        data = f.read()
+        if len(data) > 10 * 1024 * 1024:
+            return jsonify({'error': f'File {f.filename} exceeds 10MB limit'}), 400
+        files.append((f.filename, data))
+
+    if not source_text.strip() and not files:
+        return jsonify({'error': 'No source text or files provided'}), 400
+
+    from council.knowledge.source_material import ingest_source_material
+
+    result = ingest_source_material(elder_id, source_text=source_text, files=files)
+
+    # Auto-trigger quote verification for newly ingested material
+    if result.get('files_saved', 0) > 0:
+        try:
+            from council.knowledge.verify_quotes import verify_elder_quotes
+            from council.elders.custom import get_custom_elder_data
+
+            elder_data = get_custom_elder_data(elder_id)
+            elder_name = elder_data.get('name', '') if elder_data else ''
+            if elder_name:
+                tm = get_task_manager()
+                quote_task_id = tm.submit(
+                    verify_elder_quotes,
+                    task_id=f'quotes_{elder_id}',
+                    elder_id=elder_id,
+                    elder_name=elder_name,
+                )
+                result['quote_verification_task_id'] = quote_task_id
+        except Exception:
+            pass
+
+    return jsonify(result)
 
 
 @app.route('/api/custom-elders/<elder_id>', methods=['DELETE'])
@@ -1096,6 +1168,28 @@ def api_delete_custom_elder(elder_id):
 # ---------------------------------------------------------------------------
 # Enrichment API
 # ---------------------------------------------------------------------------
+
+@app.route('/api/verify-quotes', methods=['POST'])
+def api_verify_quotes():
+    """Start background quote verification for an elder."""
+    data = request.json
+    elder_id = data.get('elder_id', '')
+    name = data.get('name', '')
+
+    if not elder_id or not name:
+        return jsonify({'error': 'Missing elder_id or name'}), 400
+
+    from council.knowledge.verify_quotes import verify_elder_quotes
+
+    tm = get_task_manager()
+    task_id = tm.submit(
+        verify_elder_quotes,
+        task_id=f'quotes_{elder_id}',
+        elder_id=elder_id,
+        elder_name=name,
+    )
+    return jsonify({'task_id': task_id})
+
 
 @app.route('/api/enrich', methods=['POST'])
 def api_enrich():

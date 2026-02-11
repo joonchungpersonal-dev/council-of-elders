@@ -3,9 +3,12 @@
 Runs in a background thread (via TaskManager) to research a person:
 1. Biography (Wikipedia + LLM)
 2. YouTube search → download → vet → save transcripts
-3. ChromaDB indexing
-4. Book discovery
+3. ChromaDB indexing (with audit metadata)
+4. Book discovery (with Open Library verification)
+5. Quote verification (fire-and-forget background task)
 """
+
+import logging
 
 from council.config import get_config_value
 from council.knowledge.biography import get_biography
@@ -17,6 +20,8 @@ from council.knowledge.youtube import (
     vet_transcript,
 )
 from council.tasks import TaskProgress
+
+logger = logging.getLogger(__name__)
 
 
 def enrich_elder(
@@ -108,9 +113,25 @@ def enrich_elder(
                 progress.substeps[-1]["status"] = "skipped: failed vetting"
                 continue
 
-            save_transcript(storage_id, video_info)
+            saved_path = save_transcript(storage_id, video_info)
 
-            # Index in ChromaDB
+            # Run rule-based transcript audit (no LLM — already vetted above)
+            audit_passed = True
+            quality_score = 70
+            try:
+                from council.knowledge.audit import audit_transcript
+
+                audit = audit_transcript(saved_path, use_llm=False)
+                audit_passed = audit.passed
+                quality_score = audit.quality_score
+                progress.substeps[-1]["audit_passed"] = audit_passed
+                progress.substeps[-1]["quality_score"] = quality_score
+                if not audit_passed:
+                    progress.substeps[-1]["low_quality"] = True
+            except Exception:
+                pass
+
+            # Index in ChromaDB with audit metadata
             try:
                 from council.knowledge.store import get_knowledge_store
 
@@ -124,6 +145,8 @@ def enrich_elder(
                         "channel": video_info.channel,
                         "title": video_info.title,
                         "duration": str(video_info.duration // 60),
+                        "audit_passed": str(audit_passed),
+                        "quality_score": str(quality_score),
                     },
                 )
             except Exception:
@@ -157,9 +180,37 @@ def enrich_elder(
     except Exception as e:
         progress.substeps[-1] = {"step": "books", "status": f"failed: {e}"}
 
+    # ---- Step 4: Quote verification (fire-and-forget) ---------------------
+    try:
+        from council.knowledge.verify_quotes import verify_elder_quotes
+        from council.tasks import get_task_manager
+
+        tm = get_task_manager()
+        tm.submit(
+            verify_elder_quotes,
+            task_id=f"quotes_{elder_id}",
+            elder_id=elder_id,
+            elder_name=name,
+        )
+        progress.substeps.append({"step": "quote_verification", "status": "submitted"})
+    except Exception as e:
+        logger.debug("Quote verification kick-off failed: %s", e)
+
     # ---- Done -------------------------------------------------------------
     progress.progress = 1.0
     progress.message = f"Enrichment complete for {name}"
+
+    # Collect transcript audit summaries
+    transcript_audits = [
+        {
+            "url": s.get("url", ""),
+            "title": s.get("title", ""),
+            "audit_passed": s.get("audit_passed", True),
+            "quality_score": s.get("quality_score", 70),
+        }
+        for s in progress.substeps
+        if s.get("step", "").startswith("video_") and s.get("status") == "done"
+    ]
 
     # Update the custom elder file if it exists
     try:
@@ -172,6 +223,7 @@ def enrich_elder(
                 "status": "completed",
                 "youtube_transcripts": saved_count,
                 "books_discovered": result.get("books_discovered", 0),
+                "transcript_audits": transcript_audits,
             },
         })
     except Exception:
