@@ -41,7 +41,7 @@ RESTRICTIONS:
 These prompts represent significant creative work in crafting authentic
 representations of historical figures' thinking styles and personalities.
 
-For licensing inquiries, contact: [Your Email]
+For licensing inquiries, contact the repository maintainer.
 """
     license_path = PERSONALITIES_DIR / "LICENSE"
     license_path.write_text(license_text)

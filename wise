@@ -22,33 +22,33 @@ console = Console()
 # Elder categories for easy selection
 ELDER_GROUPS = {
     "Business & Investing": [
-        ("munger", "Charlie Munger", "Mental models, rational thinking"),
-        ("buffett", "Warren Buffett", "Value investing, patience"),
-        ("naval", "Naval Ravikant", "Wealth, happiness, leverage"),
-        ("greene", "Robert Greene", "Power, strategy, human nature"),
+        ("graham", "Benjamin Graham", "Value investing, margin of safety"),
+        ("adam_smith", "Adam Smith", "Moral philosophy, political economy"),
+        ("bacon", "Francis Bacon", "Empiricism, knowledge, pragmatism"),
+        ("machiavelli", "Niccolò Machiavelli", "Power, strategy, human nature"),
     ],
     "Philosophy & Wisdom": [
         ("aurelius", "Marcus Aurelius", "Stoicism, duty, resilience"),
         ("seneca", "Seneca", "Practical philosophy, mortality"),
-        ("thich", "Thich Nhat Hanh", "Mindfulness, peace, presence"),
+        ("dogen", "Dōgen", "Zen, mindfulness, presence"),
         ("confucius", "Confucius", "Ethics, relationships, harmony"),
     ],
     "Psychology & Growth": [
         ("jung", "Carl Jung", "Shadow work, archetypes, individuation"),
-        ("peterson", "Jordan Peterson", "Meaning, responsibility, order"),
+        ("william_james", "William James", "Pragmatism, psychology, meaning"),
         ("branden", "Nathaniel Branden", "Self-esteem, authenticity"),
-        ("frankl", "Viktor Frankl", "Meaning, suffering, purpose"),
+        ("epicurus", "Epicurus", "Happiness, simple living, purpose"),
     ],
     "Creativity & Action": [
-        ("rubin", "Rick Rubin", "Creativity, art, source"),
-        ("lee", "Bruce Lee", "Adaptability, self-expression"),
-        ("oprah", "Oprah Winfrey", "Intuition, transformation"),
+        ("davinci", "Leonardo da Vinci", "Creativity, invention, curiosity"),
+        ("musashi", "Miyamoto Musashi", "Adaptability, self-expression"),
+        ("sojourner_truth", "Sojourner Truth", "Conviction, transformation"),
         ("franklin", "Benjamin Franklin", "Self-improvement, pragmatism"),
     ],
     "Risk & Systems": [
-        ("taleb", "Nassim Taleb", "Antifragility, uncertainty, risk"),
-        ("feynman", "Richard Feynman", "First principles, curiosity"),
-        ("lao", "Lao Tzu", "Wu wei, natural flow, simplicity"),
+        ("thucydides", "Thucydides", "History, strategy, risk analysis"),
+        ("newton", "Isaac Newton", "First principles, natural philosophy"),
+        ("laotzu", "Lao Tzu", "Wu wei, natural flow, simplicity"),
     ],
 }
 
@@ -111,12 +111,12 @@ def roundtable():
 
     # Preset combinations
     presets = {
-        "1": ("munger,buffett,taleb", "Investment Decision"),
-        "2": ("aurelius,seneca,thich", "Life Challenge"),
-        "3": ("greene,naval,munger", "Career Strategy"),
-        "4": ("jung,peterson,frankl", "Personal Growth"),
-        "5": ("rubin,lee,oprah", "Creative Block"),
-        "6": ("feynman,taleb,munger", "Complex Problem"),
+        "1": ("graham,adam_smith,thucydides", "Investment Decision"),
+        "2": ("aurelius,seneca,dogen", "Life Challenge"),
+        "3": ("machiavelli,bacon,graham", "Career Strategy"),
+        "4": ("jung,william_james,epicurus", "Personal Growth"),
+        "5": ("davinci,musashi,sojourner_truth", "Creative Block"),
+        "6": ("newton,thucydides,graham", "Complex Problem"),
     }
 
     console.print("[bold]Preset Panels:[/bold]")
@@ -228,12 +228,12 @@ def full_council():
 
     # Presets
     presets = {
-        "1": ("career", "Career & Work", ["munger", "naval", "aurelius", "peterson", "greene"]),
-        "2": ("life", "Life Direction", ["aurelius", "frankl", "jung", "naval", "lao"]),
-        "3": ("creative", "Creative Challenge", ["rubin", "lee", "feynman", "jung", "naval"]),
-        "4": ("financial", "Financial Decision", ["munger", "buffett", "taleb", "seneca", "naval"]),
-        "5": ("relationship", "Relationships", ["confucius", "thich", "jung", "branden", "aurelius"]),
-        "6": ("full", "Full Council (All Domains)", ["munger", "aurelius", "jung", "rubin", "taleb"]),
+        "1": ("career", "Career & Work", ["graham", "bacon", "aurelius", "william_james", "machiavelli"]),
+        "2": ("life", "Life Direction", ["aurelius", "epicurus", "jung", "bacon", "laotzu"]),
+        "3": ("creative", "Creative Challenge", ["davinci", "musashi", "newton", "jung", "bacon"]),
+        "4": ("financial", "Financial Decision", ["graham", "adam_smith", "thucydides", "seneca", "bacon"]),
+        "5": ("relationship", "Relationships", ["confucius", "dogen", "jung", "branden", "aurelius"]),
+        "6": ("full", "Full Council (All Domains)", ["graham", "aurelius", "jung", "davinci", "thucydides"]),
     }
 
     console.print("[bold]Council Presets:[/bold]")
@@ -318,8 +318,8 @@ In 2-3 paragraphs, engage with their view. Where do you agree? What would you ad
     console.print("\n[bold yellow]━━━ PHASE 3: SYNTHESIS ━━━[/bold yellow]")
     console.print("[dim]Integrating the threads of wisdom[/dim]\n")
 
-    # Use Munger or first elder as synthesizer
-    synthesizer_id = "munger" if "munger" in domain_elders else domain_elders[0]
+    # Use Graham or first elder as synthesizer
+    synthesizer_id = "graham" if "graham" in domain_elders else domain_elders[0]
     synthesizer = ElderRegistry.get(synthesizer_id)
 
     perspectives_summary = "\n".join([

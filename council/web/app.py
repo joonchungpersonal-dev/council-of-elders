@@ -1440,4 +1440,4 @@ def run_server(host='127.0.0.1', port=5000, debug=False):
 
 
 if __name__ == '__main__':
-    run_server(debug=True)
+    run_server(debug=False)

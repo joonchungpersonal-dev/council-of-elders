@@ -46,3 +46,9 @@ roundtable_output.html
 
 # Audit report (private, regenerated on demand)
 AUDIT_REPORT.html
+
+# Environment files
+.env*
+
+# Private journals
+data/journals/
